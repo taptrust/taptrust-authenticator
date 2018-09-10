@@ -1,40 +1,16 @@
 {
-  "name": "ReactTemplate",
+  "name": "SplashLogin",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest",
-    "flow": "flow"
+    "test": "jest"
   },
   "dependencies": {
-    "@remobile/react-native-toast": "https://github.com/KucherenkoIhor/react-native-toast/tarball/feature/update_build_tools",
-    "immutable": "3.8.1",
-    "native-base": "2.1.5",
-    "prop-types": "=15.5.10",
-    "query-string": "4.3.4",
-    "react": "16.0.0-alpha.12",
-    "react-addons-shallow-compare": "15.6.0",
-    "react-localization": "0.0.15",
-    "react-native": "0.45.1",
-    "react-native-render-html": "2.0.0",
-    "react-native-popup-dialog": "0.9.29",
-    "react-navigation": "1.0.0-beta.11",
-    "react-redux": "5.0.5",
-    "redux": "3.7.0",
-    "redux-action-buffer": "1.1.0",
-    "redux-immutable": "4.0.0",
-    "redux-persist-immutable": "4.3.0",
-    "redux-saga": "0.15.3",
-    "rx-fetch": "1.3.6",
-    "showdown": "1.7.1"
-  },
-  "devDependencies": {
-    "babel-jest": "20.0.3",
-    "babel-preset-react-native": "2.0.0",
-    "flow-bin": "0.51.0",
-    "jest": "20.0.4",
-    "react-test-renderer": "16.0.0-alpha.12"
+    "expo": "27.0.1",
+    "react": "16.3.1",
+    "react-native": "^0.55.0",
+    "react-native-linear-gradient": "^2.4.2"
   },
   "jest": {
     "preset": "react-native"
