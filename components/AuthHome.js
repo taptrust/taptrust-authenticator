@@ -47,6 +47,11 @@ export default class AuthHomeScreen extends Component {
                                 onPress={() => Linking.openURL('http://taptrust.com/about')}>
                                 Learn more about using TapTrust
                               </Text>
+
+                              <Text style={{color: 'white', marginTop: '5%', fontSize: 12}}
+                                onPress={() => this.props.navigation.navigate('Login')}>
+                                Back to login page
+                              </Text>
                           </View>
 
 
