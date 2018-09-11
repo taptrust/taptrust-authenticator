@@ -7,10 +7,13 @@ import {
 } from 'react-native'
 import { createStackNavigator } from 'react-navigation';
 import SplashScreen from './Splash'
+import AuthHomeScreen from './AuthHome'
 
 export default class LoginScreen extends Component {
     constructor(props) {
       super(props);
+
+      this.onPress = this.onPress.bind(this)
       this.state = { username: null, password: null , timePassed: false}
     }
 
@@ -22,6 +25,10 @@ export default class LoginScreen extends Component {
 
     setTimePassed() {
       this.setState({timePassed: true});
+    }
+
+    onPress = () => {
+      this.props.navigation.navigate('AuthHomeScreen')
     }
 
 
@@ -64,8 +71,10 @@ export default class LoginScreen extends Component {
                                       (pwd) => this.setState({ password: pwd })
                                     }
                                 />
-                                <TouchableOpacity style={styles.buttonContainer}>
-                                    <Text style={styles.buttonText}>Login</Text>
+                                <TouchableOpacity
+                                  style={styles.buttonContainer}
+                                  onPress={() => this.props.navigation.navigate('AuthHomeScreen')}>
+                                  <Text style={styles.buttonText}>Login</Text>
                                 </TouchableOpacity>
 
                                 <Text style={{color: 'white', marginTop: 10}}
