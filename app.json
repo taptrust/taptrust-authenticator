@@ -1,4 +1,5 @@
 {
-  "name": "SplashLogin",
-  "displayName": "SplashLogin"
+  "expo": {
+    "sdkVersion": "27.0.0"
+  }
 }

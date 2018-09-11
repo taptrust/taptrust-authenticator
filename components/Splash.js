@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
 
-export default class Splash extends React.Component {
+export default class SplashScreen extends React.Component {
 
   render() {
     return (
