@@ -5,12 +5,11 @@ import {
     TextInput, SafeAreaView, Keyboard, TouchableOpacity,
     KeyboardAvoidingView, Linking
 } from 'react-native'
-import { createStackNavigator } from 'react-navigation';
 
-export default class LoginScreen extends Component {
+export default class RegisterScreen extends Component {
     constructor(props) {
       super(props);
-      this.state = { username: null, password: null }
+      this.state = { username: null, password_one: null, password_two: null }
     }
 
 
@@ -27,7 +26,7 @@ export default class LoginScreen extends Component {
                                 source={require('../src/fingerprint.png')}
                               />
 
-                              <Text style={styles.title}>TapTrust Login</Text>
+                              <Text style={styles.title}>Create Your Account</Text>
                             </View>
                             <View style={styles.infoContainer}>
                                 <TextInput style={styles.input}
@@ -40,22 +39,33 @@ export default class LoginScreen extends Component {
                                   }
                                 />
                                 <TextInput style={styles.input}
-                                    placeholder="Password"
+                                    placeholder="Enter Password"
                                     placeholderTextColor='rgba(255,255,255,0.8)'
                                     returnKeyType='go'
                                     secureTextEntry={true}
                                     autoCorrect={false}
                                     ref={"txtPassword"}
                                     onSubmitEditing={
-                                      (pwd) => this.setState({ password: pwd })
+                                      (pwd) => this.setState({ password_one: pwd_one })
+                                    }
+                                />
+                                <TextInput style={styles.input}
+                                    placeholder="Confirm Password"
+                                    placeholderTextColor='rgba(255,255,255,0.8)'
+                                    returnKeyType='go'
+                                    secureTextEntry={true}
+                                    autoCorrect={false}
+                                    ref={"txtPassword"}
+                                    onSubmitEditing={
+                                      (pwd) => this.setState({ password_two: pwd_two })
                                     }
                                 />
                                 <TouchableOpacity style={styles.buttonContainer}>
-                                    <Text style={styles.buttonText}>Login</Text>
+                                    <Text style={styles.buttonText}>Create Account</Text>
                                 </TouchableOpacity>
 
                                 <Text style={{color: 'white', marginTop: 10}}
-                                  onPress={() => this.props.navigation.navigate('Register')}>
+                                  onPress={() => Linking.openURL('http://taptrust.com')}>
                                   Create New Account
                                 </Text>
 
@@ -108,8 +118,7 @@ const styles = StyleSheet.create({
         color: '#FFF',
         marginBottom: 15,
         paddingHorizontal: 10,
-        borderRadius: 10,
-        fontSize: 20
+        borderRadius: 10
     },
     buttonContainer: {
         backgroundColor: 'white',
