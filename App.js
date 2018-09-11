@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation'; // Version can be speci
 import SplashScreen from './components/Splash'
 import LoginScreen from './components/Login'
 import RegisterScreen from './components/Register'
+import AuthHomeScreen from './components/AuthHome'
 
 
 export default createStackNavigator({
@@ -13,6 +14,9 @@ export default createStackNavigator({
   Register: {
     screen: RegisterScreen
   },
+  AuthHome: {
+    screen: AuthHomeScreen
+  }
 },{
   navigationOptions:{
     header : null
