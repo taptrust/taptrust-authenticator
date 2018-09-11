@@ -65,8 +65,8 @@ export default class RegisterScreen extends Component {
                                 </TouchableOpacity>
 
                                 <Text style={{color: 'white', marginTop: 10}}
-                                  onPress={() => Linking.openURL('http://taptrust.com')}>
-                                  Create New Account
+                                  onPress={() => this.props.navigation.navigate('Login')}>
+                                  Already have an account? Login
                                 </Text>
 
                                 <Text style={{color: 'white', marginBottom: 10}}
