@@ -6,15 +6,29 @@ import {
     KeyboardAvoidingView, Linking
 } from 'react-native'
 import { createStackNavigator } from 'react-navigation';
+import SplashScreen from './Splash'
 
 export default class LoginScreen extends Component {
     constructor(props) {
       super(props);
-      this.state = { username: null, password: null }
+      this.state = { username: null, password: null , timePassed: false}
+    }
+
+    componentDidMount() {
+      setTimeout( () => {
+        this.setTimePassed();
+      }, 2000)
+    }
+
+    setTimePassed() {
+      this.setState({timePassed: true});
     }
 
 
     render() {
+      if (!this.state.timePassed) {
+        return <SplashScreen />
+      } else {
         return (
             <SafeAreaView style={styles.container}>
                 <StatusBar barStyle="light-content" />
@@ -71,8 +85,10 @@ export default class LoginScreen extends Component {
 
             </SafeAreaView>
         )
+      }
     }
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
