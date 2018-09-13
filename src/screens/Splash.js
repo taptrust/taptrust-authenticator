@@ -10,7 +10,7 @@ export default class SplashScreen extends React.Component {
           <View style={{flex: 2, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
 
             <Image style={styles.image}
-              source={require('../src/fingerprint.png')}
+              source={require('../assets/fingerprint.png')}
             />
 
             <Text style={styles.text} >

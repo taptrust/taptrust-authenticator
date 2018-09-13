@@ -23,7 +23,7 @@ export default class AuthHomeScreen extends Component {
                       <View style={styles.logoContainer}>
                           <View style={styles.logoContainer}>
                             <Image style={styles.image}
-                              source={require('../src/fingerprint.png')}
+                              source={require('../assets/fingerprint.png')}
                             />
 
                             <Text style={styles.title}>my_username</Text>
