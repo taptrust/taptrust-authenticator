@@ -8,6 +8,7 @@ import {
 import { createStackNavigator } from 'react-navigation';
 import SplashScreen from './Splash'
 import AuthHomeScreen from './AuthHome'
+import AuthApprovalScreen from './AuthApproval'
 
 import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
@@ -19,9 +20,9 @@ export default class LoginScreen extends Component {
       super(props);
 
       this.onPress = this.onPress.bind(this)
-      this.state = { 
-          username: '', 
-          password: '', 
+      this.state = {
+          username: '',
+          password: '',
           isUserNameValid: true,
           isPasswordValid: true,
           isUserNameEmpty: false,
@@ -92,7 +93,7 @@ export default class LoginScreen extends Component {
                         username: this.state.username,
                         pubkey: this.state.password,
                     }
-                })                
+                })
                 this.login_to();
         }
     }
@@ -171,17 +172,17 @@ export default class LoginScreen extends Component {
                                     {!this.state.isPasswordValid &&
                                         <Text style={styles.usernameValidation}>Password must be at least six characters and contain at least one letter, one number, and one special character</Text>
                                     }
-                                    {/* {this.state.isPasswordConfirmationEmpty && 
+                                    {/* {this.state.isPasswordConfirmationEmpty &&
                                         <Text style={styles.usernameValidation}>Confirmation password is empty</Text>
                                     }
-                                    {!this.state.isPasswordMatched && 
+                                    {!this.state.isPasswordMatched &&
                                         <Text style={styles.usernameValidation}>Password and confirmation password do not match</Text>
                                     } */}
                                     {this.state.loginValid === 0 &&
-                                        <Text style={styles.usernameValidation}>User does not exist</Text>                                    
+                                        <Text style={styles.usernameValidation}>User does not exist</Text>
                                     }
                                     {this.state.loginValid === 1 &&
-                                        <Text style={styles.usernameValidation}>Invalid password</Text>                                    
+                                        <Text style={styles.usernameValidation}>Invalid password</Text>
                                     }
                                 </View>
                                 <TextInput style={styles.input}
