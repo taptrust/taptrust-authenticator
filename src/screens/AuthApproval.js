@@ -11,7 +11,7 @@ import SplashScreen from './Splash'
 export default class AuthHomeScreen extends Component {
     constructor(props) {
       super(props);
-      this.state = {  request_id: "Etheroll",
+      this.state = {  request_id: "0x",
                       action: null,
                       ethAmount: 0.5,
                       logo_url: "../src/0x-icon.png",
