@@ -8,6 +8,7 @@ import {
 import { createStackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import { fetchApi } from '../services/api/index';
+import { saveSession } from '../services/auth';
 
 class AuthHomeScreen extends Component {
     constructor(props) {
@@ -15,12 +16,34 @@ class AuthHomeScreen extends Component {
     }
 
     componentDidMount() {
+        fetchApi({
+            url: 'auth/request',
+            payload: {
+                'username': this.props.navigation.state.params.username,
+                'pubkey': this.props.navigation.state.params.pubkey,
+                'app-url': 'test',
+                'request': 'test',
+            },
+            method: 'post'
+        })
+        .then(response => {
+            console.log('Response-->', response);
+        // Once a pending authorization session object is returned
+        // if (response.message...)
+        })
+        .catch(e => {
+            this.setState({
+                loading: false,
+                errors: true,
+            });
+        });
+
         var timerId = setInterval( () => {
             console.log('Timer');
             fetchApi({
                 url: 'auth/get',
                 payload: {
-                    username: 'Asdfasdf'
+                    username: this.props.navigation.state.params.username,
                 },
                 method: 'post',
             })
@@ -28,7 +51,9 @@ class AuthHomeScreen extends Component {
                     console.log('Response-->', response);
                 // Once a pending authorization session object is returned
                 // if (response.message...)
-                    if(response.status === 200) {
+                    if(response.session) {
+                        let session_id = response.session.session_id;
+                        saveSession(session_id);
                         clearInterval(timerId);
                         this.props.navigation.navigate('AuthApproval');
                     }
@@ -208,8 +233,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
     nav: state.nav,
     isLoggedIn: state.auth.isLoggedIn,
-    privateKey: state.auth.privateKey,
+    pubkey: state.auth.pubkey,
     userName: state.auth.userName,
 });
 
 export default connect(mapStateToProps)(AuthHomeScreen);
+

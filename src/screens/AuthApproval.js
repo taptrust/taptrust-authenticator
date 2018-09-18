@@ -25,8 +25,8 @@ class AuthApprovalScreen extends Component {
     onApprove = async () => {
       await this.setState({
         formData: {
-          session_id: 'placeholder_session_id',
-          sig: 'placeholder_sig',
+          session_id: this.props.session_id,
+          sig: 'test',
           action: 'approve'
         }
       });
@@ -50,8 +50,8 @@ class AuthApprovalScreen extends Component {
     onReject = async () => {
       await this.setState({
         formData: {
-          session_id: 'placeholder_session_id',
-          sig: 'placeholder_sig',
+          session_id: this.props.session_id,
+          sig: 'test',
           action: 'reject'
         }
       });
@@ -75,6 +75,7 @@ class AuthApprovalScreen extends Component {
     componentDidMount() {
     }
     render() {
+      console.log('session_id-->', this.props.session_id);
       return (
           <SafeAreaView style={styles.container}>
               <StatusBar barStyle="light-content" />
@@ -188,8 +189,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   nav: state.nav,
   isLoggedIn: state.auth.isLoggedIn,
-  privateKey: state.auth.privateKey,
+  pubkey: state.auth.pubkey,
   userName: state.auth.userName,
+  session_id: state.auth.session_id,
 });
 
 export default connect(mapStateToProps)(AuthApprovalScreen);

@@ -23,7 +23,7 @@ class Root extends Component {
 const mapStateToProps = (state) => ({
     nav: state.nav,
     isLoggedIn: state.auth.isLoggedIn,
-    privateKey: state.auth.privateKey,
+    pubkey: state.auth.pubkey,
 });
 
 export default connect(mapStateToProps)(Root);
