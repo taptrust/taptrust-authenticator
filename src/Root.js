@@ -14,6 +14,7 @@ class Root extends Component {
     render() {
         return (
             <View style={{ flex: 1 }}>
+                <StatusBar barStyle="light-content" />
                 <RootNavigator/>
             </View>
         );

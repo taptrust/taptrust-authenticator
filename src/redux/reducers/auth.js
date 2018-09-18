@@ -21,7 +21,7 @@ const auth = (state = initialState, action) => {
                 ...state,
                 isLoggedIn: true,
                 pubkey: action.formData.pubkey,
-                userName: action.formData.userName,
+                userName: action.formData.username,
             };
         case SAVE_SESSION: {
             console.log('Saving session_id');
