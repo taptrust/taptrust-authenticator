@@ -1,24 +1,21 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import { createStackNavigator } from 'react-navigation'; // Version can be specified in package.json
-import SplashScreen from './src/screens/Splash'
-import LoginScreen from './src/screens/Login'
-import RegisterScreen from './src/screens/Register'
-import AuthHomeScreen from './src/screens/AuthHome'
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/es/integration/react';
 
+import { store, persistor } from "./src/config/store";
+import Root from './src/Root';
 
-export default createStackNavigator({
-  Login: {
-    screen: LoginScreen,
-  },
-  Register: {
-    screen: RegisterScreen
-  },
-  AuthHome: {
-    screen: AuthHomeScreen
-  }
-},{
-  navigationOptions:{
-    header : null
-  },
-});
+class App extends Component {
+    render() {
+        return (
+            <Provider store={store}>
+                <View style={{ flex: 1 }}>
+                  <Root />
+                </View>
+            </Provider>
+        );
+    }
+}
+
+export default App;

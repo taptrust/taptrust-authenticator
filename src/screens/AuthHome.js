@@ -6,13 +6,69 @@ import {
     KeyboardAvoidingView, Linking
 } from 'react-native'
 import { createStackNavigator } from 'react-navigation';
-import SplashScreen from './Splash'
+import { connect } from 'react-redux';
+import { fetchApi } from '../services/api/index';
 
-export default class AuthHomeScreen extends Component {
+class AuthHomeScreen extends Component {
     constructor(props) {
       super(props);
     }
 
+    componentDidMount() {
+        var timerId = setInterval( () => {
+            console.log('Timer');
+            fetchApi({
+                url: 'auth/get',
+                payload: {
+                    username: 'Asdfasdf'
+                },
+                method: 'post',
+            })
+                .then(response => {
+                    console.log('Response-->', response);
+                // Once a pending authorization session object is returned
+                // if (response.message...)
+                    if(response.status === 200) {
+                        clearInterval(timerId);
+                        this.props.navigation.navigate('AuthApproval');
+                    }
+                    this.setState({
+                        loading: false,
+                    });
+                })
+                .catch(e => {
+                    this.setState({
+                        loading: false,
+                        errors: true,
+                    });
+                });
+          },10000);
+
+    }
+    onPress = () => {
+        fetchApi({
+            url: 'auth/get',
+            payload: {
+                username: 'Asdfasdf'
+            },
+            method: 'post',
+        })
+            .then(response => {
+                console.log('Response-->', response);
+                // Once a pending authorization session object is returned
+                // if (response.message...)
+                if(response.status === 200) clearInterval();
+                this.setState({
+                    loading: false,
+                });
+            })
+            .catch(e => {
+                this.setState({
+                    loading: false,
+                    errors: true,
+                });
+            });
+    }
     render() {
       return (
           <SafeAreaView style={styles.container}>
@@ -147,4 +203,13 @@ const styles = StyleSheet.create({
       fontSize: 18,
       fontWeight: '300'
     }
-})
+});
+
+const mapStateToProps = (state) => ({
+    nav: state.nav,
+    isLoggedIn: state.auth.isLoggedIn,
+    privateKey: state.auth.privateKey,
+    userName: state.auth.userName,
+});
+
+export default connect(mapStateToProps)(AuthHomeScreen);
