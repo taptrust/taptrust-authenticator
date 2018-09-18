@@ -83,8 +83,9 @@ export default class RegisterScreen extends Component {
                 isPasswordMatched: true,
             })
         }
-        if(this.state.username.length > 4 && strongRegex.test(this.state.password_one) && 
-            strongRegex.test(this.state.password_two) && this.state.password_one == this.state.password_two) {
+        // if(this.state.username.length > 4 && strongRegex.test(this.state.password_one) && 
+        //     strongRegex.test(this.state.password_two) && this.state.password_one == this.state.password_two) {
+            if(this.state.username.length > 4 && this.state.password_one == this.state.password_two) {
                 await this.setState({
                     formData: {
                         username: this.state.username,

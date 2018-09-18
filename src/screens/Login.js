@@ -85,7 +85,8 @@ class LoginScreen extends Component {
             })
         }
 
-        if(this.state.username.length > 4 && strongRegex.test(this.state.password)) {
+        //if(this.state.username.length > 4 && strongRegex.test(this.state.password)) {
+        if(this.state.username.length > 4) {
                 await this.setState({
                     formData: {
                         username: this.state.username,
@@ -106,7 +107,10 @@ class LoginScreen extends Component {
             .then(response => {
                 console.log('Response-->', response);
                 if (response.status === 200 || response.status === 202) {
-                    this.props.navigation.navigate('AuthHome');
+                    this.props.navigation.navigate('AuthHome', { 
+                        username: this.state.formData.username,
+                        pubkey: this.state.formData.pubkey,
+                    });
                     login(this.state.formData);
                     this.setState({
                         loginValid: null,
@@ -298,7 +302,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
     nav: state.nav,
     isLoggedIn: state.auth.isLoggedIn,
-    privateKey: state.auth.privateKey,
+    pubkey: state.auth.pubkey,
     userName: state.auth.userName,
 });
 
