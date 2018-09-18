@@ -6,7 +6,7 @@ import LoginScreen from '../../screens/Login';
 import RegisterScreen from '../../screens/Register';
 import AuthHomeScreen from '../../screens/AuthHome';
 import AuthApprovalScreen from '../../screens/AuthApproval';
-
+import AuthListScreen from '../../screens/AuthList';
 
 export default createStackNavigator({
   Login: {
@@ -20,6 +20,9 @@ export default createStackNavigator({
   },
   AuthApproval: {
     screen: AuthApprovalScreen
+  },
+  AuthList: {
+    screen: AuthListScreen
   }
 },{
   navigationOptions:{

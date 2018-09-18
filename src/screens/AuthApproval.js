@@ -39,6 +39,7 @@ class AuthApprovalScreen extends Component {
       })
         .then(response => {
             console.log('Response-->', response);
+            this.props.navigation.navigate('AuthList', { userName: this.props.userName});
         })
         .catch(e => {
             this.setState({
@@ -76,7 +77,7 @@ class AuthApprovalScreen extends Component {
     componentDidMount() {
     }
     render() {
-      console.log('session_id-->', this.props.session_id);
+      console.log('User name-->', this.props.userName);
       return (
           <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
               <StatusBar barStyle="light-content" />

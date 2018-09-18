@@ -5,6 +5,7 @@ import {
     TextInput, SafeAreaView, Keyboard, TouchableOpacity,
     KeyboardAvoidingView, Linking
 } from 'react-native'
+import { LinearGradient } from 'expo';
 import { createStackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import { fetchApi } from '../services/api/index';
@@ -13,14 +14,21 @@ import { saveSession } from '../services/auth';
 class AuthHomeScreen extends Component {
     constructor(props) {
       super(props);
+
+      this.state={
+          username: '',
+      }
     }
 
     componentDidMount() {
+        this.setState({
+            username: this.props.navigation.state.params.username,
+        })
         fetchApi({
             url: 'auth/request',
             payload: {
-                'username': this.props.navigation.state.params.username,
-                'pubkey': this.props.navigation.state.params.pubkey,
+                'username': this.props.userName,
+                'pubkey': this.props.pubkey,
                 'app-url': 'test',
                 'request': 'test',
             },
@@ -96,7 +104,7 @@ class AuthHomeScreen extends Component {
     }
     render() {
       return (
-          <SafeAreaView style={styles.container}>
+          <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
               <StatusBar barStyle="light-content" />
 
                   <TouchableWithoutFeedback style={styles.container}
@@ -107,7 +115,7 @@ class AuthHomeScreen extends Component {
                               source={require('../assets/fingerprint.png')}
                             />
 
-                            <Text style={styles.title}>my_username</Text>
+                            <Text style={styles.username}>{this.props.userName ? this.props.userName : this.state.username}</Text>
                           </View>
                           <Text style={styles.explanation}> There are two ways to</Text>
                           <Text style={styles.explanation}> login to a dApp with your</Text>
@@ -123,23 +131,17 @@ class AuthHomeScreen extends Component {
 
                           <Text style={styles.explanation_top}> Make sure this screen is </Text>
                           <Text style={styles.explanation}> visible while logging in</Text>
-
-                              <Text style={{color: 'white', marginTop: '7%'}}
-                                onPress={() => Linking.openURL('http://taptrust.com/about')}>
-                                Learn more about using TapTrust
-                              </Text>
-
-                              <Text style={{color: 'white', marginTop: '5%', fontSize: 12}}
-                                onPress={() => this.props.navigation.navigate('Login')}>
-                                Back to login page
-                              </Text>
+                          <Text style={{color: 'white', marginTop: '10%', textDecorationLine: 'underline'}}
+                            onPress={() => Linking.openURL('http://taptrust.com/about')}>
+                            Learn more about using TapTrust
+                            </Text>
                           </View>
 
 
 
                   </TouchableWithoutFeedback>
 
-          </SafeAreaView>
+          </LinearGradient>
         )
       }
     }
@@ -153,17 +155,14 @@ const styles = StyleSheet.create({
     },
     logoContainer: {
         alignItems: 'center',
-        flex: 1,
-        marginBottom: '45%',
-        marginTop: '5%'
+        marginTop: '10%',
     },
-    title: {
+    username: {
         color: 'white',
-        fontSize: 30,
+        paddingVertical: 20,
+        fontSize: 25,
         textAlign: 'center',
         marginTop: 5,
-        opacity: 0.9,
-        marginBottom: '10%'
     },
     infoContainer: {
         position: 'absolute',

@@ -5,6 +5,7 @@ import {
     TextInput, SafeAreaView, Keyboard, TouchableOpacity,
     KeyboardAvoidingView, Linking
 } from 'react-native';
+import { LinearGradient } from 'expo';
 import AuthHomeScreen from './AuthHome';
 import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
@@ -126,7 +127,7 @@ export default class RegisterScreen extends Component {
     }
     render() {
         return (
-            <SafeAreaView style={styles.container}>
+            <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
                 <StatusBar barStyle="light-content" />
 
                     <TouchableWithoutFeedback style={styles.container}
@@ -196,12 +197,33 @@ export default class RegisterScreen extends Component {
                                     <Text style={styles.buttonText}>Create Account</Text>
                                 </TouchableOpacity>
 
-                                <Text style={{color: 'white', marginTop: 10}}
+                                <Text style={{
+                                    color: 'white', 
+                                    marginTop: 30, 
+                                    textAlign: 'center',
+                                    fontSize: 16,
+                                    textDecorationLine: 'underline',
+                                    }}
                                   onPress={() => this.props.navigation.navigate('Login')}>
-                                  Already have an account? Login
+                                  Have an account? Log In
                                 </Text>
 
-                                <Text style={{color: 'white', marginBottom: 10}}
+                                <Text style={{
+                                    color: 'white', 
+                                    marginTop: 30, 
+                                    textAlign: 'center',
+                                    fontSize: 16,
+                                    paddingHorizontal: '25%'
+                                    }}>
+                                  Your wallet contract is hosted at taptrust.eth.
+                                </Text>
+
+                                <Text style={{ color: 'white',
+                                    marginTop: 20,
+                                    marginBottom: 10, 
+                                    textAlign: 'center',
+                                    textDecorationLine: 'underline',
+                                    }}
                                   onPress={() => Linking.openURL('http://taptrust.com/about')}>
                                   Learn More
                                 </Text>
@@ -211,7 +233,7 @@ export default class RegisterScreen extends Component {
                         </View>
                     </TouchableWithoutFeedback>
 
-            </SafeAreaView>
+            </LinearGradient>
         )
     }
 }
@@ -256,7 +278,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingVertical: 15,
         marginBottom: 0,
-        borderRadius: 10
+        borderRadius: 30
     },
     buttonText: {
         textAlign: 'center',
