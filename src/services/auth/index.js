@@ -1,5 +1,6 @@
 
 import { Platform, PushNotificationIOS, AsyncStorage } from "react-native";
+import { store } from "../../config/store";
 
 import {
 login as loginAction,
@@ -7,11 +8,11 @@ login as loginAction,
 
 const login = (formData) => {
     console.log('logging in...');
-    AsyncStorage.multiSet([
-        ['username', formData.username],
-        ['pubkey', formData.pubkey],
-    ]);
-    dispatch(loginAction(formData));
+    // AsyncStorage.multiSet([
+    //     ['username', formData.username],
+    //     ['pubkey', formData.pubkey],
+    // ]);
+    store.dispatch(loginAction(formData));
 };
 
 export {

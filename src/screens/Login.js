@@ -6,15 +6,19 @@ import {
     KeyboardAvoidingView, Linking, AsyncStorage
 } from 'react-native'
 import { createStackNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
 import SplashScreen from './Splash'
 import AuthHomeScreen from './AuthHome'
 
 import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
+// var bitcore = require('bitcore-lib');
+// var EthereumBip44 = require('ethereum-bip44');
+// create a new master private key
 
 var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
 
-export default class LoginScreen extends Component {
+class LoginScreen extends Component {
     constructor(props) {
       super(props);
 
@@ -39,12 +43,7 @@ export default class LoginScreen extends Component {
       setTimeout( () => {
         this.setTimePassed();
       }, 2000);
-
-      AsyncStorage.multiGet(['username', 'pubkey']).then((data) =>{
-        if(data[0][1]) {
-            console.log('Stored credential', data[0][1], data[1][1]);
-        }
-    });
+      this.props.isLoggedIn && this.props.navigation.navigate('AuthHome');
     }
 
     setTimePassed() {
@@ -140,6 +139,7 @@ export default class LoginScreen extends Component {
     }
 
     render() {
+        console.log('Login-->', this.props.isLoggedIn);
       if (!this.state.timePassed) {
         return <SplashScreen />
       } else {
@@ -294,3 +294,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     }
 })
+
+const mapStateToProps = (state) => ({
+    nav: state.nav,
+    isLoggedIn: state.auth.isLoggedIn,
+    privateKey: state.auth.privateKey,
+    userName: state.auth.userName,
+});
+
+export default connect(mapStateToProps)(LoginScreen);

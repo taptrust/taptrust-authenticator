@@ -43,28 +43,3 @@ const styles = StyleSheet.create({
     marginTop: 0
   }
 });
-
-// export default class Splash extends React.Component {
-//   render() {
-//     return (
-//       <View style={styles.container }>
-//         <Text style={styles.title} >
-//
-//         </Text>
-//       </View>
-//     )
-//   }
-// }
-//
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#1899cc',
-//     alignItems: 'center',
-//     justifyContent: 'center'
-//   },
-//   title: {
-//     fontWeight: 'bold',
-//     fontSize: 18
-//   }
-// });
