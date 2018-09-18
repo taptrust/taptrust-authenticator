@@ -4,7 +4,8 @@ import {
     TouchableWithoutFeedback, StatusBar,
     TextInput, SafeAreaView, Keyboard, TouchableOpacity,
     KeyboardAvoidingView, Linking
-} from 'react-native'
+} from 'react-native';
+import { LinearGradient } from 'expo';
 import { createStackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import { fetchApi } from '../services/api/index';
@@ -77,16 +78,12 @@ class AuthApprovalScreen extends Component {
     render() {
       console.log('session_id-->', this.props.session_id);
       return (
-          <SafeAreaView style={styles.container}>
+          <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
               <StatusBar barStyle="light-content" />
 
                 <View style={styles.logoContainer}>
-                    <View style={styles.logoContainer}>
-                      <Image style={styles.image}
-                        source={require("../assets/0x-icon.png")}
-                      />
-
-                    </View>
+                  <Image style={styles.image} source={require("../assets/0x-icon.png")}
+                  />
                 </View>
 
                 <View style={styles.infoContainer}>
@@ -94,22 +91,17 @@ class AuthApprovalScreen extends Component {
                   <Text style={styles.title}>{this.state.request_id}</Text>
 
 
-                  <Text style={styles.explanation}> Is requesting the following </Text>
+                  <Text style={styles.explanation}> Is Requesting the following </Text>
                   <Text style={styles.explanation}> Permissions: </Text>
 
-                  <Text style={styles.spend}> Spend up to {this.state.ethAmount} ETH </Text>
-
-                  <Text style={styles.spend}> Expires in {this.state.hoursLeft} hours </Text>
+                  <View style={styles.details}>
+                    <Text style={styles.ethAmount}> Spend up to {this.state.ethAmount} ETH </Text>
+                    <Text style={styles.hoursLeft}> Expires in {this.state.hoursLeft} hours </Text>
+                  </View>
 
                   <Text style={styles.explanation}> Please check you are using the</Text>
                   <Text style={styles.explanation}> verified Etheroll app hosted at </Text>
                   <Text style={styles.explanation_url}>{this.state.app_url}</Text>
-
-
-                  <Text style={{color: 'white', marginTop: '5%', fontSize: 12}}
-                    onPress={() => this.props.navigation.navigate('Login')}>
-                    Back to login page
-                  </Text>
 
                 </View>
 
@@ -127,7 +119,7 @@ class AuthApprovalScreen extends Component {
                 </View>
 
 
-          </SafeAreaView>
+          </LinearGradient>
         )
       }
     }
@@ -141,48 +133,68 @@ const styles = StyleSheet.create({
     },
     logoContainer: {
         alignItems: 'center',
-        flex: 1,
-        marginBottom: '45%',
-        marginTop: '10%'
+        marginTop: '25%',
     },
     infoContainer: {
-      flex: 1,
-      flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: '20%'
+      marginTop: 20,
     },
     title: {
         color: 'white',
-        fontSize: 30,
+        fontSize: 23,
         textAlign: 'center',
         marginTop: 5,
+        paddingBottom: 20,
     },
     explanation: {
       textAlign: 'center',
-      color: 'white'
+      color: 'white',
+      fontSize: 15,
+      fontWeight: '400'
+    },
+    details: {
+      paddingTop: 30,
+      paddingBottom: 30,
+    },
+    ethAmount: {
+      color: 'white',
+      fontSize: 21,
+      textAlign: 'center',
+    },
+    hoursLeft: {
+      color: 'white',
+      marginTop: 15,
+      fontSize: 20,
+      fontWeight: '300',
+      textAlign: 'center',
     },
     explanation_url: {
       textAlign: 'center',
       color: 'white',
       fontWeight: '700'
     },
+    bothButtonContainer: {
+      paddingTop: 30,
+    },
     buttonContainer: {
         backgroundColor: 'white',
-        paddingVertical: 15,
-        marginBottom: 0,
-        borderRadius: 10
+        marginLeft: '20%',
+        marginRight: '20%',
+        paddingTop: 10,
+        paddingBottom: 10,
+        marginBottom: 20,
+        borderRadius: 20,
     },
     buttonText: {
         textAlign: 'center',
-        color :'rgb(32, 53, 70)',
-        fontWeight: 'bold',
+        color :'black',
+        fontWeight: '300',
         fontSize: 18
     },
     image: {
       height: 100,
       width: 100,
-      marginBottom: '5%'
     }
 })
 
