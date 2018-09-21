@@ -3,7 +3,7 @@ import {
     StyleSheet, Text, View, Image,
     TouchableWithoutFeedback, StatusBar,
     TextInput, SafeAreaView, Keyboard, TouchableOpacity,
-    KeyboardAvoidingView, Linking
+    KeyboardAvoidingView, Linking, Alert
 } from 'react-native';
 import { LinearGradient } from 'expo';
 import AuthHomeScreen from './AuthHome';
@@ -33,60 +33,49 @@ export default class RegisterScreen extends Component {
     }
 
     validation = async () => {
-        if(this.state.username.length == 0) {
-            this.setState({
-                isUserNameEmpty: true,
-                isUserNameValid: true,
-                isPasswordValid: true,
-            })
-        }
         if(this.state.username.length > 0 && this.state.username.length < 5) {
             this.setState({
                 isUserNameValid: false,
                 isUserNameEmpty: false,
             })
+            Alert.alert(
+                'Oops!',
+                'Username must be at least 5 characters',
+                [
+                {text: 'OK', onPress: () => console.log('Username invalid')},
+                ],
+                { cancelable: false }
+            )
         }
-        if(this.state.username && this.state.username.length > 4) {
+        if(this.state.username.length > 4 && (!strongRegex.test(this.state.password_one) || !strongRegex.test(this.state.password_two))) {
             this.setState({
                 isUserNameValid: true,
                 isUserNameEmpty: false,
             })
+            Alert.alert(
+                'Oops!',
+                'Password must be at least six characters and contain at least one letter, one number, and one special character',
+                [
+                {text: 'OK', onPress: () => console.log('Password invalid')},
+                ],
+                { cancelable: false }
+            )
         }
-        if(this.state.username.length > 0 && strongRegex.test(this.state.password_one)) {
-            this.setState({
-                isPasswordValid: true,
-            })
-        }
-        if(this.state.username.length > 0 && !strongRegex.test(this.state.password_one)) {
-            this.setState({
-                isPasswordValid: false,
-            })
-        }
-        if(this.state.username.length > 0 && this.state.password_one.length == 0) {
-            this.setState({
-                isPasswordEmpty: true,
-                isPasswordMatched: false,
-            })
-        }
-        if(this.state.username.length > 0 && this.state.password_two.length == 0) {
-            this.setState({
-                isPasswordConfirmationEmpty: true,
-                isPasswordMatched: false,
-            })
-        }
-        if(this.state.username.length > 0 && this.state.password_two !== this.state.password_one) {
+        if(this.state.username.length > 0 && strongRegex.test(this.state.password_one) && strongRegex.test(this.state.password_two) && this.state.password_two !== this.state.password_one) {
             this.setState({
                 isPasswordMatched: false,
             })
+            Alert.alert(
+                'Oops!',
+                'Password and confirmed password should be same',
+                [
+                {text: 'OK', onPress: () => console.log('Password invalid')},
+                ],
+                { cancelable: false }
+            )
         }
-        if(this.state.username.length > 0 && this.state.password_two == this.state.password_one) {
-            this.setState({
-                isPasswordMatched: true,
-            })
-        }
-        // if(this.state.username.length > 4 && strongRegex.test(this.state.password_one) && 
-        //     strongRegex.test(this.state.password_two) && this.state.password_one == this.state.password_two) {
-            if(this.state.username.length > 4 && this.state.password_one == this.state.password_two) {
+        if(this.state.username.length > 4 && strongRegex.test(this.state.password_one) && 
+            strongRegex.test(this.state.password_two) && this.state.password_one == this.state.password_two) {
                 await this.setState({
                     formData: {
                         username: this.state.username,
@@ -128,38 +117,45 @@ export default class RegisterScreen extends Component {
     render() {
         return (
             <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
-                <StatusBar barStyle="light-content" />
-
-                    <TouchableWithoutFeedback style={styles.container}
+                    <TouchableWithoutFeedback 
                             onPress={Keyboard.dismiss}>
-                        <View style={styles.logoContainer}>
+                        <View style={styles.content}>
                             <View style={styles.logoContainer}>
                               <Image style={styles.image}
-                                source={require('../assets/fingerprint.png')}
+                                resizeMethod={'resize'}
+                                source={require('../assets/Logo_small.png')}
                               />
-                              <Text style={styles.title}>Create Your Account</Text>
                             </View>
+                            <Text style={styles.title}>Create Your Account</Text>                            
                             <View style={styles.infoContainer}>
                                 <View style={styles.validation}>
                                     {/* {this.state.isUserNameEmpty &&
                                         <Text style={styles.usernameValidation}>Username is empty</Text>
                                     } */}
-                                    {!this.state.isUserNameValid &&
+                                    {/* {!this.state.isUserNameValid &&
                                         <Text style={styles.usernameValidation}>Username must be at least 5 characters</Text>
-                                    }
+                                    } */}
                                     {/* {this.state.isPasswordEmpty &&
                                         <Text style={styles.usernameValidation}>Password is empty</Text>
                                     } */}
-                                    {!this.state.isPasswordValid &&
+                                    {/* {!this.state.isPasswordValid &&
                                         <Text style={styles.usernameValidation}>Password must be at least six characters and contain at least one letter, one number, and one special character</Text>
-                                    }
+                                    } */}
                                     {/* {this.state.isPasswordConfirmationEmpty && 
                                         <Text style={styles.usernameValidation}>Confirmation password is empty</Text>
                                     }
                                     {!this.state.isPasswordMatched && 
                                         <Text style={styles.usernameValidation}>Password and confirmation password do not match</Text>
                                     } */}
+                                    {/* {this.state.loginValid === 0 &&
+                                        <Text style={styles.usernameValidation}>User does not exist</Text>                                    
+                                    }
+                                    {this.state.loginValid === 1 &&
+                                        <Text style={styles.usernameValidation}>Invalid password</Text>                                    
+                                    } */}
                                 </View>
+                            </View>
+                            <View style={styles.loginContainer}>
                                 <TextInput style={styles.input}
                                     placeholder="Username"
                                     placeholderTextColor='rgba(255,255,255,0.8)'
@@ -168,9 +164,10 @@ export default class RegisterScreen extends Component {
                                     autoCorrect={false}
                                     onChangeText={ (uname) => this.setState({ username: uname })
                                   }
+                                  placeholderTextColor='#FFF'
                                 />
                                 <TextInput style={styles.input}
-                                    placeholder="Enter Password"
+                                    placeholder="Password"
                                     placeholderTextColor='rgba(255,255,255,0.8)'
                                     returnKeyType='go'
                                     secureTextEntry={true}
@@ -180,6 +177,7 @@ export default class RegisterScreen extends Component {
                                       (pwd) => this.setState({ password_one: pwd })
                                     }
                                     value={this.state.password_one}
+                                    placeholderTextColor='#FFF'
                                 />
                                 <TextInput style={styles.input}
                                     placeholder="Confirm Password"
@@ -192,47 +190,53 @@ export default class RegisterScreen extends Component {
                                       (pwd) => this.setState({ password_two: pwd })
                                     }
                                     value={this.state.password_two}
+                                    placeholderTextColor='#FFF'
                                 />
-                                <TouchableOpacity onPress={this.onRegisterPressed} style={styles.buttonContainer}>
-                                    <Text style={styles.buttonText}>Create Account</Text>
+                                <TouchableOpacity
+                                  style={styles.buttonContainer}
+                                  onPress={this.onRegisterPressed}>
+                                  <Text style={styles.buttonText}>Create Account</Text>
                                 </TouchableOpacity>
 
-                                <Text style={{
-                                    color: 'white', 
-                                    marginTop: 30, 
-                                    textAlign: 'center',
-                                    fontSize: 16,
-                                    textDecorationLine: 'underline',
-                                    }}
-                                  onPress={() => this.props.navigation.navigate('Login')}>
-                                  Have an account? Log In
-                                </Text>
+                                <View style={styles.bottomContainer}>
+                                    <Text style={{
+                                        color: 'white', 
+                                        marginTop: 30, 
+                                        textAlign: 'center',
+                                        fontSize: 16,
+                                        textDecorationLine: 'underline',
+                                        alignContent: 'flex-start'
+                                        }}
+                                    onPress={() => this.props.navigation.navigate('Register')}>
+                                    Have an account? Log In
+                                    </Text>
+                                    <View style={styles.bottom}>
+                                        <Text style={{
+                                            color: 'white', 
+                                            marginTop: 30, 
+                                            textAlign: 'center',
+                                            fontSize: 16,
+                                            paddingHorizontal: 60,
+                                            lineHeight: 30,
+                                            }}>
+                                        Your wallet contract is hosted at taptrust.eth.
+                                        </Text>
 
-                                <Text style={{
-                                    color: 'white', 
-                                    marginTop: 30, 
-                                    textAlign: 'center',
-                                    fontSize: 16,
-                                    paddingHorizontal: '25%'
-                                    }}>
-                                  Your wallet contract is hosted at taptrust.eth.
-                                </Text>
-
-                                <Text style={{ color: 'white',
-                                    marginTop: 20,
-                                    marginBottom: 10, 
-                                    textAlign: 'center',
-                                    textDecorationLine: 'underline',
-                                    }}
-                                  onPress={() => Linking.openURL('http://taptrust.com/about')}>
-                                  Learn More
-                                </Text>
+                                        <Text style={{ color: 'white',
+                                            marginTop: 20,
+                                            marginBottom: 10, 
+                                            fontSize: 14,
+                                            textAlign: 'center',
+                                            textDecorationLine: 'underline',
+                                            }}
+                                        onPress={() => Linking.openURL('http://taptrust.com/about')}>
+                                        Learn More
+                                        </Text>
+                                    </View>
+                                </View>
                             </View>
-
-
                         </View>
                     </TouchableWithoutFeedback>
-
             </LinearGradient>
         )
     }
@@ -242,20 +246,23 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#1899cc',
         flexDirection: 'column',
+        paddingTop: 20,
+        justifyContent: 'space-between'
+    },
+    content: {
+        marginTop: 10,
+        marginHorizontal: 50,
     },
     logoContainer: {
         alignItems: 'center',
-        flex: 1,
-        marginBottom: '55%',
-        marginTop: '5%'
+        marginTop: 20,
     },
     title: {
         color: 'white',
-        fontSize: 30,
+        fontSize: 26,
         textAlign: 'center',
-        marginTop: 5,
-        opacity: 0.9,
-        marginBottom: '5%'
+        marginTop: 30,
+        fontWeight: '400'
     },
     infoContainer: {
         position: 'absolute',
@@ -266,30 +273,46 @@ const styles = StyleSheet.create({
         padding: 20,
         marginBottom: 0
     },
+    loginContainer: {
+        //alignItems: 'center',
+        //marginHorizontal: 50,
+        marginTop: 10,
+    },
     input: {
         height: 40,
-        backgroundColor: 'rgba(255,255,255,0.2)',
-        color: '#FFF',
-        marginBottom: 15,
+        marginTop: 20,
+        color: 'white',
         paddingHorizontal: 10,
-        borderRadius: 10
+        borderRadius: 10,
+        fontSize: 20,
+        borderBottomWidth: 1,
+        borderColor: '#FFF',
+        fontWeight: '400',
+        textAlign: 'center',
     },
     buttonContainer: {
         backgroundColor: 'white',
-        paddingVertical: 15,
-        marginBottom: 0,
+        paddingVertical: 12,
+        marginTop: 40,
         borderRadius: 30
     },
     buttonText: {
         textAlign: 'center',
-        color :'rgb(32, 53, 70)',
-        fontWeight: 'bold',
-        fontSize: 18
+        color : 'black',
+        fontWeight: '400',
+        fontSize: 19
+    },
+    bottomContainer: {
+        marginTop: 30,
+        justifyContent: 'space-between'
+    },
+    bottom: {
+        alignContent: 'flex-end'
     },
     image: {
-      height: 100,
-      width: 100,
-      marginBottom: '5%'
+    //   height: 100,
+    //   width: 100,
+      //marginBottom: '5%'
     },
     validation: {
         marginBottom: 20,

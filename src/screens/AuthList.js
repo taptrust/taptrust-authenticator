@@ -33,7 +33,7 @@ class AuthListScreen extends Component {
         fetchApi({
             url: 'auth/list',
             payload: {
-                'username': 'api_overview_testing1',
+                'username': this.props.userName,
             },
             method: 'post'
         })
