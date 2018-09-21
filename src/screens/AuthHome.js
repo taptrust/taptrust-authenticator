@@ -6,7 +6,7 @@ import {
     KeyboardAvoidingView, Linking
 } from 'react-native'
 import { LinearGradient } from 'expo';
-import { createStackNavigator } from 'react-navigation';
+import { DrawerActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { fetchApi } from '../services/api/index';
 import { saveSession } from '../services/auth';
@@ -22,7 +22,7 @@ class AuthHomeScreen extends Component {
 
     componentDidMount() {
         this.setState({
-            username: this.props.navigation.state.params.username,
+            username: this.props.userName
         })
         fetchApi({
             url: 'auth/request',
@@ -51,7 +51,7 @@ class AuthHomeScreen extends Component {
             fetchApi({
                 url: 'auth/get',
                 payload: {
-                    username: this.props.navigation.state.params.username,
+                    username: this.props.userName
                 },
                 method: 'post',
             })
@@ -102,11 +102,22 @@ class AuthHomeScreen extends Component {
                 });
             });
     }
+
+    navBar = () => {
+        this.props.navigation.dispatch(DrawerActions.openDrawer());
+    }
+
     render() {
       return (
           <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
               <StatusBar barStyle="light-content" />
-
+              <View style={styles.header}>
+                <TouchableOpacity style={{ marginLeft: 5 }} onPress={this.navBar}>
+                    <View style={{ width: 17, marginTop: 2.5, height:2, backgroundColor: 'white'}}/>
+                    <View style={{ width: 14, marginTop: 2.5, height:2, backgroundColor: 'white'}}/>
+                    <View style={{ width: 12, marginTop: 2.5, height:2, backgroundColor: 'white'}}/>
+                </TouchableOpacity>
+              </View>
                   <TouchableWithoutFeedback style={styles.container}
                           onPress={Keyboard.dismiss}>
                       <View style={styles.logoContainer}>
@@ -152,6 +163,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#1899cc',
         flexDirection: 'column',
+    },
+    header: {
+        marginTop: 20,
+        paddingTop: 10,
+        marginHorizontal: '2.5%',
     },
     logoContainer: {
         alignItems: 'center',

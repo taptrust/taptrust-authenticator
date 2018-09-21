@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import { LinearGradient } from 'expo';
 import { Ionicons, Entypo } from '@expo/vector-icons';
-import { createStackNavigator } from 'react-navigation';
+import { DrawerActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { fetchApi } from '../services/api/index';
 import { saveSession } from '../services/auth';
@@ -27,7 +27,6 @@ class AuthListScreen extends Component {
     }
 
     componentDidMount() {
-        //let user_name = this.props.navigation.state.params.userName;
         this.setState({
             isLoading: true,
         })
@@ -106,13 +105,17 @@ class AuthListScreen extends Component {
     }
 
     navBar = () => {
-        // this.props.navigation.navigate('Drawer');
+        this.props.navigation.dispatch(DrawerActions.openDrawer());
     }
     render() {
       return (
           <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
               <View style={styles.header}>
-                {/* <TouchableOpacity onPress={this.navBar}><Text>Navbar</Text></TouchableOpacity> */}
+                <TouchableOpacity style={{ marginLeft: 5 }} onPress={this.navBar}>
+                    <View style={{ width: 17, marginTop: 2.5, height:2, backgroundColor: 'white'}}/>
+                    <View style={{ width: 14, marginTop: 2.5, height:2, backgroundColor: 'white'}}/>
+                    <View style={{ width: 12, marginTop: 2.5, height:2, backgroundColor: 'white'}}/>
+                </TouchableOpacity>
               </View>
               <View style={styles.searchBar}>
                 <Ionicons style={{ alignSelf: 'center',}}name="ios-search" size={25} color="black"/>
@@ -185,13 +188,14 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     header: {
-        marginTop: '5%',
-        height: 60,
+        marginTop: 20,
+        paddingTop: 10,
+        marginHorizontal: '2.5%',
     },
     searchBar: {
-        marginTop: 20,
+        marginTop: 30,
         backgroundColor: 'white',
-        marginHorizontal: '5%',
+        marginHorizontal: '2.5%',
         borderRadius: 20,
         flexDirection: 'row',
         alignItems: 'center',
