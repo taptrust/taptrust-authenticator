@@ -27,10 +27,5 @@
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "redux-persist": "^5.10.0"
-  },
-  // "expo": {
-  //   "splash": {
-  //     "image": "./src/assets/fingerprint.png"
-  //   }
-  // }
+  }
 }
