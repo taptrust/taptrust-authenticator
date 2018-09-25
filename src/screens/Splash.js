@@ -1,12 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
+import { LinearGradient } from 'expo';
 
 
 export default class SplashScreen extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: '#1899cc' }}>
+      <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={{ flex: 1, backgroundColor: '#1899cc' }}>
           <View style={{flex: 2, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
 
             <Image style={styles.image}
@@ -18,7 +19,7 @@ export default class SplashScreen extends React.Component {
             </Text>
           </View>
 
-      </View>
+      </LinearGradient>
 
     );
   }
@@ -43,28 +44,3 @@ const styles = StyleSheet.create({
     marginTop: 0
   }
 });
-
-// export default class Splash extends React.Component {
-//   render() {
-//     return (
-//       <View style={styles.container }>
-//         <Text style={styles.title} >
-//
-//         </Text>
-//       </View>
-//     )
-//   }
-// }
-//
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#1899cc',
-//     alignItems: 'center',
-//     justifyContent: 'center'
-//   },
-//   title: {
-//     fontWeight: 'bold',
-//     fontSize: 18
-//   }
-// });

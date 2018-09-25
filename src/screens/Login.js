@@ -3,18 +3,23 @@ import {
     StyleSheet, Text, View, Image,
     TouchableWithoutFeedback, StatusBar,
     TextInput, SafeAreaView, Keyboard, TouchableOpacity,
-    KeyboardAvoidingView, Linking, AsyncStorage
+    KeyboardAvoidingView, Linking, Alert
 } from 'react-native'
+import { LinearGradient } from 'expo';
 import { createStackNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
 import SplashScreen from './Splash'
 import AuthHomeScreen from './AuthHome'
 
 import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
+// var bitcore = require('bitcore-lib');
+// var EthereumBip44 = require('ethereum-bip44');
+// create a new master private key
 
 var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
 
-export default class LoginScreen extends Component {
+class LoginScreen extends Component {
     constructor(props) {
       super(props);
 
@@ -30,25 +35,12 @@ export default class LoginScreen extends Component {
               username: '',
               pubkey: '',
           },
-          timePassed: false,
           loginValid: null,
         }
     }
 
     componentDidMount() {
-      setTimeout( () => {
-        this.setTimePassed();
-      }, 2000);
-
-      AsyncStorage.multiGet(['username', 'pubkey']).then((data) =>{
-        if(data[0][1]) {
-            console.log('Stored credential', data[0][1], data[1][1]);
-        }
-    });
-    }
-
-    setTimePassed() {
-      this.setState({timePassed: true});
+      this.props.isLoggedIn && this.props.navigation.navigate('AuthHome');
     }
 
     onPress = () => {
@@ -86,7 +78,8 @@ export default class LoginScreen extends Component {
             })
         }
 
-        if(this.state.username.length > 4 && strongRegex.test(this.state.password)) {
+        //if(this.state.username.length > 4 && strongRegex.test(this.state.password)) {
+        if(this.state.username.length > 4) {
                 await this.setState({
                     formData: {
                         username: this.state.username,
@@ -107,7 +100,10 @@ export default class LoginScreen extends Component {
             .then(response => {
                 console.log('Response-->', response);
                 if (response.status === 200 || response.status === 202) {
-                    this.props.navigation.navigate('AuthHome');
+                    this.props.navigation.navigate('AuthHome', { 
+                        username: this.state.formData.username,
+                        pubkey: this.state.formData.pubkey,
+                    });
                     login(this.state.formData);
                     this.setState({
                         loginValid: null,
@@ -119,12 +115,28 @@ export default class LoginScreen extends Component {
                         this.setState({
                             loginValid: 0,
                         })
+                        Alert.alert(
+                            'Oops!',
+                            'User does not exist',
+                            [
+                            {text: 'OK', onPress: () => this.onDefault},
+                            ],
+                            { cancelable: false }
+                        )
                     }
                     if (response.error.indexOf('with different pubkey') !== -1) {
                         console.log('Invalid password');
                         this.setState({
                             loginValid: 1,
                         })
+                        Alert.alert(
+                            'Oops!',
+                            'Invalid password',
+                            [
+                            {text: 'OK', onPress: () => this.onDefault},
+                            ],
+                            { cancelable: false }
+                        )
                     }
                 }
                 this.setState({
@@ -139,51 +151,84 @@ export default class LoginScreen extends Component {
             });
     }
 
+    onDefault = () => {
+        this.setState({
+            isUserNameValid: true,
+            isPasswordValid: true,
+            loginValid: null,
+        })
+    }
     render() {
-      if (!this.state.timePassed) {
-        return <SplashScreen />
-      } else {
+        console.log('Login-->', this.props.isLoggedIn);
         return (
-            <SafeAreaView style={styles.container}>
-                <StatusBar barStyle="light-content" />
-
-                    <TouchableWithoutFeedback style={styles.container}
+            <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
+                    <TouchableWithoutFeedback 
                             onPress={Keyboard.dismiss}>
-                        <View style={styles.logoContainer}>
+                        <View style={styles.content}>
                             <View style={styles.logoContainer}>
                               <Image style={styles.image}
-                                source={require('../assets/fingerprint.png')}
+                                resizeMethod={'resize'}
+                                source={require('../assets/Logo.png')}
                               />
-
-                              <Text style={styles.title}>TapTrust Login</Text>
                             </View>
+                            <Text style={styles.title}>TapTrust Login</Text>                            
                             <View style={styles.infoContainer}>
                                 <View style={styles.validation}>
                                     {/* {this.state.isUserNameEmpty &&
                                         <Text style={styles.usernameValidation}>Username is empty</Text>
                                     } */}
-                                    {!this.state.isUserNameValid &&
-                                        <Text style={styles.usernameValidation}>Username must be at least 5 characters</Text>
-                                    }
+                                    {/* {!this.state.isUserNameValid &&
+                                        Alert.alert(
+                                            'Oops!',
+                                            'Username must be at least 5 characters',
+                                            [
+                                            {text: 'OK', onPress: () => this.onDefault},
+                                            ],
+                                            { cancelable: false }
+                                        )
+                                    } */}
                                     {/* {this.state.isPasswordEmpty &&
                                         <Text style={styles.usernameValidation}>Password is empty</Text>
                                     } */}
-                                    {!this.state.isPasswordValid &&
-                                        <Text style={styles.usernameValidation}>Password must be at least six characters and contain at least one letter, one number, and one special character</Text>
-                                    }
+                                    {/* {this.state.isUserNameValid && !this.state.isPasswordValid &&
+                                        Alert.alert(
+                                            'Oops!',
+                                            'Password must be at least six characters and contain at least one letter, one number, and one special character',
+                                            [
+                                            {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                            ],
+                                            { cancelable: false }
+                                        )
+                                    } */}
                                     {/* {this.state.isPasswordConfirmationEmpty && 
                                         <Text style={styles.usernameValidation}>Confirmation password is empty</Text>
                                     }
                                     {!this.state.isPasswordMatched && 
                                         <Text style={styles.usernameValidation}>Password and confirmation password do not match</Text>
                                     } */}
-                                    {this.state.loginValid === 0 &&
-                                        <Text style={styles.usernameValidation}>User does not exist</Text>                                    
+                                    {/* {this.state.loginValid === 0 &&
+                                        Alert.alert(
+                                            'Oops!',
+                                            'User does not exist',
+                                            [
+                                            {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                            ],
+                                            { cancelable: false }
+                                        )
                                     }
                                     {this.state.loginValid === 1 &&
-                                        <Text style={styles.usernameValidation}>Invalid password</Text>                                    
-                                    }
+                                        Alert.alert(
+                                            'Oops!',
+                                            'User does not exist',
+                                            [
+                                            {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                            ],
+                                            { cancelable: false }
+                                        )
+                                    } */}
                                 </View>
+                            </View>
+                            <View style={styles.loginContainer}>
                                 <TextInput style={styles.input}
                                     placeholder="Username"
                                     placeholderTextColor='rgba(255,255,255,0.8)'
@@ -192,6 +237,7 @@ export default class LoginScreen extends Component {
                                     autoCorrect={false}
                                     onChangeText={ (uname) => this.setState({ username: uname })
                                   }
+                                  placeholderTextColor='#FFF'
                                 />
                                 <TextInput style={styles.input}
                                     placeholder="Password"
@@ -203,6 +249,7 @@ export default class LoginScreen extends Component {
                                     onChangeText={
                                       (pwd) => this.setState({ password: pwd })
                                     }
+                                    placeholderTextColor='#FFF'
                                 />
                                 <TouchableOpacity
                                   style={styles.buttonContainer}
@@ -210,46 +257,72 @@ export default class LoginScreen extends Component {
                                   <Text style={styles.buttonText}>Login</Text>
                                 </TouchableOpacity>
 
-                                <Text style={{color: 'white', marginTop: 10}}
-                                  onPress={() => this.props.navigation.navigate('Register')}>
-                                  Create New Account
-                                </Text>
+                                <View style={styles.bottomContainer}>
+                                    <Text style={{
+                                        color: 'white', 
+                                        marginTop: 30, 
+                                        textAlign: 'center',
+                                        fontSize: 16,
+                                        textDecorationLine: 'underline',
+                                        alignContent: 'flex-start'
+                                        }}
+                                    onPress={() => this.props.navigation.navigate('Register')}>
+                                    Create New Account
+                                    </Text>
+                                    <View style={styles.bottom}>
+                                        <Text style={{
+                                            color: 'white', 
+                                            marginTop: 30, 
+                                            textAlign: 'center',
+                                            fontSize: 16,
+                                            paddingHorizontal: 60,
+                                            lineHeight: 30,
+                                            }}>
+                                        Your wallet contract is hosted at taptrust.eth.
+                                        </Text>
 
-                                <Text style={{color: 'white', marginBottom: 10}}
-                                  onPress={() => Linking.openURL('http://taptrust.com/about')}>
-                                  Learn More
-                                </Text>
+                                        <Text style={{ color: 'white',
+                                            marginTop: 20,
+                                            marginBottom: 10, 
+                                            textAlign: 'center',
+                                            textDecorationLine: 'underline',
+                                            }}
+                                        onPress={() => Linking.openURL('http://taptrust.com/about')}>
+                                        Learn More
+                                        </Text>
+                                    </View>
+                                </View>
                             </View>
-
-
                         </View>
                     </TouchableWithoutFeedback>
-
-            </SafeAreaView>
+            </LinearGradient>
         )
       }
     }
-}
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#1899cc',
         flexDirection: 'column',
+        paddingTop: 20,
+        justifyContent: 'space-between'
+    },
+    content: {
+        marginTop: 10,
+        marginHorizontal: 50,
     },
     logoContainer: {
         alignItems: 'center',
-        flex: 1,
-        marginBottom: '45%',
-        marginTop: '5%'
+        marginTop: 20,
+
     },
     title: {
         color: 'white',
-        fontSize: 30,
+        fontSize: 26,
         textAlign: 'center',
-        marginTop: 5,
-        opacity: 0.9,
-        marginBottom: '5%'
+        marginTop: 20,
+        fontWeight: '400'
     },
     infoContainer: {
         position: 'absolute',
@@ -260,31 +333,46 @@ const styles = StyleSheet.create({
         padding: 20,
         marginBottom: 0
     },
+    loginContainer: {
+        //alignItems: 'center',
+        //marginHorizontal: 50,
+        marginTop: 20,
+    },
     input: {
         height: 40,
-        backgroundColor: 'rgba(255,255,255,0.2)',
-        color: '#FFF',
-        marginBottom: 15,
+        marginTop: 20,
+        color: 'white',
         paddingHorizontal: 10,
         borderRadius: 10,
-        fontSize: 20
+        fontSize: 20,
+        borderBottomWidth: 1,
+        borderColor: '#FFF',
+        fontWeight: '400',
+        textAlign: 'center',
     },
     buttonContainer: {
         backgroundColor: 'white',
-        paddingVertical: 15,
-        marginBottom: 0,
-        borderRadius: 10
+        paddingVertical: 12,
+        marginTop: 40,
+        borderRadius: 30
     },
     buttonText: {
         textAlign: 'center',
-        color :'rgb(32, 53, 70)',
-        fontWeight: 'bold',
-        fontSize: 18
+        color : 'black',
+        fontWeight: '400',
+        fontSize: 19
+    },
+    bottomContainer: {
+        marginTop: 30,
+        justifyContent: 'space-between'
+    },
+    bottom: {
+        alignContent: 'flex-end'
     },
     image: {
-      height: 100,
-      width: 100,
-      marginBottom: '5%'
+    //   height: 100,
+    //   width: 100,
+      //marginBottom: '5%'
     },
     validation: {
         marginBottom: 20,
@@ -294,3 +382,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     }
 })
+
+const mapStateToProps = (state) => ({
+    nav: state.nav,
+    isLoggedIn: state.auth.isLoggedIn,
+    pubkey: state.auth.pubkey,
+    userName: state.auth.userName,
+});
+
+export default connect(mapStateToProps)(LoginScreen);

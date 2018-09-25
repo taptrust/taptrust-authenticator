@@ -5,19 +5,119 @@ import {
     TextInput, SafeAreaView, Keyboard, TouchableOpacity,
     KeyboardAvoidingView, Linking
 } from 'react-native'
-import { createStackNavigator } from 'react-navigation';
-import SplashScreen from './Splash'
+import { LinearGradient } from 'expo';
+import { DrawerActions } from 'react-navigation';
+import { connect } from 'react-redux';
+import { fetchApi } from '../services/api/index';
+import { saveSession } from '../services/auth';
 
-export default class AuthHomeScreen extends Component {
+class AuthHomeScreen extends Component {
     constructor(props) {
       super(props);
+
+      this.state={
+          username: '',
+      }
+    }
+
+    componentDidMount() {
+        this.setState({
+            username: this.props.userName
+        })
+        fetchApi({
+            url: 'auth/request',
+            payload: {
+                'username': this.props.userName,
+                'pubkey': this.props.pubkey,
+                'app-url': 'test',
+                'request': 'test',
+            },
+            method: 'post'
+        })
+        .then(response => {
+            console.log('Response-->', response);
+        // Once a pending authorization session object is returned
+        // if (response.message...)
+        })
+        .catch(e => {
+            this.setState({
+                loading: false,
+                errors: true,
+            });
+        });
+
+        var timerId = setInterval( () => {
+            console.log('Timer');
+            fetchApi({
+                url: 'auth/get',
+                payload: {
+                    username: this.props.userName
+                },
+                method: 'post',
+            })
+                .then(response => {
+                    console.log('Response-->', response);
+                // Once a pending authorization session object is returned
+                // if (response.message...)
+                    if(response.session) {
+                        let session_id = response.session.session_id;
+                        saveSession(session_id);
+                        clearInterval(timerId);
+                        this.props.navigation.navigate('AuthApproval');
+                    }
+                    this.setState({
+                        loading: false,
+                    });
+                })
+                .catch(e => {
+                    this.setState({
+                        loading: false,
+                        errors: true,
+                    });
+                });
+          },10000);
+
+    }
+    onPress = () => {
+        fetchApi({
+            url: 'auth/get',
+            payload: {
+                username: 'Asdfasdf'
+            },
+            method: 'post',
+        })
+            .then(response => {
+                console.log('Response-->', response);
+                // Once a pending authorization session object is returned
+                // if (response.message...)
+                if(response.status === 200) clearInterval();
+                this.setState({
+                    loading: false,
+                });
+            })
+            .catch(e => {
+                this.setState({
+                    loading: false,
+                    errors: true,
+                });
+            });
+    }
+
+    navBar = () => {
+        this.props.navigation.dispatch(DrawerActions.openDrawer());
     }
 
     render() {
       return (
-          <SafeAreaView style={styles.container}>
+          <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
               <StatusBar barStyle="light-content" />
-
+              <View style={styles.header}>
+                <TouchableOpacity style={{ marginLeft: 5 }} onPress={this.navBar}>
+                    <View style={{ width: 17, marginTop: 2.5, height:2, backgroundColor: 'white'}}/>
+                    <View style={{ width: 14, marginTop: 2.5, height:2, backgroundColor: 'white'}}/>
+                    <View style={{ width: 12, marginTop: 2.5, height:2, backgroundColor: 'white'}}/>
+                </TouchableOpacity>
+              </View>
                   <TouchableWithoutFeedback style={styles.container}
                           onPress={Keyboard.dismiss}>
                       <View style={styles.logoContainer}>
@@ -26,7 +126,7 @@ export default class AuthHomeScreen extends Component {
                               source={require('../assets/fingerprint.png')}
                             />
 
-                            <Text style={styles.title}>my_username</Text>
+                            <Text style={styles.username}>{this.props.userName ? this.props.userName : this.state.username}</Text>
                           </View>
                           <Text style={styles.explanation}> There are two ways to</Text>
                           <Text style={styles.explanation}> login to a dApp with your</Text>
@@ -42,23 +142,17 @@ export default class AuthHomeScreen extends Component {
 
                           <Text style={styles.explanation_top}> Make sure this screen is </Text>
                           <Text style={styles.explanation}> visible while logging in</Text>
-
-                              <Text style={{color: 'white', marginTop: '7%'}}
-                                onPress={() => Linking.openURL('http://taptrust.com/about')}>
-                                Learn more about using TapTrust
-                              </Text>
-
-                              <Text style={{color: 'white', marginTop: '5%', fontSize: 12}}
-                                onPress={() => this.props.navigation.navigate('Login')}>
-                                Back to login page
-                              </Text>
+                          <Text style={{color: 'white', marginTop: '10%', textDecorationLine: 'underline'}}
+                            onPress={() => Linking.openURL('http://taptrust.com/about')}>
+                            Learn more about using TapTrust
+                            </Text>
                           </View>
 
 
 
                   </TouchableWithoutFeedback>
 
-          </SafeAreaView>
+          </LinearGradient>
         )
       }
     }
@@ -70,19 +164,21 @@ const styles = StyleSheet.create({
         backgroundColor: '#1899cc',
         flexDirection: 'column',
     },
+    header: {
+        marginTop: 20,
+        paddingTop: 10,
+        marginHorizontal: '2.5%',
+    },
     logoContainer: {
         alignItems: 'center',
-        flex: 1,
-        marginBottom: '45%',
-        marginTop: '5%'
+        marginTop: '10%',
     },
-    title: {
+    username: {
         color: 'white',
-        fontSize: 30,
+        paddingVertical: 20,
+        fontSize: 25,
         textAlign: 'center',
         marginTop: 5,
-        opacity: 0.9,
-        marginBottom: '10%'
     },
     infoContainer: {
         position: 'absolute',
@@ -147,4 +243,14 @@ const styles = StyleSheet.create({
       fontSize: 18,
       fontWeight: '300'
     }
-})
+});
+
+const mapStateToProps = (state) => ({
+    nav: state.nav,
+    isLoggedIn: state.auth.isLoggedIn,
+    pubkey: state.auth.pubkey,
+    userName: state.auth.userName,
+});
+
+export default connect(mapStateToProps)(AuthHomeScreen);
+
