@@ -47,36 +47,36 @@ class AuthHomeScreen extends Component {
             });
         });
 
-        // var timerId = setInterval( () => {
-        //     console.log('Timer');
-        //     try {fetchApi({
-        //         url: 'auth/get',
-        //         payload: {
-        //             username: this.props.userName
-        //         },
-        //         method: 'post',
-        //     })
-        //         .then(response => {
-        //             console.log('Timer Response-->', response);
-        //             if(response.session) {
-        //                 let session_id = response.session.session_id;
-        //                 saveSession(session_id);
-        //                 clearInterval(timerId);
-        //                 this.props.navigation.navigate('AuthApproval');
-        //             }
-        //             this.setState({
-        //                 loading: false,
-        //             });
-        //         })
-        //         .catch(e => {
-        //             this.setState({
-        //                 loading: false,
-        //                 errors: true,
-        //             });
-        //         });} catch(e) {
-        //             Alert.alert(e);
-        //         }
-        //   },10000);
+        var timerId = setInterval( () => {
+            console.log('Timer');
+            try {fetchApi({
+                url: 'auth/get',
+                payload: {
+                    username: this.props.userName
+                },
+                method: 'post',
+            })
+                .then(response => {
+                    console.log('Timer Response-->', response);
+                    if(response.session) {
+                        let session_id = response.session.session_id;
+                        saveSession(session_id);
+                        clearInterval(timerId);
+                        this.props.navigation.navigate('AuthApproval');
+                    }
+                    this.setState({
+                        loading: false,
+                    });
+                })
+                .catch(e => {
+                    this.setState({
+                        loading: false,
+                        errors: true,
+                    });
+                });} catch(e) {
+                    Alert.alert(e);
+                }
+          },10000);
 
     }
     onPress = () => {
