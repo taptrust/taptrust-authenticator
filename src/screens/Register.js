@@ -207,7 +207,7 @@ export default class RegisterScreen extends Component {
                                         textDecorationLine: 'underline',
                                         alignContent: 'flex-start'
                                         }}
-                                    onPress={() => this.props.navigation.navigate('Register')}>
+                                    onPress={() => this.props.navigation.goBack()}>
                                     Have an account? Log In
                                     </Text>
                                     <View style={styles.bottom}>
