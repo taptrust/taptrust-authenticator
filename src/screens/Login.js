@@ -13,9 +13,7 @@ import AuthHomeScreen from './AuthHome'
 
 import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
-// var bitcore = require('bitcore-lib');
-// var EthereumBip44 = require('ethereum-bip44');
-// create a new master private key
+import { sha256, sha224 } from 'js-sha256';
 
 var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
 
@@ -40,6 +38,8 @@ class LoginScreen extends Component {
     }
 
     componentDidMount() {
+        let value = sha256('taptrust-wallet-api_overview_testing1');
+        console.log('Key-->', value.length);
       this.props.isLoggedIn && this.props.navigation.navigate('AuthHome');
     }
 

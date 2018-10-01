@@ -126,35 +126,7 @@ export default class RegisterScreen extends Component {
                                 source={require('../assets/Logo_small.png')}
                               />
                             </View>
-                            <Text style={styles.title}>Create Your Account</Text>                            
-                            <View style={styles.infoContainer}>
-                                <View style={styles.validation}>
-                                    {/* {this.state.isUserNameEmpty &&
-                                        <Text style={styles.usernameValidation}>Username is empty</Text>
-                                    } */}
-                                    {/* {!this.state.isUserNameValid &&
-                                        <Text style={styles.usernameValidation}>Username must be at least 5 characters</Text>
-                                    } */}
-                                    {/* {this.state.isPasswordEmpty &&
-                                        <Text style={styles.usernameValidation}>Password is empty</Text>
-                                    } */}
-                                    {/* {!this.state.isPasswordValid &&
-                                        <Text style={styles.usernameValidation}>Password must be at least six characters and contain at least one letter, one number, and one special character</Text>
-                                    } */}
-                                    {/* {this.state.isPasswordConfirmationEmpty && 
-                                        <Text style={styles.usernameValidation}>Confirmation password is empty</Text>
-                                    }
-                                    {!this.state.isPasswordMatched && 
-                                        <Text style={styles.usernameValidation}>Password and confirmation password do not match</Text>
-                                    } */}
-                                    {/* {this.state.loginValid === 0 &&
-                                        <Text style={styles.usernameValidation}>User does not exist</Text>                                    
-                                    }
-                                    {this.state.loginValid === 1 &&
-                                        <Text style={styles.usernameValidation}>Invalid password</Text>                                    
-                                    } */}
-                                </View>
-                            </View>
+                            <Text style={styles.title}>Create Your Account</Text>
                             <View style={styles.loginContainer}>
                                 <TextInput style={styles.input}
                                     placeholder="Username"
