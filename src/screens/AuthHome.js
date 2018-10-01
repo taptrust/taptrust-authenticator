@@ -37,8 +37,6 @@ class AuthHomeScreen extends Component {
         })
         .then(response => {
             console.log('Request response-->', response);
-        // Once a pending authorization session object is returned
-        // if (response.message...)
         })
         .catch(e => {
             this.setState({
@@ -79,30 +77,6 @@ class AuthHomeScreen extends Component {
           },10000);
 
     }
-    onPress = () => {
-        fetchApi({
-            url: 'auth/get',
-            payload: {
-                username: 'Asdfasdf'
-            },
-            method: 'post',
-        })
-            .then(response => {
-                console.log('Response-->', response);
-                // Once a pending authorization session object is returned
-                // if (response.message...)
-                if(response.status === 200) clearInterval();
-                this.setState({
-                    loading: false,
-                });
-            })
-            .catch(e => {
-                this.setState({
-                    loading: false,
-                    errors: true,
-                });
-            });
-    }
 
     navBar = () => {
         this.props.navigation.dispatch(DrawerActions.openDrawer());
@@ -120,8 +94,9 @@ class AuthHomeScreen extends Component {
                     console.log('Timer Response-->', response);
                     if(response.session) {
                         let session_id = response.session.session_id;
+                        let request = response.session.request;
                         saveSession(session_id);
-                        this.props.navigation.navigate('AuthApproval');
+                        this.props.navigation.navigate('AuthApproval', { request: request });
                     }
                     this.setState({
                         loading: false,
@@ -203,6 +178,7 @@ const styles = StyleSheet.create({
         color: 'white',
         paddingVertical: 20,
         fontSize: 25,
+        fontWeight: 'bold',
         textAlign: 'center',
         marginTop: 5,
     },
