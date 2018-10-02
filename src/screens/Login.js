@@ -13,9 +13,7 @@ import AuthHomeScreen from './AuthHome'
 
 import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
-// var bitcore = require('bitcore-lib');
-// var EthereumBip44 = require('ethereum-bip44');
-// create a new master private key
+import { sha256, sha224 } from 'js-sha256';
 
 var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
 
@@ -40,6 +38,8 @@ class LoginScreen extends Component {
     }
 
     componentDidMount() {
+        let value = sha256('taptrust-wallet-api_overview_testing1');
+        console.log('Key-->', value.length);
       this.props.isLoggedIn && this.props.navigation.navigate('AuthHome');
     }
 
@@ -170,63 +170,7 @@ class LoginScreen extends Component {
                                 resizeMethod={'resize'}
                                 source={require('../assets/Logo.png')}
                               />
-                            </View>
-                            <Text style={styles.title}>TapTrust Login</Text>                            
-                            <View style={styles.infoContainer}>
-                                <View style={styles.validation}>
-                                    {/* {this.state.isUserNameEmpty &&
-                                        <Text style={styles.usernameValidation}>Username is empty</Text>
-                                    } */}
-                                    {/* {!this.state.isUserNameValid &&
-                                        Alert.alert(
-                                            'Oops!',
-                                            'Username must be at least 5 characters',
-                                            [
-                                            {text: 'OK', onPress: () => this.onDefault},
-                                            ],
-                                            { cancelable: false }
-                                        )
-                                    } */}
-                                    {/* {this.state.isPasswordEmpty &&
-                                        <Text style={styles.usernameValidation}>Password is empty</Text>
-                                    } */}
-                                    {/* {this.state.isUserNameValid && !this.state.isPasswordValid &&
-                                        Alert.alert(
-                                            'Oops!',
-                                            'Password must be at least six characters and contain at least one letter, one number, and one special character',
-                                            [
-                                            {text: 'OK', onPress: () => console.log('OK Pressed')},
-                                            ],
-                                            { cancelable: false }
-                                        )
-                                    } */}
-                                    {/* {this.state.isPasswordConfirmationEmpty && 
-                                        <Text style={styles.usernameValidation}>Confirmation password is empty</Text>
-                                    }
-                                    {!this.state.isPasswordMatched && 
-                                        <Text style={styles.usernameValidation}>Password and confirmation password do not match</Text>
-                                    } */}
-                                    {/* {this.state.loginValid === 0 &&
-                                        Alert.alert(
-                                            'Oops!',
-                                            'User does not exist',
-                                            [
-                                            {text: 'OK', onPress: () => console.log('OK Pressed')},
-                                            ],
-                                            { cancelable: false }
-                                        )
-                                    }
-                                    {this.state.loginValid === 1 &&
-                                        Alert.alert(
-                                            'Oops!',
-                                            'User does not exist',
-                                            [
-                                            {text: 'OK', onPress: () => console.log('OK Pressed')},
-                                            ],
-                                            { cancelable: false }
-                                        )
-                                    } */}
-                                </View>
+                                <Text style={styles.title}>TapTrust Login</Text>                                                          
                             </View>
                             <View style={styles.loginContainer}>
                                 <TextInput style={styles.input}
@@ -306,11 +250,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#1899cc',
         flexDirection: 'column',
         paddingTop: 20,
-        justifyContent: 'space-between'
     },
     content: {
         marginTop: 10,
         marginHorizontal: 50,
+        justifyContent: 'space-between'
+        
     },
     logoContainer: {
         alignItems: 'center',
@@ -336,7 +281,7 @@ const styles = StyleSheet.create({
     loginContainer: {
         //alignItems: 'center',
         //marginHorizontal: 50,
-        marginTop: 20,
+        marginBottom: 20,
     },
     input: {
         height: 40,
@@ -363,7 +308,7 @@ const styles = StyleSheet.create({
         fontSize: 19
     },
     bottomContainer: {
-        marginTop: 30,
+        marginTop: 10,
         justifyContent: 'space-between'
     },
     bottom: {

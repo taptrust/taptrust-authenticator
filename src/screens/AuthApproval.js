@@ -6,6 +6,7 @@ import {
     KeyboardAvoidingView, Linking
 } from 'react-native';
 import { LinearGradient } from 'expo';
+import { Ionicons, Entypo } from '@expo/vector-icons';
 import { createStackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import { fetchApi } from '../services/api/index';
@@ -14,13 +15,28 @@ class AuthApprovalScreen extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        request_id: "Etheroll",
-        action: null,
-        ethAmount: 0.5,
-        logo_url: "../assets/0x-icon.png",
-        hoursLeft: 24,
-        app_url: 'https://etheroll.com/'
+        app_name: null,
+        eth_amount: 0,
+        icon_url: "../assets/0x-icon.png",
+        hours_left: 0,
+        app_url: 'https://etheroll.com/',
+        recipient: null,
+        type: null,
       }
+    }
+
+    componentDidMount() {
+      const request = this.props.navigation.state.params.request;
+      console.log('Request-->', request);
+      this.setState({
+        app_name: request.app.name,
+        eth_amount: request.value,
+        icon_url: request.app.icon_url,
+        hours_left: !request.duration ? 0 : request.duration,
+        app_url: 'https://' + request.app.url,
+        recipient: request.recipient,
+        type: request.type,
+      })
     }
 
     onApprove = async () => {
@@ -74,52 +90,60 @@ class AuthApprovalScreen extends Component {
         });
     }
 
-    componentDidMount() {
+    onBack = () => {
+      this.props.navigation.goBack();
     }
+
     render() {
       console.log('User name-->', this.props.userName);
       return (
           <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
               <StatusBar barStyle="light-content" />
-
-                <View style={styles.logoContainer}>
-                  <Image style={styles.image} source={require("../assets/0x-icon.png")}
-                  />
-                </View>
-
-                <View style={styles.infoContainer}>
-
-                  <Text style={styles.title}>{this.state.request_id}</Text>
-
-
-                  <Text style={styles.explanation}> Is Requesting the following </Text>
-                  <Text style={styles.explanation}> Permissions: </Text>
-
-                  <View style={styles.details}>
-                    <Text style={styles.ethAmount}> Spend up to {this.state.ethAmount} ETH </Text>
-                    <Text style={styles.hoursLeft}> Expires in {this.state.hoursLeft} hours </Text>
+              <View style={styles.header}>
+                <TouchableOpacity style={{ marginLeft: 20 }} onPress={this.onBack}>
+                  <Ionicons name="ios-arrow-back-outline" size={25} color="white"/>
+                </TouchableOpacity>
+              </View>
+                <View style={styles.content}>
+                  <View style={styles.logoContainer}>
+                    <Image style={styles.image} resizeMode="contain" source={{ uri: this.state.icon_url }}/>
                   </View>
 
-                  <Text style={styles.explanation}> Please check you are using the</Text>
-                  <Text style={styles.explanation}> verified Etheroll app hosted at </Text>
-                  <Text style={styles.explanation_url}>{this.state.app_url}</Text>
+                  <View style={styles.infoContainer}>
+                    <Text style={styles.title}>{this.state.app_name}</Text>
+                    <Text style={styles.explanation}> Is Requesting the following </Text>
+                    <Text style={styles.explanation}> { this.state.type === 'transaction' ? 'Transaction' : 'Permissions:' }</Text>
+                    {this.state.type === 'transaction' ?
+                      <View style={styles.details}>
+                        <Text style={styles.ethAmount}>{this.state.eth_amount} ETH </Text>
+                        <View style={styles.recipient}>
+                          <Text style={styles.toString}>to </Text>
+                          <Text style={styles.recipientAddress}>{this.state.recipient}</Text>                        
+                        </View>
+                      </View> :
+                      <View style={styles.details}>
+                        <Text style={styles.ethAmount}> Spend up to {this.state.eth_amount} ETH </Text>
+                        <Text style={styles.hoursLeft}> Expires in {this.state.hours_left} hours </Text>
+                      </View>
+                    }
+                    <Text style={styles.explanation}> Please check you are using the</Text>
+                    <Text style={styles.explanation}> verified {this.state.app_name} hosted at </Text>
+                    <Text style={styles.explanation_url}>{this.state.app_url}</Text>
+                  </View>
 
+                  <View style={styles.bothButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.buttonContainer}
+                      onPress={this.onApprove}>
+                      <Text style={styles.buttonText}>Approve</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.buttonContainer}
+                      onPress={this.onReject}>
+                      <Text style={styles.buttonText}>Reject</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-
-                <View style={styles.bothButtonContainer}>
-                  <TouchableOpacity
-                    style={styles.buttonContainer}
-                    onPress={this.onApprove}>
-                    <Text style={styles.buttonText}>Approve</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.buttonContainer}
-                    onPress={this.onReject}>
-                    <Text style={styles.buttonText}>Reject</Text>
-                  </TouchableOpacity>
-                </View>
-
-
           </LinearGradient>
         )
       }
@@ -132,9 +156,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#1899cc',
         flexDirection: 'column',
     },
+    header: {
+      marginTop: 20,
+      paddingTop: 10,
+    },
+    content: {
+        marginTop: 50,
+        //marginHorizontal: 50,
+    },
     logoContainer: {
         alignItems: 'center',
-        marginTop: '25%',
+        //marginTop: '25%',
+        borderRadius: 50,
+        borderWidth: 1,
+        borderColor: 'white',
+        width: 80,
+        height: 80,
+        alignSelf: 'center',
+        justifyContent: 'center',
     },
     infoContainer: {
       justifyContent: 'center',
@@ -161,6 +200,7 @@ const styles = StyleSheet.create({
     ethAmount: {
       color: 'white',
       fontSize: 21,
+      fontWeight: '300',
       textAlign: 'center',
     },
     hoursLeft: {
@@ -169,6 +209,22 @@ const styles = StyleSheet.create({
       fontSize: 20,
       fontWeight: '300',
       textAlign: 'center',
+    },
+    recipient: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    toString: {
+      color: 'white',
+      marginTop: 15,
+      fontSize: 15,
+      fontWeight: '300',
+    },
+    recipientAddress: {
+      color: 'white',
+      marginTop: 15,
+      fontSize: 16,
+      fontWeight: 'bold',
     },
     explanation_url: {
       textAlign: 'center',
@@ -194,8 +250,10 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     image: {
-      height: 100,
-      width: 100,
+      height: 60,
+      width: 60,
+      alignSelf: 'center',
+      justifyContent: 'center'
     }
 })
 
