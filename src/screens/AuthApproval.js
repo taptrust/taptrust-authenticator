@@ -25,10 +25,10 @@ class AuthApprovalScreen extends Component {
       }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
       const request = this.props.navigation.state.params.request;
       console.log('Request-->', request);
-      this.setState({
+      await this.setState({
         app_name: request.app.name,
         eth_amount: request.value,
         icon_url: request.app.icon_url,

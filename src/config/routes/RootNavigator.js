@@ -9,13 +9,12 @@ import AuthApprovalScreen from '../../screens/AuthApproval';
 import AuthListScreen from '../../screens/AuthList';
 import AuthDetailsScreen from '../../screens/AuthDetails';
 import DrawerScreen from '../../screens/DrawerScreen';
+import OffersScreen from '../../screens/Offers';
+import SecurityScreen from '../../screens/Security';
 import TabsStack from './TabsStack';
 
 const { width, height } = Dimensions.get('window');
 const Drawer = createDrawerNavigator ({
-  Login: {
-    screen: LoginScreen,
-  },
   AuthHome: {
     screen: AuthHomeScreen
   },
@@ -27,6 +26,12 @@ const Drawer = createDrawerNavigator ({
   },
   AuthDetails: {
     screen: AuthDetailsScreen
+  },
+  Offers: {
+    screen: OffersScreen
+  },
+  Security: {
+    screen: SecurityScreen
   }
 },  {
   drawerWidth: width/2,
@@ -56,15 +61,6 @@ const RootNavigator = createStackNavigator({
   AuthHome: {
     screen: Drawer
   },
-  AuthList: {
-      screen: AuthListScreen
-  },
-  AuthApproval: {
-    screen: AuthApprovalScreen
-  },
-  AuthDetails: {
-    screen: AuthDetailsScreen
-  }
 },{
   initialRouteName: 'Login',
   navigationOptions:{
