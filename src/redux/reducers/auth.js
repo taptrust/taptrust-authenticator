@@ -5,7 +5,7 @@ import { LOGIN, SAVE_SESSION, LOGOUT } from '../actions/auth';
 
 // Initial state
 const initialState = {
-    isLoggedIn: false,
+    isLoggedIn: null,
     pubkey: null,
     userName: null,
     session_id: null,

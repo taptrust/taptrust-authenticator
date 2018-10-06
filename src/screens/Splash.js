@@ -1,24 +1,29 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View, Image } from 'react-native';
 import { LinearGradient } from 'expo';
+import { connect } from 'react-redux';
 
-
-export default class SplashScreen extends React.Component {
+class SplashScreen extends React.Component {
 
   render() {
+    if ( this.props.isLoggedIn !== null && this.props.isLoggedIn === true) {
+      this.props.navigation.navigate('App');
+    } 
+    if ( this.props.isLoggedIn !== null && this.props.isLoggedIn === false) {
+        this.props.navigation.navigate('Auth');
+    }
     return (
-      <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={{ flex: 1, backgroundColor: '#1899cc' }}>
-          <View style={{flex: 2, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-
-            <Image style={styles.image}
-              source={require('../assets/fingerprint.png')}
-            />
-
-            <Text style={styles.text} >
-              TapTrust
-            </Text>
+      <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <View style={styles.logoContainer}>
+              <Image style={styles.image}
+                source={require('../assets/Logo.png')}
+                resizeMode="contain"
+              />
+            </View>
+            <Text style={styles.text}>TapTrust</Text>
+            <ActivityIndicator style={{ marginTop: 20 }} size="large" color="white"/>      
           </View>
-
       </LinearGradient>
 
     );
@@ -27,20 +32,36 @@ export default class SplashScreen extends React.Component {
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1899cc'
+  container: { 
+    flex: 1, 
+    backgroundColor: '#1899cc', 
+    justifyContent: 'center', 
+    alignItems: 'center' 
+  },
+  logoContainer: {
+    width: 120,
+    height: 120,
+    alignSelf: 'center',
   },
   text: {
-    fontSize: 30,
+    fontSize: 35,
     textAlign: 'center',
     color: 'white',
     fontFamily: 'Helvetica',
-    marginTop: 50
+    marginTop: 20
   },
   image: {
-    width: 135,
-    height: 135,
+    width: 120,
+    height: 120,
     marginTop: 0
   }
 });
+
+const mapStateToProps = (state) => ({
+  nav: state.nav,
+  isLoggedIn: state.auth.isLoggedIn,
+  pubkey: state.auth.pubkey,
+  userName: state.auth.userName,
+});
+
+export default connect(mapStateToProps)(SplashScreen);
