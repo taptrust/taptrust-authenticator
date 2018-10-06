@@ -3,7 +3,8 @@
     "sdkVersion": "27.0.0",
     "splash": {
       "image": "./src/assets/splash.png",
-      "resizeMode": "contain"
+      "resizeMode": "contain",
+      "backgroundColor": "#0499ED"
     }
   }
 }

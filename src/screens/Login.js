@@ -14,6 +14,7 @@ import AuthHomeScreen from './AuthHome'
 import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
 import { sha256, sha224 } from 'js-sha256';
+const wallet=require('../libraries/EthereumLib/ethereumjs-wallet');
 
 var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
 
@@ -39,7 +40,11 @@ class LoginScreen extends Component {
 
     componentDidMount() {
         let value = sha256('taptrust-wallet-api_overview_testing1');
-        console.log('Key-->', value.length);
+        const w = wallet.generate(false,value);
+        var priv = w.getPrivateKeyString();
+        const pub = w.getPublicKeyString();
+        console.log('publickey', pub);
+        console.log('privatekye', priv);
       this.props.isLoggedIn && this.props.navigation.navigate('AuthHome');
     }
 
