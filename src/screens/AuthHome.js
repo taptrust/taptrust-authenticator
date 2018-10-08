@@ -113,6 +113,7 @@ class AuthHomeScreen extends Component {
                 }
     }
     render() {
+        console.log('Private_key-->', this.props.private_key);
       return (
           <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.mainContainer}>
               <StatusBar barStyle="light-content" />
@@ -253,6 +254,7 @@ const mapStateToProps = (state) => ({
     isLoggedIn: state.auth.isLoggedIn,
     pubkey: state.auth.pubkey,
     userName: state.auth.userName,
+    private_key: state.auth.private_key,
 });
 
 export default connect(mapStateToProps)(AuthHomeScreen);

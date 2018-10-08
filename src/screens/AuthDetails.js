@@ -6,7 +6,6 @@ import {
     KeyboardAvoidingView, Linking
 } from 'react-native';
 import { LinearGradient } from 'expo';
-import { createStackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import { fetchApi } from '../services/api/index';
 
