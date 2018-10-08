@@ -3,12 +3,13 @@ import {
     StyleSheet, Text, View, Image,
     TouchableWithoutFeedback, StatusBar,
     TextInput, SafeAreaView, Keyboard, TouchableOpacity,
-    KeyboardAvoidingView, Linking, Alert
+    KeyboardAvoidingView, Linking, Alert, ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo';
 import AuthHomeScreen from './AuthHome';
 import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
+import { generateKeys } from '../services/crypto';
 
 var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
 
@@ -28,7 +29,10 @@ export default class RegisterScreen extends Component {
           formData: {
               username: '',
               pubkey: '',
-          }
+          },
+          private_key: '',
+          isLoading: false,
+          ActivityIndicator,
         };
     }
 
@@ -76,12 +80,15 @@ export default class RegisterScreen extends Component {
         }
         if(this.state.username.length > 4 && strongRegex.test(this.state.password_one) && 
             strongRegex.test(this.state.password_two) && this.state.password_one == this.state.password_two) {
+			    let keys = generateKeys(this.state.username, this.state.password);                
                 await this.setState({
                     formData: {
                         username: this.state.username,
-                        pubkey: this.state.password_one,
-                    }
-                })                
+                        pubkey: keys.public_key,
+                    },
+                    private_key: keys.private_key,
+                });
+			    console.log('Keys-->', keys);                
                 this.register();
         }
     }
@@ -94,13 +101,17 @@ export default class RegisterScreen extends Component {
             method: 'post',
         })
             .then(response => {
-                console.log('Response-->', response);
-                this.props.navigation.navigate('AuthHome');
-                login(this.state.formData);
-                
+                console.log('Response-->', response);                
                 this.setState({
-                    loading: false,
-                });
+                    loginValid: null,
+                    isLoading: false,
+                })
+                let payload = {
+                    formData: this.state.formData,
+                    private_key: this.state.private_key
+                }
+                login(payload);
+                this.props.navigation.navigate('App');
             })
             .catch(e => {
                 this.setState({
@@ -111,6 +122,9 @@ export default class RegisterScreen extends Component {
     }
 
     onRegisterPressed = () => {
+        this.setState({
+            isLoading: true,
+        })
         console.log('Credentials', this.state.username, this.state.password_one, this.state.password_two);
         this.validation();
     }
@@ -209,6 +223,8 @@ export default class RegisterScreen extends Component {
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
+                    {this.state.isLoading &&
+                    <ActivityIndicator style={styles.indicator} size="large"/> }
             </LinearGradient>
         )
     }
@@ -224,6 +240,13 @@ const styles = StyleSheet.create({
     content: {
         marginTop: 10,
         marginHorizontal: 50,
+    },
+    indicator: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        right: 0,
+        left: 0,
     },
     logoContainer: {
         alignItems: 'center',

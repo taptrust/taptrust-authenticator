@@ -9,6 +9,7 @@ const initialState = {
     pubkey: null,
     userName: null,
     session_id: null,
+    private_key: null,
 };
 
 // Reducer
@@ -19,8 +20,9 @@ const auth = (state = initialState, action) => {
             return {
                 ...state,
                 isLoggedIn: true,
-                pubkey: action.formData.pubkey,
-                userName: action.formData.username,
+                pubkey: action.formData.formData.pubkey,
+                userName: action.formData.formData.username,
+                private_key: action.formData.private_key,
             };
         case SAVE_SESSION: 
             console.log('Saving session_id');
