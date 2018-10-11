@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo';
 import { Ionicons, Entypo } from '@expo/vector-icons';
-import { createStackNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import { fetchApi } from '../services/api/index';
 
