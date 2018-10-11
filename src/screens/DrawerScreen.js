@@ -28,6 +28,14 @@ class AuthHomeScreen extends Component {
         this.props.navigation.navigate('AuthList');
     }
 
+    onOffers = () => {
+        this.props.navigation.navigate('Offers');
+    }
+
+    onSecurity = () => {
+        this.props.navigation.navigate('Security');
+    }
+    
     onLogout = () => {
         logout();
         this.props.navigation.navigate('Login');
@@ -37,8 +45,10 @@ class AuthHomeScreen extends Component {
       return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
-                <Image style={styles.image} source={require('../assets/fingerprint.png')}/>
-                <Text style={{ color: 'white', marginTop: 10, fontSize: 18, }}>TapTrust</Text>
+                <Image style={styles.image}
+                    resizeMethod={'resize'}
+                    source={require('../assets/Logo_small.png')}
+                />
             </View>
             <View style={styles.content}>
                 <View style={styles.top}>
@@ -47,6 +57,12 @@ class AuthHomeScreen extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.option} onPress={this.onAuthList}>
                         <Text style={styles.text}>Authorizations</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.option} onPress={this.onOffers}>
+                        <Text style={styles.text}>Offers</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.option} onPress={this.onSecurity}>
+                        <Text style={styles.text}>Security</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -68,16 +84,16 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     logoContainer: {
-        flex: 1,
         alignItems: 'center',
-        marginTop: 30,
+        marginTop: 20,
     },
     image: {
-      height: 80,
-      width: 80,
+    //   height: 80,
+    //   width: 80,
     },
     content: {
         flex: 4,
+        marginTop: 20,
         paddingHorizontal: 20,
         justifyContent: 'space-between'
     },
