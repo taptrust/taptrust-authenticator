@@ -9,7 +9,7 @@ class SplashScreen extends React.Component {
     if ( this.props.isLoggedIn !== null && this.props.isLoggedIn === true) {
       this.props.navigation.navigate('App');
     } 
-    if ( this.props.isLoggedIn !== null && this.props.isLoggedIn === false) {
+    if ( this.props.isLoggedIn === null || this.props.isLoggedIn === false) {
         this.props.navigation.navigate('Auth');
     }
     return (
