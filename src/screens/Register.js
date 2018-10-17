@@ -32,7 +32,6 @@ export default class RegisterScreen extends Component {
           },
           private_key: '',
           isLoading: false,
-          ActivityIndicator,
         };
     }
 
@@ -80,7 +79,7 @@ export default class RegisterScreen extends Component {
         }
         if(this.state.username.length > 4 && strongRegex.test(this.state.password_one) && 
             strongRegex.test(this.state.password_two) && this.state.password_one == this.state.password_two) {
-			    let keys = generateKeys(this.state.username, this.state.password);                
+			    let keys = generateKeys(this.state.username, this.state.password_one);                
                 await this.setState({
                     formData: {
                         username: this.state.username,
@@ -95,6 +94,9 @@ export default class RegisterScreen extends Component {
 
     register = () => {
         console.log('All valid');
+        this.setState({
+            isLoading: true,
+        })
         fetchApi({
             url: 'register',
             payload: this.state.formData,
@@ -122,9 +124,6 @@ export default class RegisterScreen extends Component {
     }
 
     onRegisterPressed = () => {
-        this.setState({
-            isLoading: true,
-        })
         console.log('Credentials', this.state.username, this.state.password_one, this.state.password_two);
         this.validation();
     }

@@ -4,13 +4,15 @@ import { LinearGradient } from 'expo';
 import { connect } from 'react-redux';
 
 class SplashScreen extends React.Component {
+  componentDidMount() {
+    console.log('Is loggedin-->',this.props.isLoggedIn);
+  }
 
   render() {
-    if ( this.props.isLoggedIn !== null && this.props.isLoggedIn === true) {
+    if (this.props.isLoggedIn) {
       this.props.navigation.navigate('App');
-    } 
-    if ( this.props.isLoggedIn === null || this.props.isLoggedIn === false) {
-        this.props.navigation.navigate('Auth');
+    } else {
+      this.props.navigation.navigate('Auth');
     }
     return (
       <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
