@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
 
 import { store, persistor } from "./src/config/store";
+import SplashScreen from './src/screens/Splash';
 import Root from './src/Root';
 
 class App extends Component {
@@ -11,7 +12,9 @@ class App extends Component {
         return (
             <Provider store={store}>
                 <View style={{ flex: 1 }}>
-                  <Root />
+                    <PersistGate persistor={persistor}>
+                        <Root />
+                    </PersistGate>
                 </View>
             </Provider>
         );
