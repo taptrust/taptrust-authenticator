@@ -5,6 +5,7 @@
       "image": "./src/assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#0499ED"
-    }
+    },
+    "orientation": "portrait"
   }
 }
