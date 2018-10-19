@@ -115,7 +115,7 @@ export default class RegisterScreen extends Component {
           private_key: this.state.private_key
         }
         login(payload);
-        this.props.navigation.navigate('App');
+        this.props.navigation.navigate('Reminder');
       })
       .catch(e => {
         this.setState({

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
   StyleSheet, Text, View, Image,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback, TextInput,
   Keyboard, TouchableOpacity,
   Dimensions, ActivityIndicator, ScrollView
 } from 'react-native';

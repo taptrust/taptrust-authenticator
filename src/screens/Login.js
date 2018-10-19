@@ -110,7 +110,7 @@ class LoginScreen extends Component {
             private_key: this.state.private_key
           };
           login(payload);
-          this.props.navigation.navigate('App');
+          this.props.navigation.navigate('Reminder');
         }
         if (response.status === 406) {
           this.setState({

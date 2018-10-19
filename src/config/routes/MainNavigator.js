@@ -22,9 +22,6 @@ const Drawer = createDrawerNavigator ({
   AuthApproval: {
     screen: AuthApprovalScreen
   },
-  AuthDetails: {
-    screen: AuthDetailsScreen
-  },
   Offers: {
     screen: OffersScreen
   },
@@ -53,6 +50,9 @@ const MainNavgator = createStackNavigator({
   AuthHome: {
     screen: Drawer
   },
+  AuthDetails: {
+    screen: AuthDetailsScreen
+  }
 },{
   initialRouteName: 'AuthHome',
   navigationOptions:{
