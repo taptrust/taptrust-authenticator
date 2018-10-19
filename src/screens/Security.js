@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
 
   middleContainer: {
     flex: 1,
-    top: 20,
+    marginTop: 30,
     alignItems: 'center',
   },
 
