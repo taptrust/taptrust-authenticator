@@ -1,162 +1,163 @@
 import React, { Component } from 'react'
 import {
-    StyleSheet, Text, View, Image,
-    TouchableWithoutFeedback, StatusBar,
-    TextInput, SafeAreaView, Keyboard, TouchableOpacity,
-    KeyboardAvoidingView, Linking
-} from 'react-native'
+  View,  
+  StyleSheet,
+  Text,
+  Image,
+  StatusBar,
+	TouchableOpacity,
+	Linking,
+} from 'react-native';
+
 import { LinearGradient } from 'expo';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { DrawerActions } from 'react-navigation';
 import { connect } from 'react-redux';
+
+import Header from '../components/Header';
 import { fetchApi } from '../services/api/index';
 import { saveSession } from '../services/auth';
 
 class AuthHomeScreen extends Component {
-    constructor(props) {
-      super(props);
+	constructor(props) {
+		super(props);
 
-      this.state={
-          username: '',
-      }
-    }
+		this.state={
+				username: '',
+		}
+	}
 
-    componentDidMount() {
-        this.setState({
-            username: this.props.userName
-        })
-        fetchApi({
-            url: 'auth/request',
-            payload: {
-                'username': this.props.userName,
-                'pubkey': this.props.pubkey,
-                'app-url': 'test',
-                'request': 'test',
-            },
-            method: 'post'
-        })
-        .then(response => {
-            console.log('Request response-->', response);
-        })
-        .catch(e => {
-            this.setState({
-                loading: false,
-                errors: true,
-            });
-        });
+	componentDidMount() {
+			this.setState({
+					username: this.props.userName
+			})
+			fetchApi({
+					url: 'auth/request',
+					payload: {
+							'username': this.props.userName,
+							'pubkey': this.props.pubkey,
+							'app-url': 'test',
+							'request': 'test',
+					},
+					method: 'post'
+			})
+			.then(response => {
+					console.log('Request response-->', response);
+			})
+			.catch(e => {
+					this.setState({
+							loading: false,
+							errors: true,
+					});
+			});
 
-        // var timerId = setInterval( () => {
-        //     console.log('Timer');
-        //     try {fetchApi({
-        //         url: 'auth/get',
-        //         payload: {
-        //             username: this.props.userName
-        //         },
-        //         method: 'post',
-        //     })
-        //         .then(response => {
-        //             console.log('Timer Response-->', response);
-        //             if(response.session) {
-        //                 clearInterval(timerId);
-        //                 let session_id = response.session.session_id;
-        //                 let request = response.session.request;
-        //                 saveSession(session_id);
-        //                 this.props.navigation.navigate('AuthApproval', { request: request });
-        //             }
-        //             this.setState({
-        //                 loading: false,
-        //             });
-        //         })
-        //         .catch(e => {
-        //             this.setState({
-        //                 loading: false,
-        //                 errors: true,
-        //             });
-        //         });} catch(e) {
-        //             Alert.alert(e);
-        //         }
-        //   },10000);
+			// var timerId = setInterval( () => {
+			//     console.log('Timer');
+			//     try {fetchApi({
+			//         url: 'auth/get',
+			//         payload: {
+			//             username: this.props.userName
+			//         },
+			//         method: 'post',
+			//     })
+			//         .then(response => {
+			//             console.log('Timer Response-->', response);
+			//             if(response.session) {
+			//                 clearInterval(timerId);
+			//                 let session_id = response.session.session_id;
+			//                 let request = response.session.request;
+			//                 saveSession(session_id);
+			//                 this.props.navigation.navigate('AuthApproval', { request: request });
+			//             }
+			//             this.setState({
+			//                 loading: false,
+			//             });
+			//         })
+			//         .catch(e => {
+			//             this.setState({
+			//                 loading: false,
+			//                 errors: true,
+			//             });
+			//         });} catch(e) {
+			//             Alert.alert(e);
+			//         }
+			//   },10000);
 
-    }
+	}
 
-    navBar = () => {
-        this.props.navigation.dispatch(DrawerActions.openDrawer());
-    }
+	reFresh = () => {
+		try {
+			fetchApi({
+				url: 'auth/get',
+				payload: {
+					username: this.props.userName
+				},
+				method: 'post',
+		})
+		.then(response => {
+			console.log('Timer Response-->', response);
+			if(response.session) {
+				let session_id = response.session.session_id;
+				let request = response.session.request;
+				saveSession(session_id);
+				this.props.navigation.navigate('AuthApproval', { request: request });
+			}
+			this.setState({
+				loading: false,
+			});
+		})
+		.catch(e => {
+			this.setState({
+				loading: false,
+				errors: true,
+			});
+		});} catch(e) {
+			Alert.alert(e);
+		}
+	}
 
-    reFresh = () => {
-        try {fetchApi({
-                url: 'auth/get',
-                payload: {
-                    username: this.props.userName
-                },
-                method: 'post',
-            })
-                .then(response => {
-                    console.log('Timer Response-->', response);
-                    if(response.session) {
-                        let session_id = response.session.session_id;
-                        let request = response.session.request;
-                        saveSession(session_id);
-                        this.props.navigation.navigate('AuthApproval', { request: request });
-                    }
-                    this.setState({
-                        loading: false,
-                    });
-                })
-                .catch(e => {
-                    this.setState({
-                        loading: false,
-                        errors: true,
-                    });
-                });} catch(e) {
-                    Alert.alert(e);
-                }
-    }
-    render() {
-        console.log('Private_key-->', this.props.private_key);
-      return (
-          <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.mainContainer}>
-              <StatusBar barStyle="light-content" />
-              <View style={styles.header}>
-                <TouchableOpacity style={{ marginLeft: 5 }} onPress={this.navBar}>
-                    <View style={{ width: 17, marginTop: 2.5, height:2, backgroundColor: 'white'}}/>
-                    <View style={{ width: 14, marginTop: 2.5, height:2, backgroundColor: 'white'}}/>
-                    <View style={{ width: 12, marginTop: 2.5, height:2, backgroundColor: 'white'}}/>
-                </TouchableOpacity>
-              </View>
-                  <TouchableWithoutFeedback style={styles.container}
-                          onPress={Keyboard.dismiss}>
-                      <View style={styles.logoContainer}>
-                          <View style={styles.logoContainer}>
-                            <Image style={styles.image}
-                              source={require('../assets/Logo_small.png')}
-                            />
-                            <Text style={styles.username}>{this.props.userName ? this.props.userName : this.state.username}</Text>
-                          </View>
-                          <Text style={styles.explanation}> There are two ways to</Text>
-                          <Text style={styles.explanation}> login to a dApp with your</Text>
-                          <Text style={styles.explanation}> TapTrust account</Text>
-                          <Text style={styles.explanationBold_one}> Use a dApp with a</Text>
-                          <Text style={styles.explanationBold}> "TapTrust Login" option</Text>
-                          <Text style={styles.explanation_or}> - or- </Text>
-                          <Text style={styles.explanationBold_one}> Use the TapTrust</Text>
-                          <Text style={styles.explanationBold}> browser extension</Text>
-                          <Text style={styles.explanation_top}> Make sure this screen is </Text>
-                          <Text style={styles.explanation}> visible while logging in</Text>
-                          <Text style={{color: 'white', marginTop: '10%', textDecorationLine: 'underline'}}
-                            onPress={() => Linking.openURL('http://taptrust.com/about')}>Learn more about using TapTrust
-                            </Text>
-                            <TouchableOpacity onPress={this.reFresh} style={{ marginRight: 10, marginTop: 10 }}>
-                            <Ionicons style={{ alignSelf: 'center',}} name="md-refresh" size={30} color="white"/>
-                            </TouchableOpacity>
-                          </View>
-                  </TouchableWithoutFeedback>
-
-          </LinearGradient>
-        )
-      }
-    }
-
+	render() {
+		return (
+			<LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.mainContainer}>
+				<Header left="nav" right={false}/>
+				<View style={styles.container}>
+						<View style={styles.logoContainer}>
+							<Image style={styles.image} source={require('../assets/Logo_small.png')}/>
+							<Text style={styles.username}>{this.props.userName ? this.props.userName : this.state.username}</Text>
+						</View>
+						<View style={styles.content}>
+							<View style={{ alignItems: 'center' }}>
+								<Text style={styles.explanation}>There are two ways to</Text>
+								<Text style={styles.explanation}>login to a dApp with your</Text>
+								<Text style={styles.explanation}>TapTrust account:</Text>
+							</View>
+							<View style={{ alignItems: 'center', marginTop: 30 }}>
+								<Text style={styles.explanationBold}>Use a dApp with a</Text>
+								<Text style={styles.explanationBold}>"TapTrust Login" option</Text>
+							</View>
+							<Text style={styles.explanation_or}> - or- </Text>
+							<View style={{ alignItems: 'center', marginTop: 15 }}>
+								<Text style={styles.explanationBold}>Use the TapTrust</Text>
+								<Text style={styles.explanationBold}>browser extension</Text>
+							</View>
+							<View style={{ alignItems: 'center', marginTop: 30 }}>
+								<Text style={styles.explanation}>Make sure this screen is</Text>
+								<Text style={styles.explanation}>visible while logging in</Text>
+							</View>
+						</View>
+						<View style={styles.bottom}>
+							<Text style={styles.link} onPress={() => Linking.openURL('http://taptrust.com/about')}>
+								Learn more about using TapTrust
+							</Text>
+							<TouchableOpacity onPress={this.reFresh} style={{ marginRight: 10, marginTop: 10 }}>
+								<Ionicons style={{ alignSelf: 'center',}} name="md-refresh" size={30} color="white"/>
+							</TouchableOpacity>
+						</View>
+				</View>
+			</LinearGradient>
+			)
+		}
+}
 
 const styles = StyleSheet.create({
     mainContainer: {
@@ -165,17 +166,22 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     container: {
-        
-    },
-    header: {
-        marginTop: 20,
-        paddingTop: 10,
-        marginHorizontal: '2.5%',
+			flex: 1,
+			paddingVertical: 20,
+			justifyContent: 'space-between'
     },
     logoContainer: {
         alignItems: 'center',
         marginTop: 10,
-    },
+		},
+		content: {
+			alignItems: 'center',
+			justifyContent: 'space-between'
+		},
+		bottom: {
+			alignItems: 'center',
+			justifyContent: 'center'
+		},
     username: {
         color: 'white',
         paddingVertical: 20,
@@ -222,31 +228,36 @@ const styles = StyleSheet.create({
     explanation: {
       color: 'white',
       fontSize: 18,
-      fontWeight: '300',
+      fontWeight: '400',
     },
     explanation_or: {
       color: 'white',
       fontSize: 18,
-      fontWeight: '300',
-      marginTop: '5%'
+      fontWeight: '400',
+      marginTop: 15
     },
     explanationBold: {
       color: 'white',
       fontWeight: '700',
-      fontSize: 18
+      fontSize: 20
     },
     explanationBold_one: {
       color: 'white',
       fontWeight: '700',
       fontSize: 18,
-      marginTop: '5%'
     },
     explanation_top: {
       marginTop: '5%',
       color: 'white',
       fontSize: 18,
       fontWeight: '300'
-    }
+		},
+		link: {
+			color: 'white',
+			marginTop: '10%',
+			textDecorationLine: 'underline',
+			fontSize: 16,
+		}
 });
 
 const mapStateToProps = (state) => ({
