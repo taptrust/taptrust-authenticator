@@ -16,18 +16,17 @@ class SplashScreen extends React.Component {
     }
     return (
       <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <View style={styles.logoContainer}>
-              <Image style={styles.image}
-                source={require('../assets/Logo.png')}
-                resizeMode="contain"
-              />
-            </View>
-            <Text style={styles.text}>TapTrust</Text>
-            <ActivityIndicator style={{ marginTop: 20 }} size="large" color="white"/>      
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <View style={styles.logoContainer}>
+            <Image style={styles.image}
+              source={require('../assets/Logo.png')}
+              resizeMode="contain"
+            />
           </View>
+          <Text style={styles.text}>TapTrust</Text>
+          <ActivityIndicator style={{ marginTop: 20 }} size="large" color="white"/>      
+        </View>
       </LinearGradient>
-
     );
   }
 }
