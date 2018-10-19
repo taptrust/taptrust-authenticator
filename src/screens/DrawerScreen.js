@@ -20,6 +20,10 @@ class AuthHomeScreen extends Component {
     }
   }
   
+  onAccount = () => {
+    this.props.navigation.navigate('AccountHome');
+  }
+
   onHome = () => {
     this.props.navigation.navigate('AuthHome');
   }
@@ -36,6 +40,10 @@ class AuthHomeScreen extends Component {
     this.props.navigation.navigate('Security');
   }
   
+  onApprove = () => {
+    this.props.navigation.navigate('AuthHome');
+  }
+
   onLogout = () => {
     logout();
     this.props.navigation.navigate('Login');
@@ -52,6 +60,9 @@ class AuthHomeScreen extends Component {
         </View>
         <View style={styles.content}>
           <View style={styles.top}>
+            <TouchableOpacity style={styles.option} onPress={this.onAccount}>
+              <Text style={styles.text}>Account</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.option} onPress={this.onHome}>
               <Text style={styles.text}>Home</Text>
             </TouchableOpacity>
@@ -63,6 +74,9 @@ class AuthHomeScreen extends Component {
             </TouchableOpacity>
             <TouchableOpacity style={styles.option} onPress={this.onSecurity}>
               <Text style={styles.text}>Security</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.option} onPress={this.onApprove}>
+              <Text style={styles.text}>Approve Transaction</Text>
             </TouchableOpacity>
           </View>
 
