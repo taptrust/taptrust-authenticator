@@ -3,6 +3,7 @@ import { View, Text, Button, StyleSheet, Dimensions } from 'react-native';
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation'; // Version can be specified in package.json
 
 import AccountHomeScreen from '../../screens/AccountHome';
+import TokenBalancesScreen from '../../screens/TokenBalances';
 import AuthHomeScreen from '../../screens/AuthHome';
 import AuthApprovalScreen from '../../screens/AuthApproval';
 import AuthListScreen from '../../screens/AuthList';
@@ -57,6 +58,9 @@ const MainNavgator = createStackNavigator({
   },
   AuthDetails: {
     screen: AuthDetailsScreen
+  },
+  TokenBalances: {
+    screen: TokenBalancesScreen
   }
 },{
   initialRouteName: 'Home',
