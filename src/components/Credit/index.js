@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 14,
     marginTop: 5,
-    color: 'rgba(255,255,255,0.8)'
+    color: '#D8D8D8'
   },
   view: {
     flex: 1,

@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   valueText: {
-    color: 'white',fontSize: 25
+    color: 'white',
+    fontSize: 25
   },
   logoContainer: {
     width: 30,
