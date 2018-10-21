@@ -14,49 +14,28 @@ import { LinearGradient } from 'expo';
 import { connect } from 'react-redux';
 
 import Header from '../components/Header';
-import CreditList from '../components/CreditList';
+import BalanceList from '../components/BalanceList';
 
 import { fetchApi } from '../services/api/index';
 import { saveSession } from '../services/auth';
 
 const { width, height } = Dimensions.get('window');
 
-class AccountHomeScreen extends Component {
+class TokenBalancesScreen extends Component {
   constructor(props) {
     super(props);
 
     this.state={
-      isLoading: false,
-      creditList: null,
+      balanceList: null,
     }
   }
 
   componentDidMount() {
+    console.log('Prop', this.props.navigation.state.params);
+    const { balances } = this.props.navigation.state.params;
     this.setState({
-      isLoading: true,
-    });
-
-    fetchApi({
-      url: 'auth/list',
-      payload: {
-        'username': this.props.userName,
-      },
-      method: 'post'
+      balanceList: balances
     })
-    .then(response => {
-      this.setState({
-        isLoading: false,
-        creditList: response.credits && response.credits,
-        balances: response.balances && response.balances,
-      })
-      console.log('Request response-->', response);
-    })
-    .catch(e => {
-        this.setState({
-            isLoading: false,
-            errors: true,
-        });
-    });
   }
 
   viewOffers = () => {
@@ -70,33 +49,19 @@ class AccountHomeScreen extends Component {
   onBalance = () => {
     this.props.navigation.navigate('TokenBalances', { balances: this.state.balances });
   }
+
   render() {
     return (
       <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
-        <Header left="nav" right={true}/>
+        <Header left="back" title="Token Balances" right={true}/>
         <View style={styles.content}>
-          <View style={styles.top}>
-            <TouchableOpacity>
-              <Text style={styles.secure}>Secure your account</Text>
-            </TouchableOpacity>
-          </View>
           <View style={styles.main}>
-            {this.state.isLoading && <ActivityIndicator size="large" color="white"/>}
-            {this.state.creditList && <CreditList data={this.state.creditList}/>}
+            {this.state.balanceList && <BalanceList data={this.state.balanceList}/>}
           </View>
           <View style={styles.bottom}>
-            <View style={styles.links}>
-              <TouchableOpacity onPress={this.viewOffers}>
-                <Text style={styles.textLink}>View All Offers</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={this.onApprove}>
-                <Text style={styles.textLink}>Approve Transaction</Text>
-              </TouchableOpacity>
-            </View>
             <View style={styles.balanceContainer}>
-              <Text style={styles.balance}>0.00 ETH</Text>
               <TouchableOpacity style={styles.buttonContainer} onPress={this.onBalance}>
-                <Text style={styles.buttonText}>Token Balances</Text>
+                <Text style={styles.buttonText}>Add Token</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -133,7 +98,8 @@ const styles = StyleSheet.create({
   },
 
   main: {
-    flex: 6
+    flex: 6,
+    paddingVertical: 30,
   },
 
   bottom: {
@@ -190,5 +156,5 @@ const mapStateToProps = (state) => ({
   userName: state.auth.userName,
 });
 
-export default connect(mapStateToProps)(AccountHomeScreen);
+export default connect(mapStateToProps)(TokenBalancesScreen);
 
