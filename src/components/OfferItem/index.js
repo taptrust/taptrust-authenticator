@@ -34,8 +34,8 @@ class OfferItem extends Component {
             <Image style={{ width: 40, height: 50 }} resizeMode="contain" source={{uri: item.icon_url}}/>
           </View>
           <View style={styles.content}>
-            <Text style={styles.name}>{item.name + ': ' + '$' + item.amount}</Text>  
-            <Text style={styles.date}>{item.description}</Text>                                  
+            <Text style={styles.name}>{item.name + ': ' + item.credit}</Text>  
+            <Text style={styles.date}>{item.sponsor}</Text>                                  
           </View>
         </View>
         <View style={styles.view}>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.8)'
+    color: '#D8D8D8'
   },
   view: {
     flex: 1,

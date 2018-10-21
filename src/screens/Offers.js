@@ -19,64 +19,6 @@ import { saveSession } from '../services/auth';
 
 const { width, height } = Dimensions.get('window');
 
-const offersList = [
-  {
-    icon_url: 'http://www.taptrust.com/static/img/twitter@2x.png',
-    name: 'Collectible dApp',
-    amount: '10',
-    description: 'Sponsored by dApp center',
-    type: 'gaming_collectible'
-  },
-  {
-    icon_url: 'http://www.taptrust.com/static/img/twitter@2x.png',
-    name: 'Milos dApp',
-    amount: '25',
-    description: 'Sponsored by dApp center',
-    type: 'gaming_collectible'
-  },
-  {
-    icon_url: 'http://www.taptrust.com/static/img/twitter@2x.png',
-    name: 'Wow dApp',
-    amount: '40',
-    description: 'Sponsored by dApp center',
-    type: 'marketplaces'
-  },
-  {
-    icon_url: 'http://www.taptrust.com/static/img/twitter@2x.png',
-    name: 'Great dApp',
-    amount: '99',
-    description: 'Sponsored by dApp center',
-    type: 'marketplaces'
-  },
-  {
-    icon_url: 'http://www.taptrust.com/static/img/twitter@2x.png',
-    name: 'Great dApp',
-    amount: '99',
-    description: 'Sponsored by dApp center',
-    type: 'marketplaces'
-  },
-  {
-    icon_url: 'http://www.taptrust.com/static/img/twitter@2x.png',
-    name: 'Great dApp',
-    amount: '99',
-    description: 'Sponsored by dApp center',
-    type: 'marketplaces'
-  },
-  {
-    icon_url: 'http://www.taptrust.com/static/img/twitter@2x.png',
-    name: 'Great dApp',
-    amount: '99',
-    description: 'Sponsored by dApp center',
-    type: 'marketplaces'
-  },
-  {
-    icon_url: 'http://www.taptrust.com/static/img/twitter@2x.png',
-    name: 'Great dApp',
-    amount: '99',
-    description: 'Sponsored by dApp center',
-    type: 'marketplaces'
-  },
-];
 class OffersScreen extends Component {
   constructor(props) {
     super(props);
@@ -84,7 +26,8 @@ class OffersScreen extends Component {
     this.state={
       username: '',
       authList: [],
-      filteredAuthList: offersList,
+      offersList: [],
+      filteredOffersList: [],
       isLoading: false,
       tabSelected: 0,
     }
@@ -93,9 +36,28 @@ class OffersScreen extends Component {
   componentDidMount() {
     this.setState({
       isLoading: true,
-      filteredAuthList: offersList,
       tabSelected: 1,
     })
+    fetchApi({
+      url: 'auth/list',
+      payload: {
+        'username': this.props.userName,
+      },
+      method: 'post'
+    })
+    .then(response => {
+      this.setState({
+        isLoading: false,
+        offersList: response.credits && response.credits,
+      })
+      console.log('Request response-->', response);
+    })
+    .catch(e => {
+        this.setState({
+            isLoading: false,
+            errors: true,
+        });
+    });
   }
 
   select = (val) => {
@@ -104,24 +66,24 @@ class OffersScreen extends Component {
     })
     if( val === 1 ) {
       this.setState({
-        filteredAuthList: offersList,
+        filteredOffersList: this.state.offersList,
       })
     }
     if( val === 2 ) {
-      let result = offersList.filter(offer => {
-        return offer.type === 'gaming_collectible';
-      });
-      this.setState({
-        filteredAuthList: result,
-      });
+      // let result = this.state.offersList.filter(offer => {
+      //   return offer.type === 'gaming_collectible';
+      // });
+      // this.setState({
+      //   filteredOffersList: result,
+      // });
     }
     if( val === 3) {
-      let result = offersList.filter(offer => {
-        return offer.type === 'marketplaces'; // Expired but pending for test
-      }); 
-      this.setState({
-        filteredAuthList: result,
-      })
+      // let result = this.state.offersList.filter(offer => {
+      //   return offer.type === 'marketplaces'; // Expired but pending for test
+      // }); 
+      // this.setState({
+      //   filteredOffersList: result,
+      // })
     }
     console.log(val);
   }
@@ -129,7 +91,7 @@ class OffersScreen extends Component {
   render() {
     return (
       <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
-        <Header left="nav" title="Offers" right={true}/>
+        <Header left="nav" title="TrustFund Credits" right={true}/>
         <View style={styles.searchBar}>
           <Ionicons style={{ alignSelf: 'center',}} name="ios-search" size={25} color="black"/>
           <TextInput style={styles.searchInput}/>
@@ -151,7 +113,8 @@ class OffersScreen extends Component {
               <Text style={styles.tabText}>Marketplaces</Text>
             </TouchableOpacity>
           </View>
-          <OffersList data={this.state.filteredAuthList}/>
+          {this.state.isLoading && <ActivityIndicator size="large" color="white"/>}
+          {this.state.offersList && <OffersList data={this.state.offersList}/>}
         </View>
       </LinearGradient>
     )
