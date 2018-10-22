@@ -1,8 +1,9 @@
 {
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 23112,
-  "expoServerNgrokUrl": "https://nz-je6.liaodingying610.taptrust-wallet-copy.exp.direct",
-  "packagerNgrokUrl": "https://packager.nz-je6.liaodingying610.taptrust-wallet-copy.exp.direct",
-  "ngrokPid": 23132
+  "packagerPort": 19004,
+  "packagerPid": 60956,
+  "expoServerNgrokUrl": "https://yh-tnc.liaodingying610.taptrust-wallet.exp.direct",
+  "packagerNgrokUrl": "https://packager.yh-tnc.liaodingying610.taptrust-wallet.exp.direct",
+  "ngrokPid": 60976,
+  "devToolsPort": 19002
 }

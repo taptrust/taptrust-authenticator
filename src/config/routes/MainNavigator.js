@@ -1,6 +1,9 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, Dimensions } from 'react-native';
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation'; // Version can be specified in package.json
+
+import AccountHomeScreen from '../../screens/AccountHome';
+import TokenBalancesScreen from '../../screens/TokenBalances';
 import AuthHomeScreen from '../../screens/AuthHome';
 import AuthApprovalScreen from '../../screens/AuthApproval';
 import AuthListScreen from '../../screens/AuthList';
@@ -13,6 +16,9 @@ import TabsStack from './TabsStack';
 const { width, height } = Dimensions.get('window');
 
 const Drawer = createDrawerNavigator ({
+  AccountHome: {
+    screen: AccountHomeScreen,
+  },
   AuthHome: {
     screen: AuthHomeScreen
   },
@@ -21,9 +27,6 @@ const Drawer = createDrawerNavigator ({
   },
   AuthApproval: {
     screen: AuthApprovalScreen
-  },
-  AuthDetails: {
-    screen: AuthDetailsScreen
   },
   Offers: {
     screen: OffersScreen
@@ -34,7 +37,7 @@ const Drawer = createDrawerNavigator ({
 },  {
   drawerWidth: width/2,
   contentComponent: DrawerScreen,
-  initialRouteName: 'AuthHome',
+  initialRouteName: 'AccountHome',
   contentOptions: {
     activeTintColor: 'white',
     inactiveTintColor: 'white',
@@ -50,11 +53,17 @@ const Drawer = createDrawerNavigator ({
 );
 
 const MainNavgator = createStackNavigator({
-  AuthHome: {
+  Home: {
     screen: Drawer
   },
+  AuthDetails: {
+    screen: AuthDetailsScreen
+  },
+  TokenBalances: {
+    screen: TokenBalancesScreen
+  }
 },{
-  initialRouteName: 'AuthHome',
+  initialRouteName: 'Home',
   navigationOptions:{
     header : null
   },
