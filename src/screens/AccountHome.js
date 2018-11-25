@@ -34,6 +34,9 @@ class AccountHomeScreen extends Component {
       tabSelected: 0,
       tokensList: false,
       itemsList: false,
+      balances: {
+          totalUSD: ''
+      }
     }
   }
 
@@ -58,10 +61,7 @@ class AccountHomeScreen extends Component {
         tokensList: response.tokens && response.tokens,
         tabSelected: 1,
         items: response.items && response.items,
-        balances: response.balances && response.balances,
-        walletBalances: {
-            totalUSD: '$15.60'
-        }
+        balances: response.balances && response.balances
       })
       console.log('Request response-->', response);
     })
@@ -73,8 +73,8 @@ class AccountHomeScreen extends Component {
     });
   }
 
-  viewOffers = () => {
-    this.props.navigation.navigate('Offers');
+  viewVouchers = () => {
+    this.props.navigation.navigate('Vouchers');
   }
 
   select = (val) => {
@@ -100,7 +100,7 @@ class AccountHomeScreen extends Component {
     return (
       <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
         <Header left="nav" right={false}/>
-        <WalletHeader balances={this.state.walletBalances}/>
+        <WalletHeader balances={this.state.balances}/>
 
           <View style={styles.tabView}>
             <View style={styles.tabHeader}>
@@ -128,7 +128,7 @@ class AccountHomeScreen extends Component {
 
           <View style={styles.bottom}>
             <View style={styles.links}>
-              <TouchableOpacity onPress={this.viewOffers}>
+              <TouchableOpacity onPress={this.viewVouchers}>
                 <Text style={styles.textLink}>Available Voucher Balance: $100</Text>
               </TouchableOpacity>
             </View>

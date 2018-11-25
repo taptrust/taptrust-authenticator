@@ -26,7 +26,7 @@ class WalletHeader extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.totalContainer}>
-            <Text style={styles.totalText}>$15.60</Text>
+            <Text style={styles.totalText}>{balances.totalUSD}</Text>
         </View>
         <View style={styles.usernameContainer}>
           <Text style={styles.usernameText}>{userName}</Text>

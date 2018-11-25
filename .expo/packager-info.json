@@ -1,9 +1,9 @@
 {
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 2190,
-  "expoServerNgrokUrl": "https://b5-ua9.taptrust.taptrust-wallet.exp.direct",
-  "packagerNgrokUrl": "https://packager.b5-ua9.taptrust.taptrust-wallet.exp.direct",
-  "ngrokPid": 2218,
+  "packagerPid": 3548,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "devToolsPort": 19002
 }

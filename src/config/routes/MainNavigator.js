@@ -9,7 +9,7 @@ import AuthApprovalScreen from '../../screens/AuthApproval';
 import AuthListScreen from '../../screens/AuthList';
 import AuthDetailsScreen from '../../screens/AuthDetails';
 import DrawerScreen from '../../screens/DrawerScreen';
-import OffersScreen from '../../screens/Offers';
+import VouchersScreen from '../../screens/Vouchers';
 import SecurityScreen from '../../screens/Security';
 import TabsStack from './TabsStack';
 
@@ -28,8 +28,8 @@ const Drawer = createDrawerNavigator ({
   AuthApproval: {
     screen: AuthApprovalScreen
   },
-  Offers: {
-    screen: OffersScreen
+  Vouchers: {
+    screen: VouchersScreen
   },
   Security: {
     screen: SecurityScreen
