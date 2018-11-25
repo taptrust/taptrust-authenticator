@@ -15,18 +15,22 @@ class Header extends Component {
   render() {
     return (
       <View style={styles.header}>
-        { this.props.left === 'nav' && 
-          <DrawerButton/>        
+        { this.props.left === 'nav' &&
+          <DrawerButton/>
         }
-        { this.props.left === 'back' && 
-          <BackButton/>        
+        { this.props.left === 'back' &&
+          <BackButton/>
         }
         <Text style={{ fontSize: 25, color: 'white', alignSelf: 'center' }}>{this.props.title}</Text>
+
+
         { this.props.right &&
           <View style={styles.logoContainer}>
               <Image style={styles.image} resizeMode="contain" source={require('../../assets/Logo_small.png')}/>
           </View>
         }
+        
+
       </View>
     )
   }
@@ -64,4 +68,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(Header);
-
