@@ -5,11 +5,13 @@ import { NavigationActions } from "react-navigation";
 
 import RootNavigator from './config/routes/RootNavigator';
 
+console.ignoredYellowBox = ['Warning: Cannot', 'Warning: Unable'];
+
 class Root extends Component {
   constructor(props) {
     super(props);
   }
-  
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -27,4 +29,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(Root);
-

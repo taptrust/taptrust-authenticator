@@ -80,7 +80,7 @@ class OffersScreen extends Component {
     if( val === 3) {
       // let result = this.state.offersList.filter(offer => {
       //   return offer.type === 'marketplaces'; // Expired but pending for test
-      // }); 
+      // });
       // this.setState({
       //   filteredOffersList: result,
       // })
@@ -91,7 +91,7 @@ class OffersScreen extends Component {
   render() {
     return (
       <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
-        <Header left="nav" title="TrustFund Credits" right={true}/>
+        <Header left="nav" title="Redeem Vouchers" right={true}/>
         <View style={styles.searchBar}>
           <Ionicons style={{ alignSelf: 'center',}} name="ios-search" size={25} color="black"/>
           <TextInput style={styles.searchInput}/>
@@ -249,4 +249,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(OffersScreen);
-
