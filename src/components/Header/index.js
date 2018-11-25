@@ -21,7 +21,8 @@ class Header extends Component {
         { this.props.left === 'back' &&
           <BackButton/>
         }
-        <Text style={{ fontSize: 25, color: 'white', alignSelf: 'center' }}>{this.props.title}</Text>
+
+        <Text style={{ fontSize: 25, color: 'white', paddingTop: 10, textAlign: 'center' }}>{this.props.title}</Text>
 
 
         { this.props.right &&
@@ -29,7 +30,7 @@ class Header extends Component {
               <Image style={styles.image} resizeMode="contain" source={require('../../assets/Logo_small.png')}/>
           </View>
         }
-        
+
 
       </View>
     )
@@ -43,6 +44,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 20,
+    justifyContent: 'center',
     paddingTop: 10,
     marginHorizontal: '2.5%',
   },

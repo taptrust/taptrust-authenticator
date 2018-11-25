@@ -22,27 +22,25 @@ class OfferItem extends Component {
 
   selectItem = (item) => {
     console.log('hhh', item);
-    this.props.navigation.navigate('AuthDetails', { item: item });
+  /*  this.props.navigation.navigate('AuthDetails', { item: item }); */
   }
 
   render() {
     const { item, key } = this.props;
     return (
-      <View style={styles.item} key={key}>
+      <View style={styles.item} key={key} onPress={() => this.selectItem(item)} >
         <View style={{flex: 1, flexDirection: 'row'}}>
-          <View style={{ width: 45, height: 45, alignItems: 'center', borderRadius: 50, backgroundColor: 'white'}}>
-            <Image style={{ width: 40, height: 50 }} resizeMode="contain" source={{uri: item.icon_url}}/>
-          </View>
+
           <View style={styles.content}>
-            <Text style={styles.name}>{item.name + ': ' + item.credit}</Text>  
-            <Text style={styles.date}>{item.sponsor}</Text>                                  
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.sponsor}>Sponsored by {item.sponsor}</Text>
           </View>
         </View>
         <View style={styles.view}>
-          <TouchableOpacity onPress={() => this.selectItem(item)} style={{ marginRight: 30,}}>
-            <Text style={{ color: 'white', fontSize: 15, }}>View{'\n'}Offer</Text>
+          <TouchableOpacity>
+            <Text style={{ color: 'white', fontSize: 17, fontWeight: '700' }}>{item.value}  <Text style={{ color: 'rgba(255,255,255,.3)' }}>|</Text>  {item.symbol}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.selectItem(item)} style={{ marginRight: 10, }}>
+          <TouchableOpacity style={{ marginRight: 10, }}>
             <Entypo style={{ alignSelf: 'center',}} name="chevron-small-right" size={25} color="white"/>
           </TouchableOpacity>
         </View>
@@ -55,25 +53,30 @@ class OfferItem extends Component {
 const styles = StyleSheet.create({
   item: {
     //flex: 1,
-    marginHorizontal: 10,
-    marginBottom: 10,
-    paddingHorizontal: 5,
+    marginHorizontal: 20,
+    marginBottom: 20,
+    paddingBottom: 20,
+    paddingHorizontal: 0,
     paddingVertical: 8,
-    backgroundColor: '#2EA2E1',
-    borderRadius: 30,
+    borderRadius: 0,
     flexDirection: 'row',
     alignItems: 'center',
-    width: width - 10,
+    width: width - 30,
+    borderBottomColor: 'rgba(255,255,255,.3)',
+    borderRadius: 20,
+    borderBottomWidth: 1
   },
   content: {
     marginLeft: 15,
     alignSelf: 'center'
   },
   name: {
-    fontSize: 16,
+    fontSize: 20,
     color: 'white',
+    fontWeight: '700',
   },
-  date: {
+  sponsor: {
+    paddingTop: 5,
     fontSize: 12,
     color: '#D8D8D8'
   },
@@ -94,4 +97,3 @@ const mapStateToProps = (state) => ({
 
 
 export default withNavigation(connect(mapStateToProps)(OfferItem));
-

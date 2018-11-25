@@ -11,7 +11,7 @@ import { Ionicons, Entypo } from '@expo/vector-icons';
 import { DrawerActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import OffersList from '../components/OffersList';
+import VouchersList from '../components/VouchersList';
 import Header from '../components/Header';
 
 import { fetchApi } from '../services/api/index';
@@ -19,15 +19,15 @@ import { saveSession } from '../services/auth';
 
 const { width, height } = Dimensions.get('window');
 
-class OffersScreen extends Component {
+class VouchersScreen extends Component {
   constructor(props) {
     super(props);
 
     this.state={
       username: '',
       authList: [],
-      offersList: [],
-      filteredOffersList: [],
+      vouchersList: [],
+      filteredVouchersList: [],
       isLoading: false,
       tabSelected: 0,
     }
@@ -39,7 +39,7 @@ class OffersScreen extends Component {
       tabSelected: 1,
     })
     fetchApi({
-      url: 'auth/list',
+      url: 'voucher/list',
       payload: {
         'username': this.props.userName,
       },
@@ -48,7 +48,7 @@ class OffersScreen extends Component {
     .then(response => {
       this.setState({
         isLoading: false,
-        offersList: response.credits && response.credits,
+        vouchersList: response.vouchers && response.vouchers,
       })
       console.log('Request response-->', response);
     })
@@ -60,30 +60,23 @@ class OffersScreen extends Component {
     });
   }
 
+
+  viewAppVouchers = () => {
+  }
+
   select = (val) => {
     this.setState({
       tabSelected: val,
     })
     if( val === 1 ) {
       this.setState({
-        filteredOffersList: this.state.offersList,
+        filteredVouchersList: this.state.vouchersList,
       })
     }
     if( val === 2 ) {
-      // let result = this.state.offersList.filter(offer => {
-      //   return offer.type === 'gaming_collectible';
-      // });
-      // this.setState({
-      //   filteredOffersList: result,
-      // });
-    }
-    if( val === 3) {
-      // let result = this.state.offersList.filter(offer => {
-      //   return offer.type === 'marketplaces'; // Expired but pending for test
-      // });
-      // this.setState({
-      //   filteredOffersList: result,
-      // })
+      this.setState({
+        filteredVouchersList: this.state.vouchersList,
+      })
     }
     console.log(val);
   }
@@ -91,30 +84,35 @@ class OffersScreen extends Component {
   render() {
     return (
       <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
-        <Header left="nav" title="Redeem Vouchers" right={true}/>
-        <View style={styles.searchBar}>
-          <Ionicons style={{ alignSelf: 'center',}} name="ios-search" size={25} color="black"/>
-          <TextInput style={styles.searchInput}/>
-        </View>
+        <Header left="nav" title="Redeem Vouchers"/>
+
         <View style={styles.tabView}>
           <View style={styles.tabHeader}>
             <TouchableOpacity onPress={() => this.select(1)} style={ this.state.tabSelected === 1 ?
             [styles.tab, {borderBottomColor: 'white', borderBottomWidth: 3}] : styles.tab
             }>
-              <Text style={styles.tabText}>All</Text>
+              <Text style={ this.state.tabSelected === 1 ?
+              [styles.tabText, {fontWeight: '700'}] : styles.tabText
+            }>Token Vouchers</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.select(2)} style={ this.state.tabSelected === 2 ?
             [styles.tab, {borderBottomColor: 'white', borderBottomWidth: 3}] : styles.tab
             }>
-              <Text style={styles.tabText}>Gaming{"\n"}{'& Collectibles'}</Text>
+              <Text style={ this.state.tabSelected === 2 ?
+              [styles.tabText, {fontWeight: '700'}] : styles.tabText
+            }>Item Vouchers</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() =>this.select(3)} style={ this.state.tabSelected === 3 ?
-            [styles.tab, {borderBottomColor: 'white', borderBottomWidth: 3}] : styles.tab}>
-              <Text style={styles.tabText}>Marketplaces</Text>
-            </TouchableOpacity>
+
           </View>
           {this.state.isLoading && <ActivityIndicator size="large" color="white"/>}
-          {this.state.offersList && <OffersList data={this.state.offersList}/>}
+          {this.state.vouchersList && <VouchersList data={this.state.vouchersList}/>}
+        </View>
+        <View style={styles.bottom}>
+          <View style={styles.links}>
+            <TouchableOpacity onPress={this.viewAppVouchers}>
+              <Text style={styles.textLink}>View App Vouchers</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </LinearGradient>
     )
@@ -172,7 +170,7 @@ const styles = StyleSheet.create({
 
   tabView: {
     flex: 1,
-    marginTop: 10,
+    marginTop: 40,
     paddingBottom: 10,
     alignItems: 'center'
   },
@@ -238,7 +236,30 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     flexDirection: 'row',
-  }
+  },
+
+  bottom: {
+    position: 'absolute',
+    bottom: 10,
+    alignSelf: 'center',
+  },
+
+  links: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+  },
+
+  textLink : {
+    color: 'white',
+    marginTop: 20,
+    marginBottom: 10,
+    fontSize: 17,
+    textAlign: 'center',
+    textDecorationLine: 'underline',
+  },
+
 });
 
 const mapStateToProps = (state) => ({
@@ -248,4 +269,4 @@ const mapStateToProps = (state) => ({
   userName: state.auth.userName,
 });
 
-export default connect(mapStateToProps)(OffersScreen);
+export default connect(mapStateToProps)(VouchersScreen);

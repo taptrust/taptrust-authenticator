@@ -5,7 +5,7 @@ import { NavigationActions } from "react-navigation";
 
 import RootNavigator from './config/routes/RootNavigator';
 
-console.ignoredYellowBox = ['Warning: Cannot', 'Warning: Unable'];
+console.ignoredYellowBox = ['Warning: Cannot', 'Unable to symbolicate'];
 
 class Root extends Component {
   constructor(props) {

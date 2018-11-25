@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  StyleSheet, 
+  StyleSheet,
   Text,
   View,
   Image,
@@ -38,8 +38,8 @@ class TokenBalancesScreen extends Component {
     })
   }
 
-  viewOffers = () => {
-    this.props.navigation.navigate('Offers');
+  viewVouchers = () => {
+    this.props.navigation.navigate('Vouchers');
   }
 
   onApprove = () => {
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
 
-  secure: { 
+  secure: {
     color: 'white',
     fontSize: 17,
     textAlign: 'center',
@@ -114,10 +114,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
 
-  textLink : { 
+  textLink : {
     color: 'white',
     marginTop: 20,
-    marginBottom: 10, 
+    marginBottom: 10,
     fontSize: 17,
     textAlign: 'center',
     textDecorationLine: 'underline',
@@ -157,4 +157,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(TokenBalancesScreen);
-

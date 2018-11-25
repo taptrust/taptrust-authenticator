@@ -30,7 +30,7 @@ class TokenItem extends Component {
     return (
       <View style={styles.item} key={key}>
         <View style={{flex: 1, flexDirection: 'row'}}>
-          <View style={{ width: 45, height: 45, alignItems: 'center', borderRadius: 50, backgroundColor: 'white'}}>
+          <View style={styles.icon}>
             <Image style={{ width: 40, height: 50 }} resizeMode="contain" source={{uri: item.icon_url}}/>
           </View>
           <View style={styles.content}>
@@ -57,12 +57,22 @@ const styles = StyleSheet.create({
     //flex: 1,
     marginHorizontal: 0,
     marginBottom: 10,
+    paddingBottom: 17,
+    paddingTop:10,
     paddingHorizontal: 5,
     paddingVertical: 8,
     borderRadius: 30,
     flexDirection: 'row',
     alignItems: 'center',
     width: width - 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,.25)',
+  },
+  icon: {
+    width: 45,
+    height: 45,
+    alignItems: 'center',
+    borderRadius: 50,
   },
   content: {
     marginLeft: 15,
