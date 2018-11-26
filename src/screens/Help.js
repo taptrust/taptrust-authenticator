@@ -58,7 +58,7 @@ class HelpScreen extends Component {
         </View>
         <View style={styles.view}>
           <TouchableOpacity style={styles.buttonContainer} onPress={this.viewAuthHome}>
-            <Text style={{ color: 'black', fontSize: 15, }}>Using the TapTrust Browser Extension</Text>
+            <Text style={{ color: 'black', fontSize: 15, }}>Browser Extension</Text>
           </TouchableOpacity>
         </View>
         </LinearGradient>
