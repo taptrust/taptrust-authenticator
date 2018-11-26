@@ -11,6 +11,7 @@ import AuthDetailsScreen from '../../screens/AuthDetails';
 import DrawerScreen from '../../screens/DrawerScreen';
 import VouchersScreen from '../../screens/Vouchers';
 import SecurityScreen from '../../screens/Security';
+import HelpScreen from '../../screens/Help';
 import TabsStack from './TabsStack';
 
 const { width, height } = Dimensions.get('window');
@@ -30,6 +31,9 @@ const Drawer = createDrawerNavigator ({
   },
   Vouchers: {
     screen: VouchersScreen
+  },
+  Help: {
+    screen: HelpScreen
   },
   Security: {
     screen: SecurityScreen

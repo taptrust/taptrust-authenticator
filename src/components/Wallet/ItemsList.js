@@ -23,23 +23,57 @@ class ItemsList extends Component {
   componentDidMount () {
     console.log('Data', this.props.data);
   }
-  render() {
-    return (
 
-      <View style={styles.tabContent}>
+
+  render() {
+    if (this.props.data === false){ return (null); }
+    let itemsListInner;
+    console.log('data -> ' + this.props.data);
+    if (this.props.data.length > 0) {
+      itemsListInner = (
         <ScrollView style={{flex: 1}}>
           <View style={{flex: 1,flexDirection: 'row', flexWrap: 'wrap'}}>
-            {this.props.data.map((item, i) => {
-              return (
-                <Item item={item} key={i}/>
-              )})
-            }
+                  {this.props.data.map((item, i) => {
+                    return (
+                        <Item item={item} key={i}/>
+                    )})
+                  }
           </View>
         </ScrollView>
+    );
+    } else {
+      itemsListInner = (
+        <View>
+        <View>
+      <Text style={{
+        color: 'white',
+        marginTop: 10,
+        textAlign: 'center',
+        fontSize: 16,
+        alignContent: 'flex-end'
+      }}>You do not currently have any items.</Text>
+      </View>
+      <View>
+    <Text style={{
+      color: 'white',
+      marginTop: 15,
+      textAlign: 'center',
+      fontSize: 24,
+      textDecorationLine: 'underline',
+      alignContent: 'flex-end'
+    }}>Buy Items</Text>
+    </View>
+    </View>
+  );
+    }
+    return (
+      <View style={styles.tabContent}>
+        {itemsListInner}
       </View>
     )
   }
 }
+
 
 const styles = StyleSheet.create({
   tabContent: {

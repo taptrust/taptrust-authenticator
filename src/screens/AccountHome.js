@@ -120,8 +120,8 @@ class AccountHomeScreen extends Component {
             </View>
             <View style={styles.tabInner}>
               {this.state.isLoading && <ActivityIndicator size="large" color="white"/>}
-              {this.state.tokensList && <TokensList data={this.state.tokensList}/>}
-              {this.state.itemsList && <ItemsList data={this.state.itemsList}/>}
+              <TokensList data={this.state.tokensList}/>
+              <ItemsList data={this.state.itemsList}/>
             </View>
           </View>
 

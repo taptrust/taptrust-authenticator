@@ -21,9 +21,9 @@ import { saveSession } from '../services/auth';
 const { width, height } = Dimensions.get('window');
 
 const alertData = {
-	icon_url: 'http://www.taptrust.com/static/img/twitter@2x.png',
+	icon_url: 'http://www.taptrust.com/static/img/art/cryptopunks.png',
 	address: '0x70928213bc4e7',
-	name: 'Etheroll'
+	name: 'Cryptopunks'
 }
 
 class SecurityScreen extends Component {
@@ -55,15 +55,15 @@ class SecurityScreen extends Component {
 		let tail = str.substring(length-5, length-1);
 		return tail;
 	}
-	
+
 	render() {
 		return (
 			<LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
-				<Header left="nav" right={true}/>
+				<Header left="nav" right={false}/>
 				<View style={styles.content}>
 					<View style={styles.topContainer}>
 						<View style={styles.titleContainer}>
-							<View style={styles.logoContainer}>              
+							<View style={styles.logoContainer}>
 								<Image style={styles.titleImage} resizeMode="contain" source={require('../assets/alert_icon.png')}/>
 							</View>
 							<Text style={{ fontSize: 25, color: 'white', marginLeft: 10, alignSelf: 'center' }}>Security Alert</Text>
@@ -109,13 +109,13 @@ class SecurityScreen extends Component {
 						<TouchableOpacity
 							style={styles.buttonContainer}
 							onPress={this.onCancel}>
-							<Text style={styles.buttonText}>Cancel permission</Text>
+							<Text style={styles.buttonText, {paddingTop:10, paddingBottom: 10,textAlign:'center', fontWeight: '700', fontSize:22}}>Cancel permission</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={[styles.buttonContainer, {backgroundColor: '#E45353', borderRadius: 30, paddingTop: 7.5, paddingBottom: 7.5}]}
+							style={[styles.buttonContainer, {backgroundColor: '#E45353', borderRadius: 25, marginTop:10, paddingTop: 7.5, paddingBottom: 7.5}]}
 							onPress={this.onReject}>
-							<Text style={[styles.buttonText, {fontSize: 16, color: 'white'}]}>Proceed with possibly</Text>
-							<Text style={[styles.buttonText, {fontSize: 16, color: 'white'}]}>Unsafe Permission</Text>                      
+							<Text style={[styles.buttonText, {fontSize: 16, color: 'white'}]}>Proceed with Possibly</Text>
+							<Text style={[styles.buttonText, {fontSize: 16, color: 'white'}]}>Unsafe Permission</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     flex: 1,
     //alignItems: 'center',
     marginHorizontal: 20,
-    width: '70%'        
+    width: '70%'
   },
 
   titleContainer: {
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     //marginTop: '25%',
     borderRadius: 50,
     borderWidth: 1,
-    borderColor: 'white',
+    borderColor: 'rgba(255,255,255,.3)',
     width: 50,
     height: 50,
     alignSelf: 'center',
@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
   icon: {
     height: 40,
     width: 40,
+    borderRadius:10,
     justifyContent: 'center'
   },
 
@@ -244,4 +245,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(SecurityScreen);
-
