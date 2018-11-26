@@ -19,12 +19,12 @@ class SplashScreen extends React.Component {
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <View style={styles.logoContainer}>
             <Image style={styles.image}
-              source={require('../assets/Logo.png')}
+              source={require('../assets/Logo_orange_small.png')}
               resizeMode="contain"
             />
           </View>
-          <Text style={styles.text}>TapTrust</Text>
-          <ActivityIndicator style={{ marginTop: 20 }} size="large" color="white"/>      
+          <Text style={styles.text}>TapTrust Wallet</Text>
+          <ActivityIndicator style={{ marginTop: 20 }} size="large" color="white"/>
         </View>
       </LinearGradient>
     );
@@ -33,11 +33,11 @@ class SplashScreen extends React.Component {
 
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    backgroundColor: '#1899cc', 
-    justifyContent: 'center', 
-    alignItems: 'center' 
+  container: {
+    flex: 1,
+    backgroundColor: '#1899cc',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   logoContainer: {
     width: 120,

@@ -23,16 +23,50 @@ class TokensList extends Component {
   componentDidMount () {
     console.log('Data', this.props.data);
   }
+
+
   render() {
+    if (this.props.data === false){ return (null); }
+    let tokensListInner;
+    console.log('data -> ' + this.props.data);
+    if (this.props.data.length > 0) {
+      tokensListInner = (
+        <ScrollView style={{flex: 1}}>
+                  {this.props.data.map((item, i) => {
+                    return (
+                        <TokenItem item={item} key={i}/>
+                    )})
+                  }
+        </ScrollView>
+    );
+    } else {
+      tokensListInner = (
+        <View>
+        <View>
+      <Text style={{
+        color: 'white',
+        marginTop: 10,
+        textAlign: 'center',
+        fontSize: 16,
+        alignContent: 'flex-end'
+      }}>You do not currently have any tokens.</Text>
+      </View>
+      <View>
+    <Text style={{
+      color: 'white',
+      marginTop: 15,
+      textAlign: 'center',
+      fontSize: 24,
+      textDecorationLine: 'underline',
+      alignContent: 'flex-end'
+    }}>Buy Tokens</Text>
+    </View>
+    </View>
+  );
+    }
     return (
       <View style={styles.tabContent}>
-        <ScrollView style={{flex: 1}}>
-          {this.props.data.map((item, i) => {
-            return (
-                <TokenItem item={item} key={i}/>
-            )})
-          }
-        </ScrollView>
+        {tokensListInner}
       </View>
     )
   }

@@ -37,6 +37,10 @@ class AuthHomeScreen extends Component {
   }
 
   onHelp = () => {
+    this.props.navigation.navigate('Help');
+  }
+
+  onSettings = () => {
 
   }
 
