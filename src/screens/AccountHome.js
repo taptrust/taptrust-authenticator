@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  StyleSheet, 
+  StyleSheet,
   Text,
   View,
   Image,
@@ -14,7 +14,10 @@ import { LinearGradient } from 'expo';
 import { connect } from 'react-redux';
 
 import Header from '../components/Header';
-import CreditList from '../components/CreditList';
+
+import WalletHeader from '../components/Wallet/WalletHeader';
+import TokensList from '../components/Wallet/TokensList';
+import ItemsList from '../components/Wallet/ItemsList';
 
 import { fetchApi } from '../services/api/index';
 import { saveSession } from '../services/auth';
@@ -28,6 +31,12 @@ class AccountHomeScreen extends Component {
     this.state={
       isLoading: false,
       creditList: null,
+      tabSelected: 0,
+      tokensList: false,
+      itemsList: false,
+      balances: {
+          totalUSD: ''
+      }
     }
   }
 
@@ -35,6 +44,7 @@ class AccountHomeScreen extends Component {
     this.setState({
       isLoading: true,
     });
+
 
     fetchApi({
       url: 'auth/list',
@@ -47,7 +57,11 @@ class AccountHomeScreen extends Component {
       this.setState({
         isLoading: false,
         creditList: response.credits && response.credits,
-        balances: response.balances && response.balances,
+        tokens: response.tokens && response.tokens,
+        tokensList: response.tokens && response.tokens,
+        tabSelected: 1,
+        items: response.items && response.items,
+        balances: response.balances && response.balances
       })
       console.log('Request response-->', response);
     })
@@ -59,48 +73,67 @@ class AccountHomeScreen extends Component {
     });
   }
 
-  viewOffers = () => {
-    this.props.navigation.navigate('Offers');
+  viewVouchers = () => {
+    this.props.navigation.navigate('Vouchers');
   }
 
-  onApprove = () => {
-    this.props.navigation.navigate('AuthHome');
+  select = (val) => {
+    this.setState({
+      tabSelected: val,
+    })
+    if( val === 1 ) {
+      this.setState({
+         tokensList: this.state.tokens,
+         itemsList: false,
+       });
+    }
+    if( val === 2 ) {
+    this.setState({
+       tokensList: false,
+       itemsList: this.state.items,
+     });
+    }
+    console.log(val);
   }
 
-  onBalance = () => {
-    this.props.navigation.navigate('TokenBalances', { balances: this.state.balances });
-  }
   render() {
     return (
       <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
-        <Header left="nav" right={true}/>
-        <View style={styles.content}>
-          <View style={styles.top}>
-            <TouchableOpacity>
-              <Text style={styles.secure}>Secure your account</Text>
-            </TouchableOpacity>
+        <Header left="nav" right={false}/>
+        <WalletHeader balances={this.state.balances}/>
+
+          <View style={styles.tabView}>
+            <View style={styles.tabHeader}>
+              <TouchableOpacity onPress={() => this.select(1)} style={ this.state.tabSelected === 1 ?
+              [styles.tab, {borderBottomColor: 'white', borderBottomWidth: 3}] : styles.tab
+              }>
+                <Text style={ this.state.tabSelected === 1 ?
+                [styles.tabText, {fontWeight: '700'}] : styles.tabText
+                }>Tokens</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() =>this.select(2)} style={ this.state.tabSelected === 2 ?
+              [styles.tab, {borderBottomColor: 'white', borderBottomWidth: 3}] : styles.tab}>
+                <Text style={ this.state.tabSelected === 2 ?
+                [styles.tabText, {fontWeight: '700'}] : styles.tabText
+              }>Items</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.tabInner}>
+              {this.state.isLoading && <ActivityIndicator size="large" color="white"/>}
+              <TokensList data={this.state.tokensList}/>
+              <ItemsList data={this.state.itemsList}/>
+            </View>
           </View>
-          <View style={styles.main}>
-            {this.state.isLoading && <ActivityIndicator size="large" color="white"/>}
-            {this.state.creditList && <CreditList data={this.state.creditList}/>}
-          </View>
+
+
           <View style={styles.bottom}>
             <View style={styles.links}>
-              <TouchableOpacity onPress={this.viewOffers}>
-                <Text style={styles.textLink}>View All Offers</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={this.onApprove}>
-                <Text style={styles.textLink}>Approve Transaction</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.balanceContainer}>
-              <Text style={styles.balance}>0.00 ETH</Text>
-              <TouchableOpacity style={styles.buttonContainer} onPress={this.onBalance}>
-                <Text style={styles.buttonText}>Token Balances</Text>
+              <TouchableOpacity onPress={this.viewVouchers}>
+                <Text style={styles.textLink}>Available Voucher Balance: $100</Text>
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+
       </LinearGradient>
     )
   }
@@ -124,21 +157,14 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
 
-  secure: { 
-    color: 'white',
-    fontSize: 17,
-    textAlign: 'center',
-    textDecorationLine: 'underline',
-    alignSelf: 'flex-start'
-  },
-
   main: {
     flex: 6
   },
 
   bottom: {
-    flex: 2,
-    paddingBottom: 10,
+    position: 'absolute',
+    bottom: 10,
+    alignSelf: 'center',
   },
 
   links: {
@@ -148,26 +174,74 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
 
-  textLink : { 
+  textLink : {
     color: 'white',
     marginTop: 20,
-    marginBottom: 10, 
+    marginBottom: 10,
     fontSize: 17,
     textAlign: 'center',
     textDecorationLine: 'underline',
   },
 
-  balanceContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 
-  balance: {
-    color: 'white',
-    fontSize: 20,
-  },
+    tabView: {
+      flex: 1,
+      marginTop: 0,
+      paddingBottom: 10,
+      alignItems: 'center'
+    },
+
+    tabHeader: {
+      paddingHorizontal: '0%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      //alignItems: 'center',
+      borderBottomWidth: 2,
+      borderColor: 'rgba(255,255,255,0.6)',
+    },
+
+    tabInner: {
+      paddingTop:40,
+    },
+
+    tab: {
+      flex: 1,
+      paddingBottom: 10,
+      //paddingHorizontal: 20,
+      alignSelf: 'flex-end'
+    },
+
+    tabText: {
+      color: 'white',
+      alignSelf: 'center',
+      textAlign: 'center',
+      fontSize: 16,
+    },
+
+    tabContent: {
+      paddingVertical: 20,
+      marginBottom: 20,
+    },
+
+    item: {
+      //flex: 1,
+      marginHorizontal: 10,
+      marginBottom: 10,
+      paddingHorizontal: 5,
+      paddingVertical: 8,
+      backgroundColor: '#2EA2E1',
+      borderRadius: 30,
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: width - 10,
+    },
+
+    content: {
+      marginLeft: 15,
+      alignSelf: 'center'
+    },
+
+
 
   buttonContainer: {
     backgroundColor: 'white',
@@ -191,4 +265,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(AccountHomeScreen);
-

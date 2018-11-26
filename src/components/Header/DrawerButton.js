@@ -21,25 +21,28 @@ class DrawerButton extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginLeft: 5
+    top: 8,
+    left: 0,
+    position: 'absolute',
+    padding: 10,
   },
 
   line1: {
-    width: 17,
+    width: 25,
     marginTop: 2.5,
     height: 2,
     backgroundColor: 'white'
   },
 
   line2: {
-    width: 14,
+    width: 22,
     marginTop: 2.5,
     height: 2,
     backgroundColor: 'white'
   },
 
   line3: {
-    width: 12,
+    width: 19,
     marginTop: 2.5,
     height: 2,
     backgroundColor: 'white'
@@ -54,4 +57,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default withNavigation(connect(mapStateToProps)(DrawerButton));
-

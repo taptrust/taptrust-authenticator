@@ -15,18 +15,23 @@ class Header extends Component {
   render() {
     return (
       <View style={styles.header}>
-        { this.props.left === 'nav' && 
-          <DrawerButton/>        
+        { this.props.left === 'nav' &&
+          <DrawerButton/>
         }
-        { this.props.left === 'back' && 
-          <BackButton/>        
+        { this.props.left === 'back' &&
+          <BackButton/>
         }
-        <Text style={{ fontSize: 25, color: 'white', alignSelf: 'center' }}>{this.props.title}</Text>
+
+        <Text style={{ fontSize: 25, color: 'white', paddingTop: 10, textAlign: 'center' }}>{this.props.title}</Text>
+
+
         { this.props.right &&
           <View style={styles.logoContainer}>
               <Image style={styles.image} resizeMode="contain" source={require('../../assets/Logo_small.png')}/>
           </View>
         }
+
+
       </View>
     )
   }
@@ -39,6 +44,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 20,
+    justifyContent: 'center',
     paddingTop: 10,
     marginHorizontal: '2.5%',
   },
@@ -64,4 +70,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(Header);
-

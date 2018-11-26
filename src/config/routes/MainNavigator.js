@@ -9,8 +9,9 @@ import AuthApprovalScreen from '../../screens/AuthApproval';
 import AuthListScreen from '../../screens/AuthList';
 import AuthDetailsScreen from '../../screens/AuthDetails';
 import DrawerScreen from '../../screens/DrawerScreen';
-import OffersScreen from '../../screens/Offers';
+import VouchersScreen from '../../screens/Vouchers';
 import SecurityScreen from '../../screens/Security';
+import HelpScreen from '../../screens/Help';
 import TabsStack from './TabsStack';
 
 const { width, height } = Dimensions.get('window');
@@ -28,8 +29,11 @@ const Drawer = createDrawerNavigator ({
   AuthApproval: {
     screen: AuthApprovalScreen
   },
-  Offers: {
-    screen: OffersScreen
+  Vouchers: {
+    screen: VouchersScreen
+  },
+  Help: {
+    screen: HelpScreen
   },
   Security: {
     screen: SecurityScreen

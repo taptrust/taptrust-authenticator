@@ -15,14 +15,14 @@ import { connect } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
-class OfferItem extends Component {
+class TokenItem extends Component {
   constructor(props) {
     super(props);
   }
 
   selectItem = (item) => {
     console.log('hhh', item);
-    this.props.navigation.navigate('AuthDetails', { item: item });
+    /* this.props.navigation.navigate('AuthDetails', { item: item }); */
   }
 
   render() {
@@ -30,22 +30,22 @@ class OfferItem extends Component {
     return (
       <View style={styles.item} key={key}>
         <View style={{flex: 1, flexDirection: 'row'}}>
-          <View style={{ width: 45, height: 45, alignItems: 'center', borderRadius: 50, backgroundColor: 'white'}}>
+          <View style={styles.icon}>
             <Image style={{ width: 40, height: 50 }} resizeMode="contain" source={{uri: item.icon_url}}/>
           </View>
           <View style={styles.content}>
-            <Text style={styles.name}>{item.name + ': ' + item.credit}</Text>  
-            <Text style={styles.date}>{item.sponsor}</Text>                                  
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.symbol}>{item.symbol}</Text>
+
           </View>
+          <View style={styles.rightContent}>
+            <Text style={styles.balance}>{item.balanceUSD}</Text>
+            <Text style={styles.value}>{item.value}</Text>
+
+          </View>
+
         </View>
-        <View style={styles.view}>
-          <TouchableOpacity onPress={() => this.selectItem(item)} style={{ marginRight: 30,}}>
-            <Text style={{ color: 'white', fontSize: 15, }}>View{'\n'}Offer</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.selectItem(item)} style={{ marginRight: 10, }}>
-            <Entypo style={{ alignSelf: 'center',}} name="chevron-small-right" size={25} color="white"/>
-          </TouchableOpacity>
-        </View>
+
       </View>
 )
   }
@@ -55,27 +55,56 @@ class OfferItem extends Component {
 const styles = StyleSheet.create({
   item: {
     //flex: 1,
-    marginHorizontal: 10,
+    marginHorizontal: 0,
     marginBottom: 10,
+    paddingBottom: 17,
+    paddingTop:10,
     paddingHorizontal: 5,
     paddingVertical: 8,
-    backgroundColor: '#2EA2E1',
     borderRadius: 30,
     flexDirection: 'row',
     alignItems: 'center',
     width: width - 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,.25)',
+  },
+  icon: {
+    width: 45,
+    height: 45,
+    alignItems: 'center',
+    borderRadius: 50,
   },
   content: {
     marginLeft: 15,
     alignSelf: 'center'
   },
-  name: {
-    fontSize: 16,
-    color: 'white',
+  rightContent: {
+    position: 'absolute',
+    right: 10,
+    top: 4,
+    alignSelf: 'flex-end'
   },
-  date: {
+  name: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: '700',
+  },
+  symbol: {
     fontSize: 12,
-    color: '#D8D8D8'
+    paddingTop:5,
+    color: 'white'
+  },
+  balance: {
+    fontSize: 17,
+    color: 'white',
+    fontWeight: '700'
+  },
+  value: {
+    fontSize: 12,
+    color: 'white',
+    textAlign: 'right',
+    paddingRight:3,
+    paddingTop:3,
   },
   view: {
     flex: 1,
@@ -93,5 +122,4 @@ const mapStateToProps = (state) => ({
 });
 
 
-export default withNavigation(connect(mapStateToProps)(OfferItem));
-
+export default withNavigation(connect(mapStateToProps)(TokenItem));

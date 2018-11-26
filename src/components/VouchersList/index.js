@@ -12,10 +12,10 @@ import { LinearGradient } from 'expo';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { DrawerActions, withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
-import OfferItem from '../OfferItem';
+import VoucherItem from '../VoucherItem';
 const { width, height } = Dimensions.get('window');
 
-class OffersList extends Component {
+class VouchersList extends Component {
   constructor(props) {
     super(props);
   }
@@ -26,7 +26,7 @@ class OffersList extends Component {
         <ScrollView style={{flex: 1}}>
             {this.props.data.map((item, i) => {
               return (
-                <OfferItem item={item} key={i}/>
+                <VoucherItem item={item} key={i}/>
               )})
             }
         </ScrollView>
@@ -52,5 +52,4 @@ const mapStateToProps = (state) => ({
 });
 
 
-export default withNavigation(connect(mapStateToProps)(OffersList));
-
+export default withNavigation(connect(mapStateToProps)(VouchersList));

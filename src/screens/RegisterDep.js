@@ -11,6 +11,7 @@ import { LinearGradient } from 'expo';
 import AuthHomeScreen from './AuthHome';
 import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
+import { generateKeys } from '../services/crypto';
 
 var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
 
@@ -38,19 +39,8 @@ export default class RegisterScreen extends Component {
     };
   }
 
-  componentDidMount() {
-    this.setState({
-        formData: {},
-        private_key: null,
-      });
-  }
-
   validation = async () => {
-    if(this.state.username.length < 1){
-      return;
-    }
-
-    if(this.state.username.length < 5) {
+    if(this.state.username.length > 0 && this.state.username.length < 5) {
       this.setState({
         isUserNameValid: false,
         isUserNameEmpty: false,
@@ -65,35 +55,56 @@ export default class RegisterScreen extends Component {
       );
       return;
     }
-    if(!alphanumericRegex.test(this.state.username) ) {
+    if(this.state.username.length > 4 && (!strongRegex.test(this.state.password_one) || !strongRegex.test(this.state.password_two))) {
       this.setState({
-        isUserNameValid: false,
+        isUserNameValid: true,
         isUserNameEmpty: false,
       })
       Alert.alert(
-        'Error',
-        'Please choose a username containing only letters and numbers.',
+        'Oops!',
+        'Password must be at least six characters and contain at least one letter, one number, and one special character',
         [
-        {text: 'OK', onPress: () => console.log('Username invalid')},
+        {text: 'OK', onPress: () => console.log('Password invalid')},
         ],
         { cancelable: false }
-      );
-      return;
+      )
     }
-
-    this.checkAvailability();
+    if(this.state.username.length > 0 && strongRegex.test(this.state.password_one) && strongRegex.test(this.state.password_two) && this.state.password_two !== this.state.password_one) {
+      this.setState({
+        isPasswordMatched: false,
+      })
+      Alert.alert(
+        'Oops!',
+        'Password and confirmed password should be same',
+        [
+        {text: 'OK', onPress: () => console.log('Password invalid')},
+        ],
+        { cancelable: false }
+      )
+    }
+    if(this.state.username.length > 4 && strongRegex.test(this.state.password_one) &&
+      strongRegex.test(this.state.password_two) && this.state.password_one == this.state.password_two) {
+        let keys = generateKeys(this.state.username, this.state.password_one);
+        await this.setState({
+          formData: {
+            username: this.state.username,
+            pubkey: keys.public_key,
+          },
+          private_key: keys.private_key,
+        });
+        console.log('Keys-->', keys);
+        this.register();
+    }
   }
 
-  checkAvailability = () => {
+  register = () => {
     console.log('All valid');
     this.setState({
       isLoading: true,
     })
     fetchApi({
       url: 'register',
-      payload: {
-        checkAvailability: this.state.username
-      },
+      payload: this.state.formData,
       method: 'post',
     })
       .then(response => {
@@ -102,22 +113,14 @@ export default class RegisterScreen extends Component {
           loginValid: null,
           isLoading: false,
         })
-        if (response.error){
-          Alert.alert(
-            'Error',
-            response.error,
-            [
-            {text: 'OK', onPress: () => console.log('Username invalid')},
-            ],
-            { cancelable: false }
-          );
-          return;
+        let payload = {
+          formData: this.state.formData,
+          private_key: this.state.private_key
         }
-        // TODO: only send to verify phone if phone not already verified
-        this.props.navigation.navigate('RegisterVerifyPhone', { username: this.state.username });
+        login(payload);
+        this.props.navigation.navigate('Reminder');
       })
       .catch(e => {
-        console.log(e);
         this.setState({
           loading: false,
           errors: true,
@@ -125,8 +128,8 @@ export default class RegisterScreen extends Component {
       });
   }
 
-  onContinuePressed = () => {
-    console.log('Continue Credentials', this.state.username);
+  onRegisterPressed = () => {
+    console.log('Credentials', this.state.username, this.state.password_one, this.state.password_two);
     this.validation();
   }
   render() {
@@ -150,7 +153,7 @@ export default class RegisterScreen extends Component {
   </View>
               <TouchableOpacity
                 style={styles.buttonContainer}
-                onPress={this.onContinuePressed}>
+                onPress={this.onRegisterPressed}>
                 <Text style={styles.buttonText}>Continue</Text>
               </TouchableOpacity>
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  View,  
+  View,
   StyleSheet,
   Text,
   Image,
@@ -121,38 +121,42 @@ class AuthHomeScreen extends Component {
 			<LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.mainContainer}>
 				<Header left="nav" right={false}/>
 				<View style={styles.container}>
-						<View style={styles.logoContainer}>
-							<Image style={styles.image} source={require('../assets/Logo_small.png')}/>
-							<Text style={styles.username}>{this.props.userName ? this.props.userName : this.state.username}</Text>
-						</View>
+
 						<View style={styles.content}>
 							<View style={{ alignItems: 'center' }}>
-								<Text style={styles.explanation}>There are two ways to</Text>
-								<Text style={styles.explanation}>login to a dApp with your</Text>
-								<Text style={styles.explanation}>TapTrust account:</Text>
+								<Text style={styles.explanation}>Want to use TapTrust Wallet to</Text>
+								<Text style={styles.explanation}>interact with online Ethereum apps</Text>
+								<Text style={styles.explanation}>and send custom transactions?</Text>
 							</View>
-							<View style={{ alignItems: 'center', marginTop: 30 }}>
-								<Text style={styles.explanationBold}>Use a dApp with a</Text>
-								<Text style={styles.explanationBold}>"TapTrust Login" option</Text>
+							<View style={{ alignItems: 'center', marginTop: 50 }}>
+								<Text style={styles.explanationBold}>Install one of these</Text>
+								<Text style={styles.explanationBold}>browser extensions:</Text>
 							</View>
-							<Text style={styles.explanation_or}> - or- </Text>
+              <View style={{ alignItems: 'center', marginTop: 50 }}>
+              <TouchableOpacity style={styles.buttonContainer}>
+              <Image style={styles.buttonImage}
+                resizeMethod={'resize'}
+                source={require('../assets/Chrome.png')}
+              />
+                <Text style={styles.buttonText}>TapTrust for Chrome</Text>
+              </TouchableOpacity>
+              </View>
+							<Text style={styles.explanation_or}> - or - </Text>
 							<View style={{ alignItems: 'center', marginTop: 15 }}>
-								<Text style={styles.explanationBold}>Use the TapTrust</Text>
-								<Text style={styles.explanationBold}>browser extension</Text>
+              <TouchableOpacity style={styles.buttonContainer}>
+              <Image style={styles.buttonImage}
+                resizeMethod={'resize'}
+                source={require('../assets/Firefox.png')}
+              />
+                <Text style={styles.buttonText}>TapTrust for Firefox</Text>
+              </TouchableOpacity>
 							</View>
-							<View style={{ alignItems: 'center', marginTop: 30 }}>
-								<Text style={styles.explanation}>Make sure this screen is</Text>
-								<Text style={styles.explanation}>visible while logging in</Text>
+							<View style={{ alignItems: 'center', marginTop: 50 }}>
+								<Text style={styles.approvalExplanation}>Transactions made from the browser need to be</Text>
+								<Text style={styles.approvalExplanation}>approved with TapTrust Wallet on your mobile device.</Text>
 							</View>
 						</View>
-						<View style={styles.bottom}>
-							<Text style={styles.link} onPress={() => Linking.openURL('http://taptrust.com/about')}>
-								Learn more about using TapTrust
-							</Text>
-							<TouchableOpacity onPress={this.reFresh} style={{ marginRight: 10, marginTop: 10 }}>
-								<Ionicons style={{ alignSelf: 'center',}} name="md-refresh" size={30} color="white"/>
-							</TouchableOpacity>
-						</View>
+
 				</View>
 			</LinearGradient>
 			)
@@ -167,7 +171,7 @@ const styles = StyleSheet.create({
     },
     container: {
 			flex: 1,
-			paddingVertical: 20,
+			paddingVertical: 50,
 			justifyContent: 'space-between'
     },
     logoContainer: {
@@ -225,16 +229,25 @@ const styles = StyleSheet.create({
     //   width: 100,
     //   marginBottom: '5%'
     },
+    approvalExplanation: {
+      color: 'white',
+      fontSize: 14,
+      fontWeight: '400',
+      textAlign: 'center',
+      padding: 3,
+    },
     explanation: {
       color: 'white',
       fontSize: 18,
       fontWeight: '400',
+      padding: 3,
     },
     explanation_or: {
       color: 'white',
       fontSize: 18,
       fontWeight: '400',
-      marginTop: 15
+      marginTop: 25,
+      marginBottom: 10
     },
     explanationBold: {
       color: 'white',
@@ -257,7 +270,30 @@ const styles = StyleSheet.create({
 			marginTop: '10%',
 			textDecorationLine: 'underline',
 			fontSize: 16,
-		}
+		},
+    buttonContainer: {
+      backgroundColor: 'white',
+      alignSelf: 'center',
+      paddingVertical: 5,
+      paddingHorizontal: 12,
+      borderRadius: 25,
+      marginLeft: 0,
+    },
+    buttonText: {
+       color: 'black',
+       fontSize: 20,
+       paddingLeft:40,
+       paddingTop:10,
+       paddingBottom:10,
+       paddingRight:10,
+    },
+    buttonImage: {
+      height: 30,
+      width: 30,
+      position:'absolute',
+      top: 14,
+      left: 10,
+    },
 });
 
 const mapStateToProps = (state) => ({
@@ -269,4 +305,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(AuthHomeScreen);
-

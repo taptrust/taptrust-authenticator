@@ -19,8 +19,8 @@ class AuthHomeScreen extends Component {
       username: '',
     }
   }
-  
-  onAccount = () => {
+
+  onAccountHome = () => {
     this.props.navigation.navigate('AccountHome');
   }
 
@@ -28,18 +28,26 @@ class AuthHomeScreen extends Component {
     this.props.navigation.navigate('AuthHome');
   }
 
-  onAuthList = () => {
-    this.props.navigation.navigate('AuthList');
+  onApps = () => {
+
   }
 
-  onOffers = () => {
-    this.props.navigation.navigate('Offers');
+  onVouchers = () => {
+    this.props.navigation.navigate('Vouchers');
+  }
+
+  onHelp = () => {
+    this.props.navigation.navigate('Help');
+  }
+
+  onSettings = () => {
+
   }
 
   onSecurity = () => {
     this.props.navigation.navigate('Security');
   }
-  
+
   onApprove = () => {
     this.props.navigation.navigate('AuthHome');
   }
@@ -55,35 +63,33 @@ class AuthHomeScreen extends Component {
         <View style={styles.logoContainer}>
           <Image style={styles.image}
             resizeMethod={'resize'}
-            source={require('../assets/Logo_small.png')}
+            source={require('../assets/Logo_orange_small.png')}
           />
         </View>
         <View style={styles.content}>
           <View style={styles.top}>
-            <TouchableOpacity style={styles.option} onPress={this.onAccount}>
-              <Text style={styles.text}>Account</Text>
+            <TouchableOpacity style={styles.option} onPress={this.onAccountHome}>
+              <Text style={styles.text}>My Account</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.option} onPress={this.onHome}>
-              <Text style={styles.text}>Home</Text>
+            <TouchableOpacity style={styles.option} onPress={this.onVouchers}>
+              <Text style={styles.text}>Redeem Vouchers</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.option} onPress={this.onAuthList}>
-              <Text style={styles.text}>Authorizations</Text>
+
+            <TouchableOpacity style={styles.option} onPress={this.onApps}>
+              <Text style={styles.text}>Browse Apps</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.option} onPress={this.onOffers}>
-              <Text style={styles.text}>Offers</Text>
+            <TouchableOpacity style={styles.option} onPress={this.onSettings}>
+              <Text style={styles.text}>Settings</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.option} onPress={this.onSecurity}>
-              <Text style={styles.text}>Security</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.option} onPress={this.onApprove}>
-              <Text style={styles.text}>Approve Transaction</Text>
+            <TouchableOpacity style={styles.option} onPress={this.onHelp}>
+              <Text style={styles.text}>Help</Text>
             </TouchableOpacity>
           </View>
 
             <TouchableOpacity style={styles.logout} onPress={this.onLogout}>
               <Text style={styles.text}>Logout</Text>
             </TouchableOpacity>
-          
+
         </View>
       </View>
     )
@@ -99,11 +105,11 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 50,
   },
   image: {
-  //   height: 80,
-  //   width: 80,
+    height: 80,
+    width: 80,
   },
   content: {
     flex: 4,
@@ -128,8 +134,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   text: {
-    fontSize: 16,
-    color: 'white'
+    fontSize: 22,
+    color: 'white',
+    fontWeight: '700',
   }
 });
 
@@ -141,4 +148,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(AuthHomeScreen);
-

@@ -21,10 +21,10 @@ var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,}
 class LoginScreen extends Component {
   constructor(props) {
   super(props);
-  
+
   this.state = {
-    username: '', 
-    password: '', 
+    username: '',
+    password: '',
     isUserNameValid: true,
     isPasswordValid: true,
     isUserNameEmpty: false,
@@ -39,6 +39,12 @@ class LoginScreen extends Component {
     }
   }
 
+  componentDidMount() {
+    this.setState({
+        formData: {},
+        private_key: null,
+      });
+  }
 
   onLogin = () => {
     this.validation();
@@ -50,33 +56,19 @@ class LoginScreen extends Component {
         isUserNameEmpty: true,
         isUserNameValid: true,
         isPasswordValid: true,
-      })
+      });
+      return;
     }
-    if(this.state.username.length > 0 && this.state.username.length < 5) {
-      this.setState({
-        isUserNameValid: false,
-        isUserNameEmpty: false,
-      })
-    }
+
     if(this.state.username && this.state.username.length > 4) {
       this.setState({
         isUserNameValid: true,
         isUserNameEmpty: false,
-      })
-    }
-    if(this.state.username.length > 0 && strongRegex.test(this.state.password)) {
-      this.setState({
-        isPasswordValid: true,
-      })
-    }
-    if(this.state.username.length > 0 && !strongRegex.test(this.state.password)) {
-      this.setState({
-        isPasswordValid: false,
-      })
+      });
     }
 
     //if(this.state.username.length > 4 && strongRegex.test(this.state.password)) {
-    if(this.state.username.length > 4) {
+
       let keys = generateKeys(this.state.username, this.state.password);
       await this.setState({
       formData: {
@@ -88,7 +80,7 @@ class LoginScreen extends Component {
       });
       console.log('Keys-->', keys);
       this.login_to();
-    }
+
   }
 
   login_to = () => {
@@ -100,6 +92,10 @@ class LoginScreen extends Component {
     })
       .then(response => {
         console.log('Response-->', response);
+        console.log(response.error);
+        this.setState({
+          loading: false,
+        });
         if (response.status === 200 || response.status === 202) {
           this.setState({
             loginValid: null,
@@ -122,7 +118,7 @@ class LoginScreen extends Component {
               loginValid: 0,
             });
             Alert.alert(
-              'Oops!',
+              'Error',
               'User does not exist',
               [
               {text: 'OK', onPress: () => this.onDefault},
@@ -136,7 +132,7 @@ class LoginScreen extends Component {
               loginValid: 1,
             })
             Alert.alert(
-              'Oops!',
+              'Error',
               'Invalid password',
               [
               {text: 'OK', onPress: () => this.onDefault},
@@ -145,9 +141,6 @@ class LoginScreen extends Component {
             )
           }
         }
-        this.setState({
-          loading: false,
-        });
       })
       .catch(e => {
         this.setState({
@@ -172,8 +165,8 @@ class LoginScreen extends Component {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.content}>
             <View style={styles.logoContainer}>
-              <Image style={styles.image} resizeMethod={'resize'} source={require('../assets/Logo.png')}/>
-              <Text style={styles.title}>TapTrust Login</Text>                                                          
+              <Image style={styles.image} resizeMethod={'resize'} source={require('../assets/Logo_orange_small.png')}/>
+              <Text style={styles.title}>Sign Into Your TapTrust Account</Text>
             </View>
             <View style={styles.loginContainer}>
               <TextInput style={styles.input}
@@ -203,10 +196,10 @@ class LoginScreen extends Component {
               </TouchableOpacity>
               <View style={styles.bottomContainer}>
                 <Text style={{
-                  color: 'white', 
-                  marginTop: 30, 
+                  color: 'white',
+                  marginTop: 60,
                   textAlign: 'center',
-                  fontSize: 16,
+                  fontSize: 20,
                   textDecorationLine: 'underline',
                   alignContent: 'flex-start'
                   }}
@@ -214,25 +207,17 @@ class LoginScreen extends Component {
                 Create New Account
                 </Text>
                 <View style={styles.bottom}>
-                  <Text style={{
-                    color: 'white', 
-                    marginTop: 30, 
-                    textAlign: 'center',
-                    fontSize: 16,
-                    paddingHorizontal: 60,
-                    lineHeight: 30,
-                    }}>
-                  Your wallet contract is hosted at taptrust.eth.
-                  </Text>
-                  <Text style={{ color: 'white',
-                    marginTop: 20,
-                    marginBottom: 10, 
-                    textAlign: 'center',
-                    textDecorationLine: 'underline',
-                    }}
-                  onPress={() => Linking.openURL('http://taptrust.com/about')}>
-                  Learn More
-                  </Text>
+                <Text style={{
+                  color: 'white',
+                  marginTop: 15,
+                  textAlign: 'center',
+                  fontSize: 12,
+                  textDecorationLine: 'underline',
+                  alignContent: 'flex-start'
+                  }}
+              >
+                Forgot Your Password?
+                </Text>
                 </View>
               </View>
             </View>
@@ -277,7 +262,8 @@ const styles = StyleSheet.create({
     fontSize: 26,
     textAlign: 'center',
     marginTop: 20,
-    fontWeight: '400'
+    fontWeight: '400',
+    width:200,
   },
 
   infoContainer: {
@@ -296,7 +282,7 @@ const styles = StyleSheet.create({
 
   input: {
     height: 40,
-    marginTop: 20,
+    marginTop: 40,
     color: 'white',
     paddingHorizontal: 10,
     borderRadius: 10,
@@ -329,10 +315,10 @@ const styles = StyleSheet.create({
   bottom: {
     alignContent: 'flex-end'
   },
-  
+
   image: {
-    // height: 100,
-    // width: 100,
+     height: 100,
+     width: 100,
     // marginBottom: '5%'
   },
 
