@@ -23,7 +23,7 @@ const { width, height } = Dimensions.get('window');
 const alertData = {
 	icon_url: 'http://www.taptrust.com/static/img/art/cryptopunks.png',
 	address: '0x70928213bc4e7',
-	name: 'Cryptopunks'
+	name: 'EthRoulette'
 }
 
 class SecurityScreen extends Component {
@@ -46,20 +46,20 @@ class SecurityScreen extends Component {
 	}
 
 	ellipsisHeader = (str) => {
-		let head = str.substring(0,2);
+		let head = str.substring(0,4);
 		return head;
 	}
 
 	ellipsisTail = (str) => {
 		let length = str.length;
-		let tail = str.substring(length-5, length-1);
+		let tail = str.substring(length-5, length);
 		return tail;
 	}
 
 	render() {
 		return (
 			<LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
-				<Header left="nav" right={false}/>
+				<Header left="back" right={false} backTo="Help"/>
 				<View style={styles.content}>
 					<View style={styles.topContainer}>
 						<View style={styles.titleContainer}>
@@ -70,7 +70,7 @@ class SecurityScreen extends Component {
 						</View>
 						<View style={styles.contractAddress}>
 							<View style={styles.contractIcon}>
-								<Image style={styles.icon} resizeMode="contain" source={{ uri: this.state.data.icon_url }}/>
+								<Image style={styles.icon} resizeMode="contain" source={require('../assets/Ethroulette.png')}/>
 							</View>
 							<View style={{ flexDirection: 'row', marginLeft: 0, }}>
 								<Text style={{ fontSize: 16, color: 'white', marginLeft: 10, alignSelf: 'center' }}>Contract</Text>

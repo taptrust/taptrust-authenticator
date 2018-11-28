@@ -1,9 +1,9 @@
 {
   "expoServerPort": 19000,
-  "packagerPort": 19005,
-  "packagerPid": 12868,
-  "expoServerNgrokUrl": "https://d3-2vu.taptrust.taptrust-wallet.exp.direct",
-  "packagerNgrokUrl": "https://packager.d3-2vu.taptrust.taptrust-wallet.exp.direct",
-  "ngrokPid": 12892,
+  "packagerPort": 19006,
+  "packagerPid": 20455,
+  "expoServerNgrokUrl": "https://r3-3jv.taptrust.taptrust-wallet.exp.direct",
+  "packagerNgrokUrl": "https://packager.r3-3jv.taptrust.taptrust-wallet.exp.direct",
+  "ngrokPid": 20473,
   "devToolsPort": 19002
 }
