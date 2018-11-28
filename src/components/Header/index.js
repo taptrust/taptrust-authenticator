@@ -19,7 +19,7 @@ class Header extends Component {
           <DrawerButton/>
         }
         { this.props.left === 'back' &&
-          <BackButton/>
+          <BackButton backTo={this.props.backTo} />
         }
 
         <Text style={{ fontSize: 25, color: 'white', paddingTop: 10, textAlign: 'center' }}>{this.props.title}</Text>

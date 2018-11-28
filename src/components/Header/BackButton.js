@@ -7,13 +7,17 @@ import { connect } from 'react-redux';
 class BackButton extends Component {
 
   back = () => {
-      this.props.navigation.goBack();
+      if (this.props.backTo){
+        this.props.navigation.navigate(this.props.backTo);
+      }else{
+        this.props.navigation.goBack();
+      }
   }
 
   render() {
     return (
         <TouchableOpacity style={styles.container} onPress={this.back}>
-          <Entypo style={styles.icon} name="chevron-small-left" size={25} color="white"/>
+          <Entypo style={styles.icon} name="chevron-small-left" size={35} color="white"/>
         </TouchableOpacity>
     )
   }
@@ -21,7 +25,9 @@ class BackButton extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginLeft: 5
+    position:'absolute',
+    left: 0,
+    top: 10,
   },
   icon: {
     alignSelf: 'center'
@@ -36,4 +42,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default withNavigation(connect(mapStateToProps)(BackButton));
-

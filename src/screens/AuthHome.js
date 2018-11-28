@@ -119,7 +119,7 @@ class AuthHomeScreen extends Component {
 	render() {
 		return (
 			<LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.mainContainer}>
-				<Header left="nav" right={false}/>
+				<Header left="back" right={false} backTo="Help"/>
 				<View style={styles.container}>
 
 						<View style={styles.content}>

@@ -42,11 +42,15 @@ class HelpScreen extends Component {
     this.props.navigation.navigate('AuthHome');
   }
 
+  viewAuthApproval = () => {
+    this.props.navigation.navigate('AuthApproval');
+  }
+
 
   render() {
     return (
       <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
-        <Header left="nav" title="Help"/>
+        <Header left="nav" title=""/>
         <View style={styles.view}>
         </View>
         <View style={styles.view}>
@@ -59,6 +63,11 @@ class HelpScreen extends Component {
         <View style={styles.view}>
           <TouchableOpacity style={styles.buttonContainer} onPress={this.viewAuthHome}>
             <Text style={{ color: 'black', fontSize: 15, }}>Browser Extension</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.view}>
+          <TouchableOpacity style={styles.buttonContainer} onPress={this.viewAuthApproval}>
+            <Text style={{ color: 'black', fontSize: 15, }}>Example Transaction Approval</Text>
           </TouchableOpacity>
         </View>
         </LinearGradient>
