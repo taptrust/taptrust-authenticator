@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import AuthHomeScreen from './AuthHome';
 import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
-import { createKeyPair } from 'taptrust-auth';
+import { createKeyPair } from '../libraries/auth';
 
 var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
 
