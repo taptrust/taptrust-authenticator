@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import AuthHomeScreen from './AuthHome';
 import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
-import { generateKeys } from '../services/crypto';
+import { createKeyPair } from 'taptrust-auth';
 
 var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
 
@@ -108,13 +108,13 @@ componentDidMount() {
       return;
     }
 
-    let keys = generateKeys(this.state.username, this.state.password_one);
+    let keys = createKeyPair(this.state.username, this.state.password_one);
     await this.setState({
       formData: {
         username: this.state.username,
-        pubkey: keys.public_key,
+        pubkey: keys.publicKey,
       },
-      private_key: keys.private_key,
+      private_key: keys.privateKey,
     });
     console.log('Keys-->', keys);
     this.register();
