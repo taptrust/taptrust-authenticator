@@ -7,7 +7,7 @@ import { fetchApi } from '../../services/api/index';
 global.Buffer = global.Buffer || require('buffer').Buffer;
 const sign = require('ethjs-signer').sign;
 
-const generateSignedTransactionRequest = (txParams, username, privateKey) => {
+const relaySignedRequest = (action, params, username, privateKey) => {
 
       // First attempt with crypto lib
       //const tx = decodeTransaction(txParams);
@@ -17,12 +17,16 @@ const generateSignedTransactionRequest = (txParams, username, privateKey) => {
       //const tx = new EthereumTx(txParams)
       //tx.sign(privateKey)
 
-      const signedTx = sign(txParams, privateKey.toString('hex'));
+      params['action'] = action;
+
+      const signature = sign(params, privateKey.toString('hex'));
 
       fetchApi({
         url: 'relay',
         payload: {
-          message: signedTx,
+          action: action,
+          signature: signature,
+          params: JSON.stringify(params),
           username: username
         },
         method: 'post',
@@ -58,5 +62,5 @@ const generateSignedTransactionRequest = (txParams, username, privateKey) => {
 }
 
 export {
-    generateSignedTransactionRequest
+    relaySignedRequest
 };
