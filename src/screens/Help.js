@@ -17,7 +17,7 @@ import Header from '../components/Header';
 
 import { fetchApi } from '../services/api/index';
 import { saveSession } from '../services/auth';
-import { generateSignedTransactionRequest } from "../services/eth";
+import { relaySignedRequest } from "../services/eth";
 
 const { width, height } = Dimensions.get('window');
 
@@ -53,13 +53,11 @@ class HelpScreen extends Component {
         nonce: '0x00',
         gasPrice: '0x09184e72a000',
         gasLimit: '0x2710',
-        to: '0x0000000000000000000000000000000000000000',
+        to: '0x0eEB66338d9672Ba67a4342ECE388E4026f9b43d',
         value: '0x00',
         data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057',
-        // EIP 155 chainId - mainnet: 1, ropsten: 3
-        chainId: 3
       };
-    generateSignedTransactionRequest(txParams,
+    relaySignedRequest('sendTransaction', txParams,
       this.props.userName,
       this.props.privateKey);
 
