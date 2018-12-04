@@ -17,6 +17,7 @@ import Header from '../components/Header';
 
 import { fetchApi } from '../services/api/index';
 import { saveSession } from '../services/auth';
+import { generateSignedTransactionRequest } from "../services/eth";
 
 const { width, height } = Dimensions.get('window');
 
@@ -46,6 +47,24 @@ class HelpScreen extends Component {
     this.props.navigation.navigate('AuthApproval');
   }
 
+  authTest = () => {
+
+    const txParams = {
+        nonce: '0x00',
+        gasPrice: '0x09184e72a000',
+        gasLimit: '0x2710',
+        to: '0x0000000000000000000000000000000000000000',
+        value: '0x00',
+        data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057',
+        // EIP 155 chainId - mainnet: 1, ropsten: 3
+        chainId: 3
+      };
+    generateSignedTransactionRequest(txParams,
+      this.props.userName,
+      this.props.privateKey);
+
+  }
+
 
   render() {
     return (
@@ -68,6 +87,13 @@ class HelpScreen extends Component {
         <View style={styles.view}>
           <TouchableOpacity style={styles.buttonContainer} onPress={this.viewAuthApproval}>
             <Text style={{ color: 'black', fontSize: 15, }}>Example Transaction Approval</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.view}>
+        </View>
+        <View style={styles.view}>
+          <TouchableOpacity style={styles.buttonContainer} onPress={this.authTest}>
+            <Text style={{ color: 'black', fontSize: 15, }}>Authorization Test</Text>
           </TouchableOpacity>
         </View>
         </LinearGradient>
@@ -97,11 +123,14 @@ class HelpScreen extends Component {
     },
 });
 
+
 const mapStateToProps = (state) => ({
   nav: state.nav,
   isLoggedIn: state.auth.isLoggedIn,
   pubkey: state.auth.pubkey,
+  privateKey: state.auth.private_key,
   userName: state.auth.userName,
+  state: state
 });
 
 export default connect(mapStateToProps)(HelpScreen);
