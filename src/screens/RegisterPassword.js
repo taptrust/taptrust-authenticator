@@ -193,7 +193,7 @@ componentDidMount() {
             <View>
             <Text style={{
               color: 'white',
-              marginTop: 35,
+              marginTop: 55,
               textAlign: 'center',
               fontSize: 12,
               textDecorationLine: 'underline',
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
   loginContainer: {
     //alignItems: 'center',
     //marginHorizontal: 50,
-    marginTop: 10,
+    marginTop: 0,
   },
 
   input: {

@@ -143,8 +143,8 @@ export default class RegisterScreen extends Component {
                 keyboardType='email-address'
                 returnKeyType='next'
                 autoCorrect={false}
-                onChangeText={ (uname) => this.setState({ username: uname })
-                }
+                onChangeText={ (uname) => this.setState({ username: uname })}
+                autoFocus={true}
                 placeholderTextColor='#FFF'
               />
   </View>
@@ -164,7 +164,7 @@ export default class RegisterScreen extends Component {
                   alignContent: 'flex-end'
                   }}
                 onPress={() => this.props.navigation.goBack()}>
-                Have an account? Log In
+                Have an account? Sign In
                 </Text>
 
 
