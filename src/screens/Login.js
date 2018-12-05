@@ -14,7 +14,7 @@ import AuthHomeScreen from './AuthHome';
 
 import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
-import { generateKeys } from '../services/crypto';
+import { restoreKeyPair } from '../libraries/auth';
 
 var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
 
@@ -69,85 +69,86 @@ class LoginScreen extends Component {
 
     //if(this.state.username.length > 4 && strongRegex.test(this.state.password)) {
 
-      let keys = generateKeys(this.state.username, this.state.password);
-      await this.setState({
-      formData: {
-        username: this.state.username,
-        pubkey: keys.public_key,
-      },
-      private_key: keys.private_key,
-      isLoading: true,
-      });
-      console.log('Keys-->', keys);
-      this.login_to();
-
-  }
-
-  login_to = () => {
-    console.log('All valid');
     fetchApi({
       url: 'login',
-      payload: this.state.formData,
+      payload: {
+        getPublicKey: this.state.username
+      },
       method: 'post',
     })
       .then(response => {
         console.log('Response-->', response);
         console.log(response.error);
-        this.setState({
-          loading: false,
-        });
         if (response.status === 200 || response.status === 202) {
-          this.setState({
-            loginValid: null,
-            isLoading: false,
-          });
-          let payload = {
-            formData: this.state.formData,
-            private_key: this.state.private_key
-          };
-          login(payload);
-          this.props.navigation.navigate('Reminder');
-        }
-        if (response.status === 406) {
-          this.setState({
-            isLoading: false,
-          });
+          this.restoreKeys(response.pubkey);
+        }else{
+          console.error('Unable to get public key for user ' + this.state.username);
           if (response.error.indexOf('does not exist') !== -1) {
-            console.log('Does not exit');
+
             this.setState({
               loginValid: 0,
             });
             Alert.alert(
               'Error',
-              'User does not exist',
+              'No account has been created for this username',
               [
               {text: 'OK', onPress: () => this.onDefault},
               ],
               { cancelable: false }
-            )
-          }
-          if (response.error.indexOf('with different pubkey') !== -1) {
-            console.log('Invalid password');
-            this.setState({
-              loginValid: 1,
-            })
-            Alert.alert(
-              'Error',
-              'Invalid password',
-              [
-              {text: 'OK', onPress: () => this.onDefault},
-              ],
-              { cancelable: false }
-            )
-          }
+            );
+         }
+
         }
-      })
-      .catch(e => {
-        this.setState({
-          loading: false,
-          errors: true,
-        });
+
       });
+
+
+  }
+
+  restoreKeys = (pubkey) => {
+    console.log('Attempting to restore keys');
+    let keys = restoreKeyPair(this.state.username, this.state.password, pubkey);
+    if (!keys.publicKey){
+      console.log('Invalid password');
+      this.setState({
+        loginValid: 1,
+      })
+      Alert.alert(
+        'Error',
+        'Invalid password',
+        [
+        {text: 'OK', onPress: () => this.onDefault},
+        ],
+        { cancelable: false }
+      );
+      return;
+    }
+    this.setState({
+    formData: {
+      username: this.state.username,
+      pubkey: keys.publicKey,
+    },
+    private_key: keys.privateKey,
+    isLoading: true,
+    });
+    console.log('Keys-->', keys);
+    this.completeLogin();
+  }
+
+  completeLogin = () => {
+    console.log('All valid');
+
+    this.setState({
+      loginValid: null,
+      isLoading: false,
+    });
+    let payload = {
+      formData: this.state.formData,
+      private_key: this.state.private_key
+    };
+    login(payload);
+    this.props.navigation.navigate('Reminder');
+
   }
 
   onDefault = () => {
