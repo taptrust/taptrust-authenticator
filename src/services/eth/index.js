@@ -19,7 +19,12 @@ const relaySignedRequest = (action, params, username, privateKey) => {
 
       params['action'] = action;
 
+      console.log('params');
+      console.log(params);
+
       const signature = sign(params, privateKey.toString('hex'));
+
+      console.log('signature: ' + signature);
 
       fetchApi({
         url: 'relay',

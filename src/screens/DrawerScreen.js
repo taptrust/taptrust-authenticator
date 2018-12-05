@@ -87,7 +87,7 @@ class AuthHomeScreen extends Component {
           </View>
 
             <TouchableOpacity style={styles.logout} onPress={this.onLogout}>
-              <Text style={styles.text}>Logout</Text>
+              <Text style={styles.text}>Sign Out</Text>
             </TouchableOpacity>
 
         </View>

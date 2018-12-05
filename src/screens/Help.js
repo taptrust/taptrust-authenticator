@@ -57,6 +57,7 @@ class HelpScreen extends Component {
         value: '0x00',
         data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057',
       };
+      console.log('pubkey: ' + this.props.pubkey);
     relaySignedRequest('sendTransaction', txParams,
       this.props.userName,
       this.props.privateKey);

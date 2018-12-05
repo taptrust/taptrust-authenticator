@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import AuthHomeScreen from './AuthHome';
 import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
+import { notReadyAlert } from '../components/common/alerts';
 
 var numericRegex = new RegExp("^[0-9]+$");
 
@@ -52,6 +53,11 @@ componentDidMount() {
     console.log('Credentials', this.state.username, this.state.password_one, this.state.password_two);
     this.validation();
   }
+
+  onPrivacyPolicyPressed = () => {
+    return notReadyAlert('Privacy Policy');
+  }
+
   render() {
     return (
       <LinearGradient colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
@@ -95,6 +101,7 @@ componentDidMount() {
                 keyboardType='numeric'
                 returnKeyType='next'
                 autoCorrect={false}
+                autoFocus={true}
                 onChangeText={ (phone) => this.setState({ phoneNumber: phone })
                 }
                 placeholderTextColor='#FFF'
@@ -108,6 +115,7 @@ componentDidMount() {
                 textDecorationLine: 'underline',
                 alignContent: 'flex-start'
                 }}
+                onPress={this.onPrivacyPolicyPressed}
             >
               Privacy Policy
               </Text>
