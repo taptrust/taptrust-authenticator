@@ -16,7 +16,7 @@ import Header from '../components/Header';
 
 import { fetchApi } from '../services/api/index';
 import { saveSession } from '../services/auth';
-
+import { notReadyAlert } from '../components/common/alerts';
 const { width, height } = Dimensions.get('window');
 
 class VouchersScreen extends Component {
@@ -62,6 +62,7 @@ class VouchersScreen extends Component {
 
 
   viewAppVouchers = () => {
+    return notReadyAlert('App Vouchers');
   }
 
   select = (val) => {

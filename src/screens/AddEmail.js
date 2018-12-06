@@ -18,6 +18,7 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { fetchApi } from '../services/api/index';
 import { saveSession } from '../services/auth';
+import { notReadyAlert } from '../components/common/alerts';
 
 class AddEmailScreen extends Component {
   constructor(props) {
@@ -26,6 +27,10 @@ class AddEmailScreen extends Component {
 
   onContinue = () => {
     this.props.navigation.navigate('App');
+  }
+
+  onPrivacyPolicyPressed = () => {
+    return notReadyAlert('Privacy Policy');
   }
 
 	render() {
@@ -87,6 +92,7 @@ class AddEmailScreen extends Component {
             textDecorationLine: 'underline',
             alignContent: 'flex-start'
             }}
+            onPress={this.onPrivacyPolicyPressed}
         >
           Privacy Policy
           </Text>

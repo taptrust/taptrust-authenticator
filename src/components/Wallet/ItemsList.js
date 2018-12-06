@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   Image,
+  Alert,
   TouchableOpacity,
   Dimensions,
   ScrollView
@@ -24,6 +25,17 @@ class ItemsList extends Component {
     console.log('Data', this.props.data);
   }
 
+  onBuyItemsPressed = () => {
+    return Alert.alert(
+    'Not Available',
+    'Item purchasing is not yet available. For now, you can redeem item vouchers to add items to your wallet.',
+    [
+      {text: 'Cancel', onPress: () =>  console.log('Cancel Alert') },
+      {text: 'Continue', onPress: () =>  this.props.navigation.navigate('Vouchers') },
+    ],
+    { cancelable: false }
+  );
+  }
 
   render() {
     if (this.props.data === false){ return (null); }
@@ -61,7 +73,8 @@ class ItemsList extends Component {
       fontSize: 24,
       textDecorationLine: 'underline',
       alignContent: 'flex-end'
-    }}>Buy Items</Text>
+    }}
+    onPress={this.onBuyItemsPressed}>Buy Items</Text>
     </View>
     </View>
   );
