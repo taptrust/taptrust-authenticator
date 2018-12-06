@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   Image,
+  Alert,
   TouchableOpacity,
   Dimensions,
   ScrollView
@@ -22,6 +23,18 @@ class TokensList extends Component {
 
   componentDidMount () {
     console.log('Data', this.props.data);
+  }
+
+  onBuyTokensPressed = () => {
+    return Alert.alert(
+    'Not Available',
+    'Token purchasing is not yet available. For now, you can redeem token vouchers to add tokens to your wallet.',
+    [
+    {text: 'Cancel', onPress: () =>  console.log('Cancel Alert') },
+    {text: 'Continue', onPress: () =>  this.props.navigation.navigate('Vouchers') },
+    ],
+    { cancelable: false }
+  );
   }
 
 
@@ -59,7 +72,9 @@ class TokensList extends Component {
       fontSize: 24,
       textDecorationLine: 'underline',
       alignContent: 'flex-end'
-    }}>Buy Tokens</Text>
+    }}
+    onPress={this.onBuyTokensPressed}
+    >Buy Tokens</Text>
     </View>
     </View>
   );
