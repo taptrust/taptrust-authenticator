@@ -12,21 +12,24 @@ import { LinearGradient } from 'expo';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { DrawerActions, withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
-import VoucherItem from '../VoucherItem';
+import TokenVoucher from './TokenVoucher';
 const { width, height } = Dimensions.get('window');
 
-class VouchersList extends Component {
+class TokenVouchersList extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
+    console.log('tokens list data');
+    console.log(this.props.data);
+    if (this.props.data === false){ return (null); }
     return (
       <View style={styles.tabContent}>
         <ScrollView style={{flex: 1}}>
             {this.props.data.map((item, i) => {
               return (
-                <VoucherItem item={item} key={i}/>
+                <TokenVoucher item={item} key={i}/>
               )})
             }
         </ScrollView>
@@ -52,4 +55,4 @@ const mapStateToProps = (state) => ({
 });
 
 
-export default withNavigation(connect(mapStateToProps)(VouchersList));
+export default withNavigation(connect(mapStateToProps)(TokenVouchersList));

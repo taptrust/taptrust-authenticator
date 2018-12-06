@@ -11,7 +11,8 @@ import { Ionicons, Entypo } from '@expo/vector-icons';
 import { DrawerActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import VouchersList from '../components/VouchersList';
+import TokenVouchersList from '../components/Vouchers/TokenVouchersList';
+import ItemVouchersList from '../components/Vouchers/ItemVouchersList';
 import Header from '../components/Header';
 
 import { fetchApi } from '../services/api/index';
@@ -27,7 +28,8 @@ class VouchersScreen extends Component {
       username: '',
       authList: [],
       vouchersList: [],
-      filteredVouchersList: [],
+      tokenVouchersList: false,
+      itemVouchersList: false,
       isLoading: false,
       tabSelected: 0,
     }
@@ -35,9 +37,8 @@ class VouchersScreen extends Component {
 
   componentDidMount() {
     this.setState({
-      isLoading: true,
-      tabSelected: 1,
-    })
+      isLoading: true
+    });
     fetchApi({
       url: 'voucher/list',
       payload: {
@@ -48,7 +49,9 @@ class VouchersScreen extends Component {
     .then(response => {
       this.setState({
         isLoading: false,
+        tabSelected: 1,
         vouchersList: response.vouchers && response.vouchers,
+        tokenVouchersList: response.vouchers.tokens,
       })
       console.log('Request response-->', response);
     })
@@ -71,13 +74,15 @@ class VouchersScreen extends Component {
     })
     if( val === 1 ) {
       this.setState({
-        filteredVouchersList: this.state.vouchersList,
-      })
+         tokenVouchersList: this.state.vouchersList.tokens,
+         itemVouchersList: false,
+       });
     }
     if( val === 2 ) {
-      this.setState({
-        filteredVouchersList: this.state.vouchersList,
-      })
+    this.setState({
+       tokenVouchersList: false,
+       itemVouchersList: this.state.vouchersList.items,
+     });
     }
     console.log(val);
   }
@@ -106,7 +111,8 @@ class VouchersScreen extends Component {
 
           </View>
           {this.state.isLoading && <ActivityIndicator size="large" color="white"/>}
-          {this.state.vouchersList && <VouchersList data={this.state.vouchersList}/>}
+          <TokenVouchersList data={this.state.tokenVouchersList}/>
+          <ItemVouchersList data={this.state.itemVouchersList}/>
         </View>
         <View style={styles.bottom}>
           <View style={styles.links}>
