@@ -17,7 +17,7 @@ import Header from '../components/Header';
 
 import { fetchApi } from '../services/api/index';
 import { saveSession } from '../services/auth';
-import { relaySignedRequest } from "../services/eth";
+import { relaySignedRequest } from "../services/relay";
 
 const { width, height } = Dimensions.get('window');
 

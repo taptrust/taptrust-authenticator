@@ -2,25 +2,21 @@
 import { NavigationActions } from 'react-navigation';
 import { store } from '../../config/store';
 import { Alert } from 'react-native'
-// utilities from EthSigner
+
 import { fetchApi } from '../../services/api/index';
-global.Buffer = global.Buffer || require('buffer').Buffer;
-const sign = require('ethjs-signer').sign;
+import { sign, getWallet } from '../../libraries/web3util';
+
 
 const relaySignedRequest = (action, params, username, privateKey) => {
 
-      // First attempt with crypto lib
-      //const tx = decodeTransaction(txParams);
-      //const signedTx = sign(privateKey, 'test').toString('hex');
-
-      // Second attempt with EthereumTX
-      //const tx = new EthereumTx(txParams)
-      //tx.sign(privateKey)
 
       params['action'] = action;
 
       console.log('params');
       console.log(params);
+      console.log('private key');
+      console.log(privateKey);
+      getWallet(privateKey);
 
       const signature = sign(params, privateKey.toString('hex'));
 
