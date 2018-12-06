@@ -10,6 +10,7 @@ import { DrawerActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { fetchApi } from '../services/api/index';
 import { logout } from '../services/auth';
+import { notReadyAlert } from '../components/common/alerts';
 
 class AuthHomeScreen extends Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class AuthHomeScreen extends Component {
   }
 
   onApps = () => {
-
+    return notReadyAlert('App Browser');
   }
 
   onVouchers = () => {
@@ -41,7 +42,7 @@ class AuthHomeScreen extends Component {
   }
 
   onSettings = () => {
-
+      return notReadyAlert('Account Settings');
   }
 
   onSecurity = () => {
@@ -87,7 +88,7 @@ class AuthHomeScreen extends Component {
           </View>
 
             <TouchableOpacity style={styles.logout} onPress={this.onLogout}>
-              <Text style={styles.text}>Logout</Text>
+              <Text style={styles.text}>Sign Out</Text>
             </TouchableOpacity>
 
         </View>
