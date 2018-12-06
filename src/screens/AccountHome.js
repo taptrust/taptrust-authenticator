@@ -61,6 +61,7 @@ class AccountHomeScreen extends Component {
         tokensList: response.tokens && response.tokens,
         tabSelected: 1,
         items: response.items && response.items,
+        itemsList: false, // tokensList shown by default
         balances: response.balances && response.balances
       })
       console.log('Request response-->', response);

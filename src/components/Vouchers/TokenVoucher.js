@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
-class OfferItem extends Component {
+class TokenVoucher extends Component {
   constructor(props) {
     super(props);
   }
@@ -96,4 +96,4 @@ const mapStateToProps = (state) => ({
 });
 
 
-export default withNavigation(connect(mapStateToProps)(OfferItem));
+export default withNavigation(connect(mapStateToProps)(TokenVoucher));
