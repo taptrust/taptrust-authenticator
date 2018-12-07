@@ -114,7 +114,7 @@ componentDidMount() {
               <Text style={styles.instructions}>To get started, we need to verify your phone number. </Text>
             </View>
             <View style={styles.loginContainer}>
-              <TextInput style={styles.input}
+              <TextInput underlineColorAndroid="transparent" style={styles.input}
                 placeholder="Phone Number"
                 placeholderTextColor='rgba(255,255,255,0.8)'
                 keyboardType='numeric'

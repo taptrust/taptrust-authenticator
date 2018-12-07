@@ -85,7 +85,7 @@ class AddEmailScreen extends Component {
 
           </View>
           <View style={styles.inputContainer}>
-            <TextInput style={styles.input}
+            <TextInput underlineColorAndroid="transparent" style={styles.input}
               placeholder="Email Address"
               placeholderTextColor='rgba(255,255,255,0.8)'
               keyboardType='email-address'

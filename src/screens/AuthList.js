@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {
-  View,  
+  View,
   StyleSheet,
   Text,
   Image,
   StatusBar,
-	TouchableOpacity,   
+	TouchableOpacity,
 	Dimensions,
 	TextInput,
 	ScrollView,
@@ -81,14 +81,14 @@ class AuthListScreen extends Component {
 		if( val === 3) {
 			let result = this.state.authList.filter(auth => {
 				return auth.status === 'pending'; // Expired but pending for test
-			}); 
+			});
 			this.setState({
 				filteredAuthList: result,
 			})
 		}
 		console.log(val);
 	}
-	
+
 	getTime = (date) => {
 		var hours = date.getHours();
 		var minutes = date.getMinutes();
@@ -122,7 +122,7 @@ class AuthListScreen extends Component {
 				<Header left="nav" right={true}/>
 				<View style={styles.searchBar}>
 					<Ionicons style={{ alignSelf: 'center',}}name="ios-search" size={25} color="black"/>
-					<TextInput style={styles.searchInput}/>
+					<TextInput underlineColorAndroid="transparent" style={styles.searchInput}/>
 				</View>
 				<View style={styles.tabView}>
 					<View style={styles.tabHeader}>
@@ -145,7 +145,7 @@ class AuthListScreen extends Component {
 						</TouchableOpacity>
 					</View>
 					<View style={styles.tabContent}>
-						{this.state.isLoading && <ActivityIndicator size="large" color="white"/>}	
+						{this.state.isLoading && <ActivityIndicator size="large" color="white"/>}
 						<ScrollView style={{ paddingBottom: 20 }}>
 							<View>
 								{this.state.filteredAuthList.map((item, i) => {
@@ -157,8 +157,8 @@ class AuthListScreen extends Component {
 											<View style={{flex: 1, flexDirection: 'row'}}>
 												<View style={{ width: 45, height: 45, borderRadius: 50, backgroundColor: 'white'}}></View>
 												<View style={styles.content}>
-													<Text style={styles.name}>{item.app_url}</Text>  
-													<Text style={styles.date}>{_date + ' / ' + time}</Text>                                  
+													<Text style={styles.name}>{item.app_url}</Text>
+													<Text style={styles.date}>{_date + ' / ' + time}</Text>
 												</View>
 											</View>
 											<View style={styles.view}>
@@ -173,7 +173,7 @@ class AuthListScreen extends Component {
 									)})
 								}
 							</View>
-						</ScrollView>	
+						</ScrollView>
 					</View>
 				</View>
 			</LinearGradient>
@@ -266,4 +266,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(AuthListScreen);
-

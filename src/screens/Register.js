@@ -137,7 +137,7 @@ export default class RegisterScreen extends Component {
 
             <Text style={styles.title}>Choose a Username</Text>
             <View style={styles.loginContainer}>
-              <TextInput style={styles.input}
+              <TextInput underlineColorAndroid="transparent" style={styles.input}
                 placeholder=""
                 placeholderTextColor='rgba(255,255,255,0.8)'
                 keyboardType='email-address'
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
 
 
 /*
-<TextInput style={styles.input}
+<TextInput underlineColorAndroid="transparent" style={styles.input}
   placeholder="Password"
   placeholderTextColor='rgba(255,255,255,0.8)'
   returnKeyType='go'
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
   value={this.state.password_one}
   placeholderTextColor='#FFF'
 />
-<TextInput style={styles.input}
+<TextInput underlineColorAndroid="transparent" style={styles.input}
   placeholder="Confirm Password"
   placeholderTextColor='rgba(255,255,255,0.8)'
   returnKeyType='go'

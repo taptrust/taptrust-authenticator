@@ -84,16 +84,14 @@ class LoginScreen extends Component {
         if (response.status === 200 || response.status === 202) {
           this.restoreKeys(response.pubkey);
         }else{
-          console.error('Unable to get public key for user ' + this.state.username);
-          if (response.error.indexOf('does not exist') !== -1) {
-
+          console.llog('Unable to get public key for user ' + this.state.username);
             this.setState({
               loginValid: 0,
               isLoading: false
             });
             Alert.alert(
-              'Error',
-              'No account has been created for this username',
+              'Login Failed',
+              response.error,
               [
               {text: 'OK', onPress: () => this.onDefault},
               ],
@@ -101,7 +99,6 @@ class LoginScreen extends Component {
             );
          }
 
-        }
 
       });
 
@@ -197,7 +194,7 @@ class LoginScreen extends Component {
               <Text style={styles.title}>Sign Into Your TapTrust Account</Text>
             </View>
             <View style={styles.loginContainer}>
-              <TextInput style={styles.input}
+              <TextInput underlineColorAndroid="transparent" style={styles.input}
                 placeholder="Username"
                 placeholderTextColor='rgba(255,255,255,0.8)'
                 keyboardType='email-address'
@@ -208,7 +205,7 @@ class LoginScreen extends Component {
               }
               placeholderTextColor='#FFF'
               />
-              <TextInput style={styles.input}
+              <TextInput underlineColorAndroid="transparent" style={styles.input}
                 placeholder="Password"
                 placeholderTextColor='rgba(255,255,255,0.8)'
                 returnKeyType='go'
@@ -227,7 +224,7 @@ class LoginScreen extends Component {
               <View style={styles.bottomContainer}>
                 <Text style={{
                   color: 'white',
-                  marginTop: 60,
+                  marginTop: 40,
                   textAlign: 'center',
                   fontSize: 20,
                   textDecorationLine: 'underline',

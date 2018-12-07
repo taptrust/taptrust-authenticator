@@ -166,7 +166,7 @@ componentDidMount() {
               <Text style={styles.instructions}>The final step in creating your account is to set a password. </Text>
             </View>
             <View style={styles.loginContainer}>
-            <TextInput style={styles.input}
+            <TextInput underlineColorAndroid="transparent" style={styles.input}
               placeholder="Password"
               placeholderTextColor='rgba(255,255,255,0.8)'
               returnKeyType='go'
@@ -182,7 +182,7 @@ componentDidMount() {
               value={this.state.password_one}
               placeholderTextColor='#FFF'
             />
-            <TextInput style={styles.input}
+            <TextInput underlineColorAndroid="transparent" style={styles.input}
               placeholder="Confirm Password"
               placeholderTextColor='rgba(255,255,255,0.8)'
               returnKeyType='go'
