@@ -40,7 +40,8 @@ class RegisterPasswordScreen extends Component {
 
 componentDidMount() {
   this.setState({
-    username: this.props.navigation.state.params.username
+    username: this.props.navigation.state.params.username,
+    phoneVerificationKey: this.props.navigation.state.params.phoneVerificationKey
   })
 
   }
@@ -114,6 +115,7 @@ componentDidMount() {
       formData: {
         username: this.state.username,
         pubkey: keys.publicKey,
+        phoneVerificationKey: this.state.phoneVerificationKey
       },
       privateKey: keys.privateKey,
       randomFactor: keys.randomFactor
