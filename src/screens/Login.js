@@ -111,10 +111,11 @@ class LoginScreen extends Component {
   restoreKeys = (pubkey) => {
     console.log('Attempting to restore keys');
     let keys;
+    console.log('random factors: ' + this.props.randomFactors);
     if (this.props.randomFactors && this.props.randomFactors[this.state.username]){
-      console.log('random factor: ' + this.props.randomFactors);
+
       keys = generateKeys(this.state.username,
-        this.state.password, this.props.randomFactors[this.state.username]);
+        this.state.password, parseInt(this.props.randomFactors[this.state.username]));
       if (!keys){
         console.error('no keys returned with random factor provided!');
       }

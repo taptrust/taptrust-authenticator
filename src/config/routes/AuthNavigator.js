@@ -4,6 +4,7 @@ import SplashScreen from '../../screens/Splash';
 import LoginScreen from '../../screens/Login';
 import RegisterScreen from '../../screens/Register';
 import RegisterVerifyPhoneScreen from '../../screens/RegisterVerifyPhone';
+import RegisterVerifyPhoneCodeScreen from '../../screens/RegisterVerifyPhoneCode';
 import RegisterPasswordScreen from '../../screens/RegisterPassword';
 import AddEmailScreen from '../../screens/AddEmail';
 
@@ -16,6 +17,9 @@ const AuthNavigator = createStackNavigator({
     },
     RegisterVerifyPhone: {
       screen: RegisterVerifyPhoneScreen
+    },
+    RegisterVerifyPhoneCode: {
+      screen: RegisterVerifyPhoneCodeScreen
     },
     RegisterPassword: {
       screen: RegisterPasswordScreen

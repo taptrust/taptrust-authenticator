@@ -25,8 +25,20 @@ class AddEmailScreen extends Component {
     super(props);
   }
 
-  onContinue = () => {
-    this.props.navigation.navigate('App');
+  onContinuePressed = () => {
+    if (this.state.email.length < 3){ return; }
+    // TODO: validation
+    fetchApi({
+      url: 'register',
+      payload: {
+        username: this.props.userName,
+        addEmail: this.state.email
+      },
+      method: 'post',
+    })
+      .then(response => {
+          this.props.navigation.navigate('Reminder');
+      })
   }
 
   onPrivacyPolicyPressed = () => {
@@ -100,7 +112,7 @@ class AddEmailScreen extends Component {
           </Text>
           </View>
           <View style={styles.bottomContainer}>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Reminder') }>
+            <TouchableOpacity style={styles.buttonContainer} onPress={this.onContinuePressed}>
               <Text style={styles.buttonText}>Continue</Text>
             </TouchableOpacity>
             <Text style={{

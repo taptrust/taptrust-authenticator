@@ -47,6 +47,11 @@ class HelpScreen extends Component {
     this.props.navigation.navigate('AuthApproval');
   }
 
+  addEmail = () => {
+    this.props.navigation.navigate('AddEmail');
+  }
+
+
   authTest = () => {
 
     const txParams = {
@@ -91,8 +96,8 @@ class HelpScreen extends Component {
         <View style={styles.view}>
         </View>
         <View style={styles.view}>
-          <TouchableOpacity style={styles.buttonContainer} onPress={this.authTest}>
-            <Text style={{ color: 'black', fontSize: 15, }}>Authorization Test</Text>
+          <TouchableOpacity style={styles.buttonContainer} onPress={this.addEmail}>
+            <Text style={{ color: 'black', fontSize: 15, }}>Add Email</Text>
           </TouchableOpacity>
         </View>
         </LinearGradient>
