@@ -38,6 +38,7 @@ class AuthHomeScreen extends Component {
   }
 
   onHelp = () => {
+    return notReadyAlert('Support');
     this.props.navigation.navigate('Help');
   }
 
