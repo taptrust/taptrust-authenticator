@@ -27,7 +27,7 @@ class ItemVouchersList extends Component {
         <ScrollView style={{flex: 1}}>
             {this.props.data.map((item, i) => {
               return (
-                <ItemVoucher item={item} key={i}/>
+                <ItemVoucher item={item} key={i} redeemVoucher={this.props.redeemVoucher}/>
               )})
             }
         </ScrollView>

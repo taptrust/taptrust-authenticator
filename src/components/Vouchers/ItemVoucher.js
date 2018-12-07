@@ -20,31 +20,35 @@ class ItemVoucher extends Component {
     super(props);
   }
 
-  selectItem = (item) => {
-    console.log('hhh', item);
-  /*  this.props.navigation.navigate('AuthDetails', { item: item }); */
+  redeemVoucher = () => {
+      this.props.redeemVoucher(this.props.item);
   }
 
   render() {
     const { item, key } = this.props;
     return (
-      <View style={styles.item} key={key} onPress={() => this.selectItem(item)} >
+      <TouchableOpacity  onPress={this.redeemVoucher}>
+      <View style={styles.item} key={key} >
+
         <View style={{flex: 1, flexDirection: 'row'}}>
 
           <View style={styles.content}>
-            <Text style={styles.name}>Item: {item.name}</Text>
+            <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.sponsor}>Sponsored by {item.sponsor}</Text>
           </View>
         </View>
         <View style={styles.view}>
-          <TouchableOpacity>
-            <Text style={{ color: 'white', fontSize: 17, fontWeight: '700' }}>{item.value}  <Text style={{ color: 'rgba(255,255,255,.3)' }}>|</Text>  {item.symbol}</Text>
-          </TouchableOpacity>
+          <View>
+            <View style={{ width: 95, height: 70, alignItems: 'center', borderRadius: 20, }}>
+              <Image style={{ width: 70, height: 70, alignSelf: 'center' }} resizeMode="contain" source={{uri: item.iconUrl}}/>
+            </View>
+          </View>
           <TouchableOpacity style={{ marginRight: 10, }}>
             <Entypo style={{ alignSelf: 'center',}} name="chevron-small-right" size={25} color="white"/>
           </TouchableOpacity>
         </View>
       </View>
+    </TouchableOpacity>
 )
   }
 }

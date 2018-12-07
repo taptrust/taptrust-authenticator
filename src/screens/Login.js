@@ -129,6 +129,7 @@ class LoginScreen extends Component {
       pubkey: keys.publicKey,
     },
     private_key: keys.privateKey,
+    random_factor: keys.randomFactor,
     isLoading: true,
     });
     console.log('Keys-->', keys);
@@ -144,7 +145,8 @@ class LoginScreen extends Component {
     });
     let payload = {
       formData: this.state.formData,
-      private_key: this.state.private_key
+      private_key: this.state.private_key,
+      random_factor: this.state.random_factor
     };
     login(payload);
     this.props.navigation.navigate('Reminder');
@@ -176,6 +178,7 @@ class LoginScreen extends Component {
                 keyboardType='email-address'
                 returnKeyType='next'
                 autoCorrect={false}
+                selectionColor='rgba(255,165,0,0.8)'
                 onChangeText={ (uname) => this.setState({ username: uname })
               }
               placeholderTextColor='#FFF'
@@ -186,6 +189,7 @@ class LoginScreen extends Component {
                 returnKeyType='go'
                 secureTextEntry={true}
                 autoCorrect={false}
+                selectionColor='rgba(255,165,0,0.8)'
                 ref={"txtPassword"}
                 onChangeText={
                 (pwd) => this.setState({ password: pwd })

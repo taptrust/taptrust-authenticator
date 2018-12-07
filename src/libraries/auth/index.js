@@ -49,6 +49,7 @@ const generateKeys = (username, password, randomFactor) => {
     let result = {
         publicKey: publicKey,
         privateKey: privateKey,
+        randomFactor: randomFactor
     }
     return result;
 };

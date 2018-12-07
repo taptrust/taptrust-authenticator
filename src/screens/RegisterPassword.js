@@ -13,7 +13,7 @@ import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
 import { createKeyPair } from '../libraries/auth';
 
-var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
+var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{7,})");
 
 class RegisterPasswordScreen extends Component {
   constructor(props) {
@@ -64,7 +64,8 @@ componentDidMount() {
         })
         let payload = {
           formData: this.state.formData,
-          private_key: this.state.private_key
+          private_key: this.state.private_key,
+          random_factor: this.state.random_factor
         }
         login(payload);
         this.props.navigation.navigate('AddEmail'); /* CreatingAccount */
@@ -85,7 +86,7 @@ componentDidMount() {
       })
       Alert.alert(
         'Error',
-        'Password must be at least six characters and contain at least one letter, one number, and one special character',
+        'Password must be at least seven characters and contain at least one letter, one number, and one special character',
         [
         {text: 'OK', onPress: () => console.log('Password invalid')},
         ],
@@ -115,6 +116,7 @@ componentDidMount() {
         pubkey: keys.publicKey,
       },
       private_key: keys.privateKey,
+      random_factor: keys.randomFactor
     });
     console.log('Keys-->', keys);
     this.register();
@@ -168,6 +170,8 @@ componentDidMount() {
               returnKeyType='go'
               secureTextEntry={true}
               clearTextOnFocus={false}
+              autoFocus={true}
+              selectionColor='rgba(255,165,0,0.8)'
               autoCorrect={false}
               ref={"txtPassword"}
               onChangeText={
@@ -182,6 +186,7 @@ componentDidMount() {
               returnKeyType='go'
               secureTextEntry={true}
               clearTextOnFocus={false}
+              selectionColor='rgba(255,165,0,0.8)'
               autoCorrect={false}
               ref={"txtPassword"}
               onChangeText={
@@ -212,7 +217,7 @@ componentDidMount() {
               alignContent: 'flex-start'
               }}
           >
-            Must be 8 or more characters and include at least one letter, number, and special character.
+            Must be 7 or more characters and include at least one letter, number, and special character.
             </Text>
             </View>
               <TouchableOpacity

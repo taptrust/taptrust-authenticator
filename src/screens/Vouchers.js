@@ -63,6 +63,38 @@ class VouchersScreen extends Component {
     });
   }
 
+  redeemVoucher = (item) => {
+    this.setState({
+      isLoading: true
+    });
+    console.log('redeem voucher');
+    console.log(item);
+    fetchApi({
+      url: 'voucher/redeem',
+      payload: {
+        'username': this.props.userName,
+        'voucher': item.voucherId
+      },
+      method: 'post'
+    })
+    .then(response => {
+      this.setState({
+        isLoading: false,
+      })
+      console.log('Request response-->', response);
+      if (response.status === 200 || response.status === 202) {
+        this.props.navigation.navigate('AccountHome');
+      }else{
+        console.log('error response status: ' + response.status);
+      }
+    })
+    .catch(e => {
+        this.setState({
+            isLoading: false,
+            errors: true,
+        });
+    });
+  }
 
   viewAppVouchers = () => {
     return notReadyAlert('App Vouchers');
@@ -111,8 +143,8 @@ class VouchersScreen extends Component {
 
           </View>
           {this.state.isLoading && <ActivityIndicator size="large" color="white"/>}
-          <TokenVouchersList data={this.state.tokenVouchersList}/>
-          <ItemVouchersList data={this.state.itemVouchersList}/>
+          <TokenVouchersList data={this.state.tokenVouchersList} redeemVoucher={this.redeemVoucher} />
+          <ItemVouchersList data={this.state.itemVouchersList} redeemVoucher={this.redeemVoucher}/>
         </View>
         <View style={styles.bottom}>
           <View style={styles.links}>
