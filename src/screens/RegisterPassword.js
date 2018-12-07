@@ -32,7 +32,7 @@ class RegisterPasswordScreen extends Component {
         username: '',
         pubkey: '',
       },
-      private_key: '',
+      privateKey: '',
       isLoading: false,
     };
   }
@@ -64,8 +64,8 @@ componentDidMount() {
         })
         let payload = {
           formData: this.state.formData,
-          private_key: this.state.private_key,
-          random_factor: this.state.random_factor
+          privateKey: this.state.privateKey,
+          randomFactor: this.state.randomFactor
         }
         login(payload);
         this.props.navigation.navigate('AddEmail'); /* CreatingAccount */
@@ -115,8 +115,8 @@ componentDidMount() {
         username: this.state.username,
         pubkey: keys.publicKey,
       },
-      private_key: keys.privateKey,
-      random_factor: keys.randomFactor
+      privateKey: keys.privateKey,
+      randomFactor: keys.randomFactor
     });
     console.log('Keys-->', keys);
     this.register();

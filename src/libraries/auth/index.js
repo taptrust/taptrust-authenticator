@@ -70,5 +70,5 @@ const restoreKeyPair = (username, password, pubKey) => {
 }
 
 export {
-    createKeyPair, restoreKeyPair
+    createKeyPair, restoreKeyPair, generateKeys
 };

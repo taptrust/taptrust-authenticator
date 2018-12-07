@@ -9,21 +9,29 @@ const initialState = {
     pubkey: null,
     userName: null,
     session_id: null,
-    private_key: null,
+    privateKey: null,
 };
 
 // Reducer
 const auth = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN:
+            let randomFactors;
             console.log("LOGIN_SUCCESS");
+            randomFactors = state.randomFactors;
+            console.log('previous random factors', randomFactors);
+            if (!randomFactors){
+              randomFactors = {};
+            }
+            randomFactors[action.formData.formData.username] = action.formData.randomFactor;
+            console.log('new random factors', randomFactors);
             return {
                 ...state,
                 isLoggedIn: true,
                 pubkey: action.formData.formData.pubkey,
                 userName: action.formData.formData.username,
-                private_key: action.formData.private_key,
-                random_factor: action.formData.random_factor
+                privateKey: action.formData.privateKey,
+                randomFactors: randomFactors
             };
         case SAVE_SESSION:
             console.log('Saving session_id');
