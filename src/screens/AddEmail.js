@@ -25,8 +25,20 @@ class AddEmailScreen extends Component {
     super(props);
   }
 
-  onContinue = () => {
-    this.props.navigation.navigate('App');
+  onContinuePressed = () => {
+    if (this.state.email.length < 3){ return; }
+    // TODO: validation
+    fetchApi({
+      url: 'register',
+      payload: {
+        username: this.props.userName,
+        addEmail: this.state.email
+      },
+      method: 'post',
+    })
+      .then(response => {
+          this.props.navigation.navigate('Reminder');
+      })
   }
 
   onPrivacyPolicyPressed = () => {
@@ -79,6 +91,8 @@ class AddEmailScreen extends Component {
               keyboardType='email-address'
               returnKeyType='next'
               autoCorrect={false}
+              autoFocus={true}
+              selectionColor='rgba(255,165,0,0.8)'
               onChangeText={ (email) => this.setState({ email: email })
               }
               placeholderTextColor='#FFF'
@@ -98,7 +112,7 @@ class AddEmailScreen extends Component {
           </Text>
           </View>
           <View style={styles.bottomContainer}>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Reminder') }>
+            <TouchableOpacity style={styles.buttonContainer} onPress={this.onContinuePressed}>
               <Text style={styles.buttonText}>Continue</Text>
             </TouchableOpacity>
             <Text style={{
@@ -198,7 +212,7 @@ const mapStateToProps = (state) => ({
     isLoggedIn: state.auth.isLoggedIn,
     pubkey: state.auth.pubkey,
     userName: state.auth.userName,
-    private_key: state.auth.private_key,
+    privateKey: state.auth.privateKey,
 });
 
 export default connect(mapStateToProps)(AddEmailScreen);

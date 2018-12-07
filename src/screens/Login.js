@@ -14,7 +14,7 @@ import AuthHomeScreen from './AuthHome';
 
 import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
-import { restoreKeyPair } from '../libraries/auth';
+import { restoreKeyPair, generateKeys } from '../libraries/auth';
 
 var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
 
@@ -33,7 +33,7 @@ class LoginScreen extends Component {
       username: '',
       pubkey: '',
     },
-    private_key: '',
+    privateKey: '',
     loginValid: null,
     isLoading: false,
     }
@@ -42,7 +42,7 @@ class LoginScreen extends Component {
   componentDidMount() {
     this.setState({
         formData: {},
-        private_key: null,
+        privateKey: null,
       });
   }
 
@@ -68,7 +68,9 @@ class LoginScreen extends Component {
     }
 
     //if(this.state.username.length > 4 && strongRegex.test(this.state.password)) {
-
+    this.setState({
+      isLoading: true,
+    });
     fetchApi({
       url: 'login',
       payload: {
@@ -87,6 +89,7 @@ class LoginScreen extends Component {
 
             this.setState({
               loginValid: 0,
+              isLoading: false
             });
             Alert.alert(
               'Error',
@@ -107,11 +110,34 @@ class LoginScreen extends Component {
 
   restoreKeys = (pubkey) => {
     console.log('Attempting to restore keys');
-    let keys = restoreKeyPair(this.state.username, this.state.password, pubkey);
-    if (!keys.publicKey){
+    let keys;
+    console.log('random factors: ' + this.props.randomFactors);
+    if (this.props.randomFactors && this.props.randomFactors[this.state.username]){
+
+      keys = generateKeys(this.state.username,
+        this.state.password, parseInt(this.props.randomFactors[this.state.username]));
+      if (!keys){
+        console.error('no keys returned with random factor provided!');
+      }
+    }
+    if (!keys){
+      console.log('no random factor found');
+      Alert.alert(
+        'Secure Login',
+        'This process helps to secure your account and may take a couple minutes to complete.',
+        [
+        {text: 'Continue'},
+        ],
+        { cancelable: false }
+      );
+      keys = restoreKeyPair(this.state.username, this.state.password, pubkey);
+    }
+
+    if (!keys.publicKey || keys.publicKey != pubkey){ // second condition is from using random factor
       console.log('Invalid password');
       this.setState({
         loginValid: 1,
+        isLoading: false,
       })
       Alert.alert(
         'Error',
@@ -128,8 +154,8 @@ class LoginScreen extends Component {
       username: this.state.username,
       pubkey: keys.publicKey,
     },
-    private_key: keys.privateKey,
-    isLoading: true,
+    privateKey: keys.privateKey,
+    randomFactor: keys.randomFactor,
     });
     console.log('Keys-->', keys);
     this.completeLogin();
@@ -144,7 +170,8 @@ class LoginScreen extends Component {
     });
     let payload = {
       formData: this.state.formData,
-      private_key: this.state.private_key
+      privateKey: this.state.privateKey,
+      randomFactor: this.state.randomFactor
     };
     login(payload);
     this.props.navigation.navigate('Reminder');
@@ -176,6 +203,7 @@ class LoginScreen extends Component {
                 keyboardType='email-address'
                 returnKeyType='next'
                 autoCorrect={false}
+                selectionColor='rgba(255,165,0,0.8)'
                 onChangeText={ (uname) => this.setState({ username: uname })
               }
               placeholderTextColor='#FFF'
@@ -186,6 +214,7 @@ class LoginScreen extends Component {
                 returnKeyType='go'
                 secureTextEntry={true}
                 autoCorrect={false}
+                selectionColor='rgba(255,165,0,0.8)'
                 ref={"txtPassword"}
                 onChangeText={
                 (pwd) => this.setState({ password: pwd })
@@ -338,6 +367,7 @@ const mapStateToProps = (state) => ({
   isLoggedIn: state.auth.isLoggedIn,
   pubkey: state.auth.pubkey,
   userName: state.auth.userName,
+  randomFactors: state.auth.randomFactors
 });
 
 export default connect(mapStateToProps)(LoginScreen);

@@ -38,7 +38,7 @@ export const fetchApi = (args) => {
             if (response.status === 200 || response.status === 202 || response.status === 406 ) {
                 response.json().then(json => resolve(json));
             } else {
-                const e = new Error('Error making network request');
+                const e = new Error('Error making network request to url: ' + url);
                 e.responseStatus = response.status;
 
                 if (response.status === 422) {
@@ -53,7 +53,7 @@ export const fetchApi = (args) => {
                         }
                     });
                 } else {
-                    console.log("error response", response);
+                    console.log("error response for url: " + url, response);
                     reject(e);
                     throw e;
                 }

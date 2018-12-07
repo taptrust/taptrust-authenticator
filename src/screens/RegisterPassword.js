@@ -13,7 +13,7 @@ import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
 import { createKeyPair } from '../libraries/auth';
 
-var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
+var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{7,})");
 
 class RegisterPasswordScreen extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class RegisterPasswordScreen extends Component {
         username: '',
         pubkey: '',
       },
-      private_key: '',
+      privateKey: '',
       isLoading: false,
     };
   }
@@ -40,7 +40,8 @@ class RegisterPasswordScreen extends Component {
 
 componentDidMount() {
   this.setState({
-    username: this.props.navigation.state.params.username
+    username: this.props.navigation.state.params.username,
+    phoneVerificationKey: this.props.navigation.state.params.phoneVerificationKey
   })
 
   }
@@ -64,7 +65,8 @@ componentDidMount() {
         })
         let payload = {
           formData: this.state.formData,
-          private_key: this.state.private_key
+          privateKey: this.state.privateKey,
+          randomFactor: this.state.randomFactor
         }
         login(payload);
         this.props.navigation.navigate('AddEmail'); /* CreatingAccount */
@@ -85,7 +87,7 @@ componentDidMount() {
       })
       Alert.alert(
         'Error',
-        'Password must be at least six characters and contain at least one letter, one number, and one special character',
+        'Password must be at least seven characters and contain at least one letter, one number, and one special character',
         [
         {text: 'OK', onPress: () => console.log('Password invalid')},
         ],
@@ -113,8 +115,10 @@ componentDidMount() {
       formData: {
         username: this.state.username,
         pubkey: keys.publicKey,
+        phoneVerificationKey: this.state.phoneVerificationKey
       },
-      private_key: keys.privateKey,
+      privateKey: keys.privateKey,
+      randomFactor: keys.randomFactor
     });
     console.log('Keys-->', keys);
     this.register();
@@ -168,6 +172,8 @@ componentDidMount() {
               returnKeyType='go'
               secureTextEntry={true}
               clearTextOnFocus={false}
+              autoFocus={true}
+              selectionColor='rgba(255,165,0,0.8)'
               autoCorrect={false}
               ref={"txtPassword"}
               onChangeText={
@@ -182,6 +188,7 @@ componentDidMount() {
               returnKeyType='go'
               secureTextEntry={true}
               clearTextOnFocus={false}
+              selectionColor='rgba(255,165,0,0.8)'
               autoCorrect={false}
               ref={"txtPassword"}
               onChangeText={
@@ -212,7 +219,7 @@ componentDidMount() {
               alignContent: 'flex-start'
               }}
           >
-            Must be 8 or more characters and include at least one letter, number, and special character.
+            Must be 7 or more characters and include at least one letter, number, and special character.
             </Text>
             </View>
               <TouchableOpacity

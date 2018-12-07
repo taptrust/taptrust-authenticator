@@ -13,47 +13,44 @@ import { fetchApi } from '../services/api/index';
 import { login } from '../services/auth';
 import { notReadyAlert } from '../components/common/alerts';
 
-
-class RegisterVerifyPhoneScreen extends Component {
+class RegisterVerifyPhoneCodeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      phoneNumber: '',
+      verificationCode: '',
+      verificationKey: '',
     };
   }
 
 
 componentDidMount() {
   this.setState({
-    username: this.props.navigation.state.params.username
+    username: this.props.navigation.state.params.username,
+    verificationKey: this.props.navigation.state.params.verificationKey
   })
 
   }
 
 
   validation = async () => {
-    let numericLength  = this.state.phoneNumber.match(/\d/g).length;
-    if (numericLength < 9 || numericLength > 15){
+    let numericLength  = this.state.verificationCode.match(/\d/g).length;
+    if (numericLength != 4){
       Alert.alert(
         'Error',
-        'Please enter a valid phone number',
+        'Please enter a valid verification code',
         [
-        {text: 'OK', onPress: () => console.log('Phone number invalid')},
+        {text: 'OK', onPress: () => console.log('Verification code invalid')},
         ],
         { cancelable: false }
       );
       return;
     }
-
-    /* TODO: make API call to verify phone... */
-    this.setState({
-      isLoading: true,
-    });
+    console.log('calling API');
     fetchApi({
       url: 'auth/verifyPhone',
       payload: {
-        username: this.state.username,
-        phone: this.state.phoneNumber
+        key: this.state.verificationKey,
+        code: this.state.verificationCode
       },
       method: 'post',
     })
@@ -63,20 +60,60 @@ componentDidMount() {
             this.setState({
               isLoading: false
             });
-            this.props.navigation.navigate('RegisterVerifyPhoneCode', { username: this.state.username, verificationKey: response.message });
+            if (response.error) {
+              Alert.alert(
+                'Error',
+                response.error,
+                [
+                {text: 'OK'},
+                ],
+                { cancelable: false }
+              );
+              this.refs.verificationCode.value = '';
+              return;
+            }else{
+              this.props.navigation.navigate('RegisterPassword', { username: this.state.username,
+                phoneVerificationKey: this.state.verificationKey });
+            }
 
-    });
+      })
+      .catch(e => {
+        console.log('error', e);
+              this.setState({
+                  isLoading: false,
+                  errors: true,
+              });
+
+              Alert.alert(
+                'Error',
+                'Invalid Code',
+                [
+                {text: 'OK'},
+                ],
+                { cancelable: false }
+              );
+              this.refs.verificationCode.value = '';
+              return;
+          });
+
+
 
   }
 
   onContinuePressed = () => {
-      this.validation();
+    this.validation();
   }
 
   onPrivacyPolicyPressed = () => {
     return notReadyAlert('Privacy Policy');
   }
 
+  onChangeText = (code) => {
+    this.setState({ verificationCode: code });
+    if (code.length == 4){
+
+    }
+  }
   render() {
     return (
       <LinearGradient colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
@@ -111,19 +148,20 @@ componentDidMount() {
 
           </View>
             <View style={{alignSelf: 'center'}}>
-              <Text style={styles.instructions}>To get started, we need to verify your phone number. </Text>
+              <Text style={styles.instructions}>Enter the code that was sent to you in a text message. </Text>
             </View>
             <View style={styles.loginContainer}>
               <TextInput style={styles.input}
-                placeholder="Phone Number"
+                ref="verificationCode"
+                placeholder="Verification Code"
                 placeholderTextColor='rgba(255,255,255,0.8)'
                 keyboardType='numeric'
                 returnKeyType='next'
+                maxLength={4}
                 autoCorrect={false}
                 autoFocus={true}
                 selectionColor='rgba(255,165,0,0.8)'
-                onChangeText={ (phone) => this.setState({ phoneNumber: phone })
-                }
+                onChangeText={this.onChangeText}
                 placeholderTextColor='#FFF'
               />
               <View>
@@ -144,7 +182,7 @@ componentDidMount() {
               <TouchableOpacity
                 style={styles.buttonContainer}
                 onPress={this.onContinuePressed}>
-                <Text style={styles.buttonText}>Send Verification Code</Text>
+                <Text style={styles.buttonText}>Continue</Text>
               </TouchableOpacity>
 
 
@@ -216,7 +254,7 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingHorizontal: 10,
     borderRadius: 10,
-    fontSize: 20,
+    fontSize: 30,
     borderBottomWidth: 1,
     borderColor: '#FFF',
     fontWeight: '400',
@@ -271,4 +309,4 @@ const mapStateToProps = (state) => ({
   userName: state.auth.userName,
 });
 
-export default connect(mapStateToProps)(RegisterVerifyPhoneScreen);
+export default connect(mapStateToProps)(RegisterVerifyPhoneCodeScreen);

@@ -20,17 +20,16 @@ class TokenVoucher extends Component {
     super(props);
   }
 
-  selectItem = (item) => {
-    console.log('hhh', item);
-  /*  this.props.navigation.navigate('AuthDetails', { item: item }); */
+  redeemVoucher = () => {
+      this.props.redeemVoucher(this.props.item);
   }
 
   render() {
     const { item, key } = this.props;
     return (
-      <View style={styles.item} key={key} onPress={() => this.selectItem(item)} >
+        <TouchableOpacity  onPress={this.redeemVoucher}>
+        <View style={styles.item} key={key}>
         <View style={{flex: 1, flexDirection: 'row'}}>
-
           <View style={styles.content}>
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.sponsor}>Sponsored by {item.sponsor}</Text>
@@ -45,6 +44,7 @@ class TokenVoucher extends Component {
           </TouchableOpacity>
         </View>
       </View>
+      </TouchableOpacity>
 )
   }
 }

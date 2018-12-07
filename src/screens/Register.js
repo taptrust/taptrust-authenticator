@@ -33,7 +33,7 @@ export default class RegisterScreen extends Component {
         username: '',
         pubkey: '',
       },
-      private_key: '',
+      privateKey: '',
       isLoading: false,
     };
   }
@@ -41,7 +41,7 @@ export default class RegisterScreen extends Component {
   componentDidMount() {
     this.setState({
         formData: {},
-        private_key: null,
+        privateKey: null,
       });
   }
 
@@ -145,6 +145,7 @@ export default class RegisterScreen extends Component {
                 autoCorrect={false}
                 onChangeText={ (uname) => this.setState({ username: uname })}
                 autoFocus={true}
+                selectionColor='rgba(255,165,0,0.8)'
                 placeholderTextColor='#FFF'
               />
   </View>

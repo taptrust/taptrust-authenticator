@@ -22830,17 +22830,17 @@ var bn = reqqq('bn.js');
 var crt = reqqq('browserify-rsa');
 var createHash = reqqq('create-hash');
 var withPublic = reqqq('./withPublic');
-module.exports = function privateDecrypt(private_key, enc, reverse) {
+module.exports = function privateDecrypt(privateKey, enc, reverse) {
   var padding;
-  if (private_key.padding) {
-    padding = private_key.padding;
+  if (privateKey.padding) {
+    padding = privateKey.padding;
   } else if (reverse) {
     padding = 1;
   } else {
     padding = 4;
   }
 
-  var key = parseKeys(private_key);
+  var key = parseKeys(privateKey);
   var k = key.modulus.byteLength();
   if (enc.length > k || new bn(enc).cmp(key.modulus) >= 0) {
     throw new Error('decryption error');
