@@ -151,7 +151,7 @@ componentDidMount() {
               <Text style={styles.instructions}>Enter the code that was sent to you in a text message. </Text>
             </View>
             <View style={styles.loginContainer}>
-              <TextInput style={styles.input}
+              <TextInput underlineColorAndroid="transparent" style={styles.input}
                 ref="verificationCode"
                 placeholder="Verification Code"
                 placeholderTextColor='rgba(255,255,255,0.8)'

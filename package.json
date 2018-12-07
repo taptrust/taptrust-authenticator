@@ -1,6 +1,6 @@
 {
-  "name": "taptrust",
-  "version": "0.1.0",
+  "name": "TapTrust Wallet",
+  "version": "0.2.0",
   "private": true,
   "devDependencies": {
     "babel-cli": "^6.26.0",
