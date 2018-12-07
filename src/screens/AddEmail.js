@@ -79,6 +79,8 @@ class AddEmailScreen extends Component {
               keyboardType='email-address'
               returnKeyType='next'
               autoCorrect={false}
+              autoFocus={true}
+              selectionColor='rgba(255,165,0,0.8)'
               onChangeText={ (email) => this.setState({ email: email })
               }
               placeholderTextColor='#FFF'

@@ -54,19 +54,33 @@ class AccountHomeScreen extends Component {
       method: 'post'
     })
     .then(response => {
+      let tabSelectedValue;
+      let itemsListValue;
+      let tokensListValue;
+      if (response.newItem === true){
+        tabSelectedValue = 2;
+        itemsListValue = response.items && response.items;
+        tokensListValue = false;
+      }else{
+        tabSelectedValue = 1;
+        itemsListValue = false;
+        tokensListValue = response.tokens && response.tokens;
+      }
+
       this.setState({
         isLoading: false,
         creditList: response.credits && response.credits,
         tokens: response.tokens && response.tokens,
-        tokensList: response.tokens && response.tokens,
-        tabSelected: 1,
+        tokensList: tokensListValue,
+        tabSelected: tabSelectedValue,
         items: response.items && response.items,
-        itemsList: false, // tokensList shown by default
+        itemsList: itemsListValue, // tokensList shown by default
         balances: response.balances && response.balances
       })
       console.log('Request response-->', response);
     })
     .catch(e => {
+      console.log('error loading accounthome');
         this.setState({
             isLoading: false,
             errors: true,

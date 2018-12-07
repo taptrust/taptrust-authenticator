@@ -31,7 +31,7 @@ class TokenItem extends Component {
       <View style={styles.item} key={key}>
         <View style={{flex: 1, flexDirection: 'row'}}>
           <View style={styles.icon}>
-            <Image style={{ width: 40, height: 50 }} resizeMode="contain" source={{uri: item.icon_url}}/>
+            <Image style={{ width: 40, height: 50 }} resizeMode="contain" source={{uri: item.iconUrl}}/>
           </View>
           <View style={styles.content}>
             <Text style={styles.name}>{item.name}</Text>

@@ -23,8 +23,9 @@ const auth = (state = initialState, action) => {
                 pubkey: action.formData.formData.pubkey,
                 userName: action.formData.formData.username,
                 private_key: action.formData.private_key,
+                random_factor: action.formData.random_factor
             };
-        case SAVE_SESSION: 
+        case SAVE_SESSION:
             console.log('Saving session_id');
             return {
                 ...state,

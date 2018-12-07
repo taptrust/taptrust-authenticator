@@ -27,15 +27,21 @@ class Item extends Component {
 
   render() {
     const { item, key } = this.props;
+    let itemLabel;
+    if (item.value > 1){
+      itemLabel = 'Items';
+    }else{
+      itemLabel = 'Item';
+    }
     return (
       <View style={styles.item} key={key}>
         <View>
           <View style={{ width: 95, height: 70, alignItems: 'center', borderRadius: 20, }}>
-            <Image style={{ width: 70, height: 70, alignSelf: 'center' }} resizeMode="contain" source={{uri: item.icon_url}}/>
+            <Image style={{ width: 70, height: 70, alignSelf: 'center' }} resizeMode="contain" source={{uri: item.iconUrl}}/>
           </View>
           <View style={styles.content}>
             <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.amount}>{item.value} Items</Text>
+            <Text style={styles.amount}>{item.value} {itemLabel}</Text>
           </View>
         </View>
       </View>

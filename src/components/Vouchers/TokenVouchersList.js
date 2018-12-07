@@ -29,7 +29,7 @@ class TokenVouchersList extends Component {
         <ScrollView style={{flex: 1}}>
             {this.props.data.map((item, i) => {
               return (
-                <TokenVoucher item={item} key={i}/>
+                <TokenVoucher item={item} key={i} redeemVoucher={this.props.redeemVoucher} />
               )})
             }
         </ScrollView>

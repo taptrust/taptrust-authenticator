@@ -102,6 +102,7 @@ componentDidMount() {
                 returnKeyType='next'
                 autoCorrect={false}
                 autoFocus={true}
+                selectionColor='rgba(255,165,0,0.8)'
                 onChangeText={ (phone) => this.setState({ phoneNumber: phone })
                 }
                 placeholderTextColor='#FFF'

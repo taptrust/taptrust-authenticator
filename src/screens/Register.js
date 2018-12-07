@@ -145,6 +145,7 @@ export default class RegisterScreen extends Component {
                 autoCorrect={false}
                 onChangeText={ (uname) => this.setState({ username: uname })}
                 autoFocus={true}
+                selectionColor='rgba(255,165,0,0.8)'
                 placeholderTextColor='#FFF'
               />
   </View>
