@@ -141,7 +141,7 @@ const mapStateToProps = (state) => ({
     isLoggedIn: state.auth.isLoggedIn,
     pubkey: state.auth.pubkey,
     userName: state.auth.userName,
-    private_key: state.auth.private_key,
+    privateKey: state.auth.privateKey,
 });
 
 export default connect(mapStateToProps)(TestingReminderScreen);

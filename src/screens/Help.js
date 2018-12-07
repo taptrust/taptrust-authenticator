@@ -127,7 +127,7 @@ const mapStateToProps = (state) => ({
   nav: state.nav,
   isLoggedIn: state.auth.isLoggedIn,
   pubkey: state.auth.pubkey,
-  privateKey: state.auth.private_key,
+  privateKey: state.auth.privateKey,
   userName: state.auth.userName,
   state: state
 });
