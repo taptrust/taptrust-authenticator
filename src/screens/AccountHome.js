@@ -62,7 +62,7 @@ class AccountHomeScreen extends Component {
       payload: {
         'username': this.props.userName,
       },
-      method: 'post'
+      method: 'POST'
     })
     .then(response => {
       let tabSelectedValue;

@@ -58,7 +58,7 @@ class AuthHomeScreen extends Component {
 			//         payload: {
 			//             username: this.props.userName
 			//         },
-			//         method: 'post',
+			//         method: 'POST',
 			//     })
 			//         .then(response => {
 			//             console.log('Timer Response-->', response);

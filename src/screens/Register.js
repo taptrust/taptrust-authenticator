@@ -94,7 +94,7 @@ export default class RegisterScreen extends Component {
       payload: {
         checkAvailability: this.state.username
       },
-      method: 'post',
+      method: 'POST',
     })
       .then(response => {
         console.log('Response-->', response);

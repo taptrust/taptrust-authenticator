@@ -4,7 +4,7 @@ import { store } from '../../config/store';
 import { Alert } from 'react-native'
 
 import { fetchApi } from '../../services/api/index';
-import { sign, getWallet } from '../../libraries/web3util';
+import { sign, getWallet, getTxParams } from '../../libraries/web3util';
 
 
 const relaySignedRequest = (action, params, username, privateKey) => {
@@ -24,13 +24,13 @@ const relaySignedRequest = (action, params, username, privateKey) => {
 
       fetchApi({
         url: 'relay',
-        payload: {
+        body: {
           action: action,
           signature: signature,
-          params: JSON.stringify(params),
+          params: params,
           username: username
         },
-        method: 'post',
+        method: 'POST',
       })
         .then(response => {
           console.log('Response-->', response);

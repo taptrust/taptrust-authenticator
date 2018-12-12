@@ -55,7 +55,7 @@ componentDidMount() {
         username: this.state.username,
         phone: this.state.phoneNumber
       },
-      method: 'post',
+      method: 'POST',
     })
       .then(response => {
 
