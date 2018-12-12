@@ -11,14 +11,12 @@ const relaySignedRequest = (action, params, username, privateKey) => {
 
 
       params['action'] = action;
-
-      console.log('params');
-      console.log(params);
-      console.log('private key');
-      console.log(privateKey);
+      let txParams = getTxParams(params);
+      console.log('txParams');
+      console.log(txParams);
       getWallet(privateKey);
 
-      const signature = sign(params, privateKey.toString('hex'));
+      const signature = sign(txParams, privateKey.toString('hex'));
 
       console.log('signature: ' + signature);
 
@@ -27,7 +25,7 @@ const relaySignedRequest = (action, params, username, privateKey) => {
         body: {
           action: action,
           signature: signature,
-          params: params,
+          params: txParams,
           username: username
         },
         method: 'POST',

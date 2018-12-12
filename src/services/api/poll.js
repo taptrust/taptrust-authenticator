@@ -2,20 +2,20 @@ import {
   Alert
 } from 'react-native'
 import { fetchApi } from './index';
+import { saveRequest } from '../auth';
 
-const pollServer = (username, navigation) => {
+const pollServer = (username, navigation, pollParams) => {
   console.log('pollServer');
-  console.log(username);
   
   if (!username){
     console.log('no username. Not polling server.');
   }
   
-  // TODO: if open request of some kind, do not poll server. 
-  // TODO: if app is in background, do not poll server. (AppState)
+  
+  // TODO: do not poll if app is not in foreground 
   
   try {
-      pollServerRequest(username, navigation);
+      pollServerRequest(username, navigation, pollParams);
     } catch(e) {
       Alert.alert(e);
     }
@@ -23,30 +23,38 @@ const pollServer = (username, navigation) => {
 }
 
 
-const pollServerRequest = (username, navigation) => {
+const pollServerRequest = (username, navigation, pollParams) => {
   
-  console.log('poll server request.', navigation);
+  let pollPayload = {
+    username: username
+  };
+  if (pollParams){
+    pollPayload = Object.assign(pollPayload, pollParams);
+  }
   fetchApi({
       url: 'auth/get',
-      payload: {
-        username: username
-      },
+      payload: pollPayload,
       method: 'POST',
   })
   .then(response => {
     console.log('Timer Response-->', response);
+
+    // TODO place anything new into a stack 
+    // TODO: if already open request of some kind, do not redirect yet (check after leaving approval page)
     
-    return;
-    if(response.session) {
-      // TODO: probably load different views depending on tx vs. session 
-      let session_id = response.session.session_id;
-      let request = response.session.request;
-      saveSession(session_id);
-      this.props.navigation.navigate('AuthApproval', { request: request });
+      
+    if(response.authRequest) {
+      // TODO: probably load different views depending on tx vs. authRequest 
+      let request_id = response.authRequest.request_id;
+      let request_type = response.authRequest.request_type;
+      let request = response.authRequest.params;
+      request.id = request_id;
+      request.type = request_type;
+      
+      saveRequest(request_id);
+      navigation.navigate('AuthApproval', { request: request });
     }
-    this.setState({
-      loading: false,
-    });
+
   })
   .catch(e => {
     console.log('error polling', e);
@@ -59,5 +67,5 @@ const pollServerRequest = (username, navigation) => {
 
 
 export {
-    pollServer
+    pollServer, pollServerRequest
 };

@@ -84,7 +84,7 @@ class LoginScreen extends Component {
         if (response.status === 200 || response.status === 202) {
           this.restoreKeys(response.pubkey);
         }else{
-          console.llog('Unable to get public key for user ' + this.state.username);
+          console.log('Unable to get public key for user ' + this.state.username);
             this.setState({
               loginValid: 0,
               isLoading: false

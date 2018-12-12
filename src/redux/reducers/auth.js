@@ -1,14 +1,14 @@
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 
-import { LOGIN, SAVE_SESSION, LOGOUT } from '../actions/auth';
+import { LOGIN, SAVE_REQUEST, LOGOUT } from '../actions/auth';
 
 // Initial state
 const initialState = {
     isLoggedIn: false,
     pubkey: null,
     userName: null,
-    session_id: null,
+    request_id: null,
     privateKey: null,
 };
 
@@ -33,11 +33,11 @@ const auth = (state = initialState, action) => {
                 privateKey: action.formData.privateKey,
                 randomFactors: randomFactors
             };
-        case SAVE_SESSION:
-            console.log('Saving session_id');
+        case SAVE_REQUEST:
+            console.log('Saving request_id');
             return {
                 ...state,
-                session_id: action.session_id,
+                request_id: action.request_id,
             }
         case LOGOUT:
         console.log('LOG_OUT');
@@ -46,7 +46,7 @@ const auth = (state = initialState, action) => {
                 isLoggedIn: false,
                 pubkey: null,
                 userName: null,
-                session_id: null,
+                request_id: null,
             }
         default:
             return state;

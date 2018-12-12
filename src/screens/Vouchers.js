@@ -16,7 +16,7 @@ import ItemVouchersList from '../components/Vouchers/ItemVouchersList';
 import Header from '../components/Header';
 
 import { fetchApi } from '../services/api/index';
-import { saveSession } from '../services/auth';
+import { saveRequest } from '../services/auth';
 import { notReadyAlert } from '../components/common/alerts';
 const { width, height } = Dimensions.get('window');
 

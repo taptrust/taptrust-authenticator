@@ -1,5 +1,5 @@
 export const LOGIN = 'LOGIN';
-export const SAVE_SESSION = 'SAVE_SESSION';
+export const SAVE_REQUEST = 'SAVE_REQUEST';
 export const LOGOUT = 'LOGOUT';
 
 export const login = (formData) => ({
@@ -7,9 +7,9 @@ export const login = (formData) => ({
     formData
 });
 
-export const saveSession = (session_id) => ({
-    type: SAVE_SESSION,
-    session_id
+export const saveRequest = (request_id) => ({
+    type: SAVE_REQUEST,
+    request_id
 });
 
 export const logout = () => ({
