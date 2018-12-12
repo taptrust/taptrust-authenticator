@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 
 import Header from '../components/Header';
 import { fetchApi } from '../services/api/index';
-import { saveSession } from '../services/auth';
+import { saveRequest } from '../services/auth';
 
 class AuthHomeScreen extends Component {
 	constructor(props) {
@@ -64,9 +64,9 @@ class AuthHomeScreen extends Component {
 			//             console.log('Timer Response-->', response);
 			//             if(response.session) {
 			//                 clearInterval(timerId);
-			//                 let session_id = response.session.session_id;
+			//                 let request_id = response.session.request_id;
 			//                 let request = response.session.request;
-			//                 saveSession(session_id);
+			//                 saveRequest(request_id);
 			//                 this.props.navigation.navigate('AuthApproval', { request: request });
 			//             }
 			//             this.setState({
@@ -96,11 +96,19 @@ class AuthHomeScreen extends Component {
 		})
 		.then(response => {
 			console.log('Timer Response-->', response);
+<<<<<<< HEAD
 			if(response.pairRequest) {
 				let token = response.pairRequest.token;
 				// let request = response.session.request;
 				saveSession(token);
 				this.props.navigation.navigate('PairApproval', { token: token });
+=======
+			if(response.session) {
+				let request_id = response.session.request_id;
+				let request = response.session.request;
+				saveRequest(request_id);
+				this.props.navigation.navigate('AuthApproval', { request: request });
+>>>>>>> f4699a5... updates for transaction testing
 			}
 			this.setState({
 				loading: false,

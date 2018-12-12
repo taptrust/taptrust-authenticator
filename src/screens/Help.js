@@ -16,9 +16,9 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 
 import { fetchApi } from '../services/api/index';
-import { saveSession } from '../services/auth';
+import { saveRequest } from '../services/auth';
 import { relaySignedRequest } from "../services/relay";
-
+import { pollServer } from '../services/api/poll';
 const { width, height } = Dimensions.get('window');
 
 
@@ -53,18 +53,25 @@ class HelpScreen extends Component {
 
 
   authTest = () => {
-
+    // TODO: poll server with returnTestRequest param asking for a test TX
+    let pollParams = { returnTestRequest: true };
+    let username = this.props.userName;
+    let navigation = this.props.navigation;
+    pollServer(username, navigation, pollParams); 
+    return; 
+    /*
     let txWei = 1;
     const txParams = {
         nonce: 1,
         to: '0x0eEB66338d9672Ba67a4342ECE388E4026f9b43d',
         value: txWei,
         data: '0x0',
+        chainID: 3
       };
-      console.log('pubkey: ' + this.props.pubkey);
     relaySignedRequest('sendTransaction', txParams,
       this.props.userName,
       this.props.privateKey);
+      */
 
   }
 

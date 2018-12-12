@@ -2,6 +2,13 @@ const Web3 = require('web3');
 
 const web3 = new Web3(Web3.givenProvider);
 
+const weiToEth = function(wei) {
+	return web3.utils.fromWei(wei.toString(), 'ether');
+}
+
+const ethToWei = function(eth) {
+	return web3.utils.toWei(eth.toString(), 'ether');
+}
 
 const sign = function(txParams, privateKey) {
 	const hash = web3.utils.soliditySha3(
@@ -40,7 +47,7 @@ const getGasInfo = function(){
 
 const getTxParams = function(params) {
 	params['value'] = web3.utils.numberToHex(params['value']);
-	
+	// TODO: EIP 155 Chain ID (mainnet 1, ropsten 3, rinkeby 4)
 	return Object.assign(getGasInfo(), params);
 	
 }
@@ -68,5 +75,5 @@ web3.eth.estimateGas({
 */
 
 export {
-    sign, getWallet, getTxParams
+    sign, getWallet, getTxParams, weiToEth, ethToWei
 };

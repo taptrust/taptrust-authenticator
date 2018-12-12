@@ -1,5 +1,5 @@
 export const LOGIN = 'LOGIN';
-export const SAVE_SESSION = 'SAVE_SESSION';
+export const SAVE_REQUEST = 'SAVE_REQUEST';
 export const LOGOUT = 'LOGOUT';
 
 export const login = (formData) => ({
@@ -7,9 +7,15 @@ export const login = (formData) => ({
     formData
 });
 
+<<<<<<< HEAD
 export const saveSession = (token) => ({
     type: SAVE_SESSION,
     token
+=======
+export const saveRequest = (request_id) => ({
+    type: SAVE_REQUEST,
+    request_id
+>>>>>>> f4699a5... updates for transaction testing
 });
 
 export const logout = () => ({

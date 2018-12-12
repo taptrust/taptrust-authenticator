@@ -17,7 +17,7 @@ import Header from '../components/Header';
 import BalanceList from '../components/BalanceList';
 
 import { fetchApi } from '../services/api/index';
-import { saveSession } from '../services/auth';
+import { saveRequest } from '../services/auth';
 
 const { width, height } = Dimensions.get('window');
 
