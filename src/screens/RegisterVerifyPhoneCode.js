@@ -52,7 +52,7 @@ componentDidMount() {
         key: this.state.verificationKey,
         code: this.state.verificationCode
       },
-      method: 'post',
+      method: 'POST',
     })
       .then(response => {
         this.props.navigation.navigate('RegisterPassword', { username: this.state.username,

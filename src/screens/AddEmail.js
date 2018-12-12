@@ -34,7 +34,7 @@ class AddEmailScreen extends Component {
         username: this.props.userName,
         addEmail: this.state.email
       },
-      method: 'post',
+      method: 'POST',
     })
       .then(response => {
           this.props.navigation.navigate('Reminder');

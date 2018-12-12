@@ -55,7 +55,7 @@ componentDidMount() {
     fetchApi({
       url: 'register',
       payload: this.state.formData,
-      method: 'post',
+      method: 'POST',
     })
       .then(response => {
         console.log('Response-->', response);

@@ -31,7 +31,7 @@ const pollServerRequest = (username, navigation) => {
       payload: {
         username: username
       },
-      method: 'post',
+      method: 'POST',
   })
   .then(response => {
     console.log('Timer Response-->', response);

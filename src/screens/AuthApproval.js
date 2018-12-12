@@ -67,7 +67,7 @@ class AuthApprovalScreen extends Component {
     fetchApi({
       url: 'auth/process',
       payload: this.state.formData,
-      method: 'post',
+      method: 'POST',
     })
       .then(response => {
         console.log('Response-->', response);
@@ -94,7 +94,7 @@ class AuthApprovalScreen extends Component {
     fetchApi({
       url: 'auth/process',
       payload: this.state.formData,
-      method: 'post',
+      method: 'POST',
     })
       .then(response => {
         console.log('Response-->', response);

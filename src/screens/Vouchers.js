@@ -44,7 +44,7 @@ class VouchersScreen extends Component {
       payload: {
         'username': this.props.userName,
       },
-      method: 'post'
+      method: 'POST'
     })
     .then(response => {
       this.setState({
@@ -75,7 +75,7 @@ class VouchersScreen extends Component {
         'username': this.props.userName,
         'voucher': item.voucherId
       },
-      method: 'post'
+      method: 'POST'
     })
     .then(response => {
       this.setState({

@@ -76,7 +76,7 @@ class LoginScreen extends Component {
       payload: {
         getPublicKey: this.state.username
       },
-      method: 'post',
+      method: 'POST',
     })
       .then(response => {
         console.log('Response-->', response);
