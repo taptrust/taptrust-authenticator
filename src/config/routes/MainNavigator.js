@@ -12,6 +12,7 @@ import DrawerScreen from '../../screens/DrawerScreen';
 import VouchersScreen from '../../screens/Vouchers';
 import SecurityScreen from '../../screens/Security';
 import HelpScreen from '../../screens/Help';
+import AppBrowserScreen from '../../screens/AppBrowser';
 import PairApprovalScreen from '../../screens/PairApproval';
 import TabsStack from './TabsStack';
 
@@ -36,6 +37,9 @@ const Drawer = createDrawerNavigator ({
   Help: {
     screen: HelpScreen
   },
+  AppBrowser: {
+    screen: AppBrowserScreen
+  },
   Security: {
     screen: SecurityScreen
   },
@@ -45,7 +49,7 @@ const Drawer = createDrawerNavigator ({
 },  {
   drawerWidth: width/2,
   contentComponent: DrawerScreen,
-  initialRouteName: 'AuthHome',
+  initialRouteName: 'AccountHome',
   contentOptions: {
     activeTintColor: 'white',
     inactiveTintColor: 'white',

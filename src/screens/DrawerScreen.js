@@ -31,6 +31,7 @@ class AuthHomeScreen extends Component {
 
   onApps = () => {
     return notReadyAlert('App Browser');
+    //this.props.navigation.navigate('AppBrowser');
   }
 
   onVouchers = () => {
