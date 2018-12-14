@@ -55,26 +55,27 @@ componentDidMount() {
       method: 'post',
     })
       .then(response => {
-
-        console.log('Response-->', response);
-            this.setState({
-              isLoading: false
-            });
-            if (response.error) {
-              Alert.alert(
-                'Error',
-                response.error,
-                [
-                {text: 'OK'},
-                ],
-                { cancelable: false }
-              );
-              this.refs.verificationCode.value = '';
-              return;
-            }else{
-              this.props.navigation.navigate('RegisterPassword', { username: this.state.username,
-                phoneVerificationKey: this.state.verificationKey });
-            }
+        this.props.navigation.navigate('RegisterPassword', { username: this.state.username,
+            phoneVerificationKey: this.state.verificationKey });
+        // console.log('Response-->', response);
+        //     this.setState({
+        //       isLoading: false
+        //     });
+        //     if (response.error) {
+        //       Alert.alert(
+        //         'Error',
+        //         response.error,
+        //         [
+        //         {text: 'OK'},
+        //         ],
+        //         { cancelable: false }
+        //       );
+        //       this.refs.verificationCode.value = '';
+        //       return;
+        //     }else{
+        //       this.props.navigation.navigate('RegisterPassword', { username: this.state.username,
+        //         phoneVerificationKey: this.state.verificationKey });
+        //     }
 
       })
       .catch(e => {

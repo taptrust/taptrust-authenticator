@@ -7,9 +7,9 @@ export const login = (formData) => ({
     formData
 });
 
-export const saveSession = (session_id) => ({
+export const saveSession = (token) => ({
     type: SAVE_SESSION,
-    session_id
+    token
 });
 
 export const logout = () => ({

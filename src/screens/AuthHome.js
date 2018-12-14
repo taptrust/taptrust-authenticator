@@ -96,11 +96,11 @@ class AuthHomeScreen extends Component {
 		})
 		.then(response => {
 			console.log('Timer Response-->', response);
-			if(response.session) {
-				let session_id = response.session.session_id;
-				let request = response.session.request;
-				saveSession(session_id);
-				this.props.navigation.navigate('AuthApproval', { request: request });
+			if(response.pairRequest) {
+				let token = response.pairRequest.token;
+				// let request = response.session.request;
+				saveSession(token);
+				this.props.navigation.navigate('PairApproval', { token: token });
 			}
 			this.setState({
 				loading: false,
@@ -133,7 +133,7 @@ class AuthHomeScreen extends Component {
 								<Text style={styles.explanationBold}>browser extensions:</Text>
 							</View>
               <View style={{ alignItems: 'center', marginTop: 50 }}>
-              <TouchableOpacity style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.buttonContainer} onPress={this.reFresh}>
               <Image style={styles.buttonImage}
                 resizeMethod={'resize'}
                 source={require('../assets/Chrome.png')}

@@ -12,6 +12,7 @@ import DrawerScreen from '../../screens/DrawerScreen';
 import VouchersScreen from '../../screens/Vouchers';
 import SecurityScreen from '../../screens/Security';
 import HelpScreen from '../../screens/Help';
+import PairApprovalScreen from '../../screens/PairApproval';
 import TabsStack from './TabsStack';
 
 const { width, height } = Dimensions.get('window');
@@ -37,11 +38,14 @@ const Drawer = createDrawerNavigator ({
   },
   Security: {
     screen: SecurityScreen
+  },
+  PairApproval: {
+      screen: PairApprovalScreen
   }
 },  {
   drawerWidth: width/2,
   contentComponent: DrawerScreen,
-  initialRouteName: 'AccountHome',
+  initialRouteName: 'AuthHome',
   contentOptions: {
     activeTintColor: 'white',
     inactiveTintColor: 'white',

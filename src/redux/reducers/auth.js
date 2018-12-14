@@ -10,6 +10,7 @@ const initialState = {
     userName: null,
     session_id: null,
     privateKey: null,
+    token: null
 };
 
 // Reducer
@@ -37,7 +38,7 @@ const auth = (state = initialState, action) => {
             console.log('Saving session_id');
             return {
                 ...state,
-                session_id: action.session_id,
+                token: action.token,
             }
         case LOGOUT:
         console.log('LOG_OUT');
