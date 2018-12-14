@@ -111,7 +111,7 @@ componentDidMount() {
   onChangeText = (code) => {
     this.setState({ verificationCode: code });
     if (code.length == 4){
-
+        this.onContinuePressed();
     }
   }
   render() {
