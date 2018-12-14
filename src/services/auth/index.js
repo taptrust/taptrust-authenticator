@@ -14,8 +14,8 @@ const login = (payload) => {
     store.dispatch(NavigationActions.navigate({routeName: 'App'}));
 };
 
-const saveSession = (session_id) => {
-    store.dispatch(saveSessionAction(session_id));
+const saveSession = (token) => {
+    store.dispatch(saveSessionAction(token));
 };
 
 const logout = () => {
