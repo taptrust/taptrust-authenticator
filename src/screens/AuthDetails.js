@@ -31,7 +31,7 @@ class AuthDetailsScreen extends Component {
   onApprove = async () => {
     await this.setState({
       formData: {
-        session_id: this.props.session_id,
+        request_id: this.props.request_id,
         sig: 'test',
         action: 'approve'
       }
@@ -40,7 +40,7 @@ class AuthDetailsScreen extends Component {
     fetchApi({
       url: 'auth/process',
       payload: this.state.formData,
-      method: 'post',
+      method: 'POST',
     })
       .then(response => {
         console.log('Response-->', response);
@@ -203,7 +203,7 @@ const mapStateToProps = (state) => ({
   isLoggedIn: state.auth.isLoggedIn,
   pubkey: state.auth.pubkey,
   userName: state.auth.userName,
-  session_id: state.auth.session_id,
+  request_id: state.auth.request_id,
 });
 
 export default connect(mapStateToProps)(AuthDetailsScreen);

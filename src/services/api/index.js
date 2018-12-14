@@ -1,11 +1,13 @@
 import { Platform } from 'react-native';
 
-let apiUrl = 'http://www.taptrust.com/api/1/';
+let apiVersion = '1';
+let apiUrl = 'http://www.taptrust.com/api/' + apiVersion + '/';
 
 const defaultSettings = {
     url: '',
     payload: {},
-    method: 'get',
+    body: {},
+    method: 'GET',
 };
 
 function getQuery (queryParams) {
@@ -22,17 +24,27 @@ export const fetchApi = (args) => {
     };
 
     let url = apiUrl + settings.url;
+    settings.method = settings.method.toUpperCase();
 
     const fetchOptions = {
         method: settings.method,
     };
 
     if (Object.keys(settings.payload).length > 0) {
-        if (settings.method === 'post') {
             url += getQuery(settings.payload);
-        }
     }
+    
+    if (Object.keys(settings.body).length > 0) {
+            fetchOptions.headers =  {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            };
+            fetchOptions.body = JSON.stringify(settings.body);
+    }
+        
+    
 
+    console.log('Sending request to url ' + url, fetchOptions);
     return new Promise((resolve, reject) => {
         fetch(url, fetchOptions).then(response => {
             if (response.status === 200 || response.status === 202 || response.status === 406 ) {

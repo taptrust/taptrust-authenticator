@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 
 import Header from '../components/Header';
 import { fetchApi } from '../services/api/index';
-import { saveSession } from '../services/auth';
+import { saveRequest } from '../services/auth';
 import { notReadyAlert } from '../components/common/alerts';
 
 class AddEmailScreen extends Component {
@@ -34,7 +34,7 @@ class AddEmailScreen extends Component {
         username: this.props.userName,
         addEmail: this.state.email
       },
-      method: 'post',
+      method: 'POST',
     })
       .then(response => {
           this.props.navigation.navigate('Reminder');
