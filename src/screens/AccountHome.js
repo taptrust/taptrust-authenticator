@@ -18,11 +18,13 @@ import Header from '../components/Header';
 import WalletHeader from '../components/Wallet/WalletHeader';
 import TokensList from '../components/Wallet/TokensList';
 import ItemsList from '../components/Wallet/ItemsList';
-
+import { pollServer } from '../services/api/poll';
 import { fetchApi } from '../services/api/index';
-import { saveSession } from '../services/auth';
+import { saveRequest } from '../services/auth';
 
 const { width, height } = Dimensions.get('window');
+
+let serverPoll;
 
 class AccountHomeScreen extends Component {
   constructor(props) {
@@ -44,6 +46,16 @@ class AccountHomeScreen extends Component {
     this.setState({
       isLoading: true,
     });
+    
+    let username = this.props.userName;
+    let navigation = this.props.navigation;
+     if (!serverPoll){
+       console.log('setting server poll interval');
+       serverPoll = setInterval(function(){
+          pollServer(username, navigation);
+      }, 10000);
+     }
+
 
 
     fetchApi({
@@ -51,7 +63,7 @@ class AccountHomeScreen extends Component {
       payload: {
         'username': this.props.userName,
       },
-      method: 'post'
+      method: 'POST'
     })
     .then(response => {
       let tabSelectedValue;
@@ -86,6 +98,14 @@ class AccountHomeScreen extends Component {
             errors: true,
         });
     });
+  }
+  
+  componentWillUnmount() {
+    
+    if (serverPoll){
+      console.log('clearing poll interval');
+      clearInterval(serverPoll);
+    }
   }
 
   viewVouchers = () => {

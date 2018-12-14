@@ -1,5 +1,5 @@
 {
-  "name": "TapTrust-Wallet",
+  "name": "taptrust-wallet",
   "version": "0.2.0",
   "private": true,
   "devDependencies": {

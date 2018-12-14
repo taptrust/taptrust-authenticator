@@ -3,6 +3,7 @@
     "sdkVersion": "27.0.0",
     "name": "TapTrust Wallet",
     "slug": "taptrust-wallet",
+    "privacy": "public",
     "scheme": "taptrust",
     "description": "TapTrust Wallet makes it easier to try decentralized apps. Come for free app vouchers. Stay for built-in security.",
     "icon": "./src/assets/Logo_orange_small.png",

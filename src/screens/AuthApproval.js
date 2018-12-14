@@ -14,60 +14,74 @@ import { connect } from 'react-redux';
 
 import Header from '../components/Header';
 import { fetchApi } from '../services/api/index';
+import { relaySignedRequest } from "../services/relay";
+import { weiToEth } from '../libraries/web3util';
 
 class AuthApprovalScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       app_name: null,
-      eth_amount: 0,
-      icon_url: "../assets/0x-icon.png",
-      hours_left: 0,
-      app_url: 'https://etheroll.com/',
-      recipient: null,
+      value: null,
+      icon_url: null,
+      hours_left: null,
+      app_url: null,
+      to: null,
       type: null,
     }
   }
 
   async componentDidMount() {
 
-  /*
+
   const request = this.props.navigation.state.params.request;
   console.log('Request-->', request);
   await this.setState({
-      app_name: request.app.name,
-      eth_amount: request.value,
-      icon_url: request.app.icon_url,
-      hours_left: !request.duration ? 0 : request.duration,
-      app_url: 'https://' + request.app.url,
-      recipient: request.recipient,
+      value: request.value,
+      ethValue: weiToEth(request.value),
+      to: request.to,
       type: request.type,
-    }) */
-    await this.setState({
-        app_name: 'Example App',
-        eth_amount: '0.01',
-        icon_url: "../assets/0x-icon.png",
-        hours_left: 0,
-        app_url: 'https://www.example.com',
-        recipient: '0x0eEB66338d9672Ba67a4342ECE388E4026f9b43d',
-        type: 'transaction',
-      })
-  }
+    });
+    if (request.type == 'customTransaction'){
+      await this.setState({
+          txParams: {
+            nonce: request.nonce,
+            to: request.to,
+            value: request.value,
+            data: request.data
+          }
+        });
+    }
+    if (request.type == 'appTransaction'){
+      await this.setState({
+          app_name: request.app.name,
+          icon_url: request.app.icon_url,
+          app_url: 'https://' + request.app.url,
+        });
+    }
+}
 
-  onApprove = async () => {
-    return;
+  onApprove = () => { // async 
+    console.log('onApprove');
+    relaySignedRequest('sendTransaction', this.state.txParams,
+      this.props.userName,
+      this.props.privateKey);
+      
+
+    /*
+    
     await this.setState({
       formData: {
-        session_id: this.props.session_id,
+        request_id: this.props.request_id,
         sig: 'test',
         action: 'approve'
       }
     });
-
+    
     fetchApi({
       url: 'auth/process',
       payload: this.state.formData,
-      method: 'post',
+      method: 'POST',
     })
       .then(response => {
         console.log('Response-->', response);
@@ -79,13 +93,15 @@ class AuthApprovalScreen extends Component {
           errors: true,
         });
     });
+    */
+    
   }
 
   onReject = async () => {
     return;
     await this.setState({
       formData: {
-        session_id: this.props.session_id,
+        request_id: this.props.request_id,
         sig: 'test',
         action: 'reject'
       }
@@ -94,7 +110,7 @@ class AuthApprovalScreen extends Component {
     fetchApi({
       url: 'auth/process',
       payload: this.state.formData,
-      method: 'post',
+      method: 'POST',
     })
       .then(response => {
         console.log('Response-->', response);
@@ -120,37 +136,73 @@ class AuthApprovalScreen extends Component {
 
   render() {
 
+    let renderedValue;
+    let valueUnit;
+    
+    if (this.state.value < 10000){
+      renderedValue = this.state.value;
+      valueUnit = 'WEI';
+    }else{
+      renderedValue = this.state.ethValue;
+      valueUnit = 'ETH';
+    }
     let authApprovalInner;
 
-    if (this.state.type === 'transaction'){
+    if (this.state.type === 'customTransaction'){
       authApprovalInner = (
         <View>
-        <Text style={styles.explanation}>Wants to send a transaction</Text>
-        <Text style={styles.explanation}>of the following amount:</Text>
+        <Text style={styles.explanation}>You are going to send</Text>
+        <Text style={styles.explanation}>the following transaction:</Text>
 
           <View style={styles.details}>
-            <Text style={styles.ethAmount}>{this.state.eth_amount} ETH</Text>
-            <View style={styles.recipient}>
+            <Text style={styles.ethAmount}>{renderedValue} {valueUnit}</Text>
+            <View style={styles.to}>
               <View>
                 <Text style={styles.toString}>will be sent to</Text>
               </View>
               <View style={{marginTop: 7, flexDirection: 'row'}}>
-                <Text style={styles.recipientAddress}>{this.ellipsisHeader(this.state.recipient)}</Text>
-                <Text style={styles.recipientAddress}>...</Text>
-                <Text style={styles.recipientAddress}>{this.ellipsisTail(this.state.recipient)}</Text>
+                <Text style={styles.toAddress}>{this.ellipsisHeader(this.state.to)}</Text>
+                <Text style={styles.toAddress}>...</Text>
+                <Text style={styles.toAddress}>{this.ellipsisTail(this.state.to)}</Text>
               </View>
             </View>
           </View>
 
         </View>
       );
-    }else{
+      }
+    if (this.state.type === 'appTransaction'){
+      authApprovalInner = (
+        <View>
+        <Text style={styles.explanation}>Wants to send a transaction</Text>
+        <Text style={styles.explanation}>of the following amount:</Text>
+
+          <View style={styles.details}>
+            <Text style={styles.ethAmount}>{renderedValue} {valueUnit}</Text>
+            <View style={styles.to}>
+              <View>
+                <Text style={styles.toString}>will be sent to</Text>
+              </View>
+              <View style={{marginTop: 7, flexDirection: 'row'}}>
+                <Text style={styles.toAddress}>{this.ellipsisHeader(this.state.to)}</Text>
+                <Text style={styles.toAddress}>...</Text>
+                <Text style={styles.toAddress}>{this.ellipsisTail(this.state.to)}</Text>
+              </View>
+            </View>
+          </View>
+          <Text style={styles.explanation}> Please check you are using the</Text>
+          <Text style={styles.explanation}> verified {this.state.app_name} hosted at </Text>
+          <Text style={styles.explanation_url}>{this.state.app_url}</Text>
+        </View>
+      );
+    }
+  if (this.state.type === 'appSession'){
       authApprovalInner = (
         <View>
         <Text style={styles.explanation}> Is Requesting a</Text>
         <Text style={styles.explanation}>Permission:</Text>
         <View style={styles.details}>
-          <Text style={styles.ethAmount}> Spend up to {this.state.eth_amount} ETH </Text>
+          <Text style={styles.ethAmount}> Spend up to {renderedValue} {valueUnit} </Text>
           <Text style={styles.hoursLeft}> Expires in {this.state.hours_left} hours </Text>
         </View>
         </View>
@@ -163,14 +215,11 @@ class AuthApprovalScreen extends Component {
         <Header left="back" right={false} backTo="Help" />
         <View style={styles.content}>
           <View style={styles.logoContainer}>
-            <Image style={styles.image} resizeMode="contain" source={require('../assets/Ethroulette.png')} />
+            <Image style={styles.image} resizeMode="contain" source={require('../assets/Logo_orange_small.png')} />
           </View>
           <View style={styles.infoContainer}>
             <Text style={styles.title}>{this.state.app_name}</Text>
             {authApprovalInner}
-            <Text style={styles.explanation}> Please check you are using the</Text>
-            <Text style={styles.explanation}> verified {this.state.app_name} hosted at </Text>
-            <Text style={styles.explanation_url}>{this.state.app_url}</Text>
           </View>
           <View style={styles.bothButtonContainer}>
             <TouchableOpacity
@@ -248,7 +297,7 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     textAlign: 'center',
   },
-  recipient: {
+  to: {
     flexDirection: 'column',
     alignItems: 'center'
   },
@@ -258,7 +307,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '300',
   },
-  recipientAddress: {
+  toAddress: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
@@ -301,7 +350,8 @@ const mapStateToProps = (state) => ({
   isLoggedIn: state.auth.isLoggedIn,
   pubkey: state.auth.pubkey,
   userName: state.auth.userName,
-  session_id: state.auth.session_id,
+  privateKey: state.auth.privateKey,
+  request_id: state.auth.request_id,
 });
 
 export default connect(mapStateToProps)(AuthApprovalScreen);

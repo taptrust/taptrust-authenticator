@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 
 import Header from '../components/Header';
 import { fetchApi } from '../services/api/index';
-import { saveSession } from '../services/auth';
+import { saveRequest } from '../services/auth';
 
 class AuthHomeScreen extends Component {
 	constructor(props) {
@@ -58,15 +58,15 @@ class AuthHomeScreen extends Component {
 			//         payload: {
 			//             username: this.props.userName
 			//         },
-			//         method: 'post',
+			//         method: 'POST',
 			//     })
 			//         .then(response => {
 			//             console.log('Timer Response-->', response);
 			//             if(response.session) {
 			//                 clearInterval(timerId);
-			//                 let session_id = response.session.session_id;
+			//                 let request_id = response.session.request_id;
 			//                 let request = response.session.request;
-			//                 saveSession(session_id);
+			//                 saveRequest(request_id);
 			//                 this.props.navigation.navigate('AuthApproval', { request: request });
 			//             }
 			//             this.setState({

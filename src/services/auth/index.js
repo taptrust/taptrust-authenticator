@@ -4,7 +4,7 @@ import { store } from '../../config/store';
 
 import {
 login as loginAction,
-saveSession as saveSessionAction,
+saveRequest as saveRequestAction,
 logout as logoutAction,
 } from '../../redux/actions/auth';
 
@@ -14,8 +14,8 @@ const login = (payload) => {
     store.dispatch(NavigationActions.navigate({routeName: 'App'}));
 };
 
-const saveSession = (token) => {
-    store.dispatch(saveSessionAction(token));
+const saveRequest = (request_id) => {
+    store.dispatch(saveRequestAction(request_id));
 };
 
 const logout = () => {
@@ -24,6 +24,6 @@ const logout = () => {
 
 export {
     login,
-    saveSession,
+    saveRequest,
     logout,
 };

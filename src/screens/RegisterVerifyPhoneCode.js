@@ -52,7 +52,7 @@ componentDidMount() {
         key: this.state.verificationKey,
         code: this.state.verificationCode
       },
-      method: 'post',
+      method: 'POST',
     })
       .then(response => {
         this.props.navigation.navigate('RegisterPassword', { username: this.state.username,
@@ -112,7 +112,7 @@ componentDidMount() {
   onChangeText = (code) => {
     this.setState({ verificationCode: code });
     if (code.length == 4){
-
+        this.onContinuePressed();
     }
   }
   render() {

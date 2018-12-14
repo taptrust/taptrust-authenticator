@@ -16,7 +16,7 @@ import ItemVouchersList from '../components/Vouchers/ItemVouchersList';
 import Header from '../components/Header';
 
 import { fetchApi } from '../services/api/index';
-import { saveSession } from '../services/auth';
+import { saveRequest } from '../services/auth';
 import { notReadyAlert } from '../components/common/alerts';
 const { width, height } = Dimensions.get('window');
 
@@ -44,7 +44,7 @@ class VouchersScreen extends Component {
       payload: {
         'username': this.props.userName,
       },
-      method: 'post'
+      method: 'POST'
     })
     .then(response => {
       this.setState({
@@ -75,7 +75,7 @@ class VouchersScreen extends Component {
         'username': this.props.userName,
         'voucher': item.voucherId
       },
-      method: 'post'
+      method: 'POST'
     })
     .then(response => {
       this.setState({

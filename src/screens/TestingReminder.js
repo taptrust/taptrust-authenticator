@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 
 import Header from '../components/Header';
 import { fetchApi } from '../services/api/index';
-import { saveSession } from '../services/auth';
+import { saveRequest } from '../services/auth';
 
 class TestingReminderScreen extends Component {
   constructor(props) {
