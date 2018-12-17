@@ -46,13 +46,11 @@ const pollServerRequest = (username, navigation, pollParams) => {
     if(response.authRequest) {
       // TODO: probably load different views depending on tx vs. authRequest 
       let request_id = response.authRequest.request_id;
-      let request_type = response.authRequest.request_type;
       let request = response.authRequest.params;
       request.id = request_id;
-      request.type = request_type;
       
       saveRequest(request_id);
-      navigation.navigate('AuthApproval', { request: request });
+      navigation.navigate('AuthApproval', { request: request, request_id: request_id });
     }
 
   })

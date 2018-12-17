@@ -40,9 +40,10 @@ class AuthApprovalScreen extends Component {
       value: request.value,
       ethValue: weiToEth(request.value),
       to: request.to,
-      type: request.type,
+      requestType: request.type
     });
     if (request.type == 'customTransaction'){
+      console.log('is a custom transaction', this.state.type);
       await this.setState({
           txParams: {
             nonce: request.nonce,
@@ -63,46 +64,18 @@ class AuthApprovalScreen extends Component {
 
   onApprove = () => { // async 
     console.log('onApprove');
+    // TODO - include app request ID 
     relaySignedRequest('sendTransaction', this.state.txParams,
       this.props.userName,
-      this.props.privateKey);
-      
-
-    /*
-    
-    await this.setState({
-      formData: {
-        request_id: this.props.request_id,
-        sig: 'test',
-        action: 'approve'
-      }
-    });
-    
-    fetchApi({
-      url: 'auth/process',
-      payload: this.state.formData,
-      method: 'POST',
-    })
-      .then(response => {
-        console.log('Response-->', response);
-        this.props.navigation.navigate('AuthList', { userName: this.props.userName});
-      })
-      .catch(e => {
-        this.setState({
-          loading: false,
-          errors: true,
-        });
-    });
-    */
-    
+      this.props.privateKey,
+      this.props.navigation.state.params.request_id);
+    this.props.navigation.navigate('AccountHome');
   }
 
   onReject = async () => {
-    return;
     await this.setState({
       formData: {
         request_id: this.props.request_id,
-        sig: 'test',
         action: 'reject'
       }
     });
@@ -114,6 +87,7 @@ class AuthApprovalScreen extends Component {
     })
       .then(response => {
         console.log('Response-->', response);
+        this.props.navigation.navigate('AccountHome');
       })
       .catch(e => {
         this.setState({
@@ -147,8 +121,21 @@ class AuthApprovalScreen extends Component {
       valueUnit = 'ETH';
     }
     let authApprovalInner;
+    let toAddress;
+    
+    if (String(this.state.to).length < 8){
+      toAddress = <Text style={styles.toAddress}>{String(this.state.to)}</Text>
+    }else{
+      toAddress = (
+        <View>
+          <Text style={styles.toAddress}>{this.ellipsisHeader(this.state.to)}</Text>
+          <Text style={styles.toAddress}>...</Text>
+          <Text style={styles.toAddress}>{this.ellipsisTail(this.state.to)}</Text>
+      </View>
+    );
+    }
 
-    if (this.state.type === 'customTransaction'){
+    if (this.state.requestType === 'customTransaction'){
       authApprovalInner = (
         <View>
         <Text style={styles.explanation}>You are going to send</Text>
@@ -161,9 +148,7 @@ class AuthApprovalScreen extends Component {
                 <Text style={styles.toString}>will be sent to</Text>
               </View>
               <View style={{marginTop: 7, flexDirection: 'row'}}>
-                <Text style={styles.toAddress}>{this.ellipsisHeader(this.state.to)}</Text>
-                <Text style={styles.toAddress}>...</Text>
-                <Text style={styles.toAddress}>{this.ellipsisTail(this.state.to)}</Text>
+                {toAddress}
               </View>
             </View>
           </View>
@@ -171,7 +156,7 @@ class AuthApprovalScreen extends Component {
         </View>
       );
       }
-    if (this.state.type === 'appTransaction'){
+    if (this.state.requestType === 'appTransaction'){
       authApprovalInner = (
         <View>
         <Text style={styles.explanation}>Wants to send a transaction</Text>
@@ -196,7 +181,7 @@ class AuthApprovalScreen extends Component {
         </View>
       );
     }
-  if (this.state.type === 'appSession'){
+  if (this.state.requestType === 'appSession'){
       authApprovalInner = (
         <View>
         <Text style={styles.explanation}> Is Requesting a</Text>
@@ -208,6 +193,11 @@ class AuthApprovalScreen extends Component {
         </View>
       );
     }
+    
+  let transactionTitle = 'Transaction Request';
+  if (this.state.app_name){
+    transactionTitle = this.state.app_name;
+  }
 
     console.log('User name-->', this.props.userName);
     return (
@@ -218,7 +208,7 @@ class AuthApprovalScreen extends Component {
             <Image style={styles.image} resizeMode="contain" source={require('../assets/Logo_orange_small.png')} />
           </View>
           <View style={styles.infoContainer}>
-            <Text style={styles.title}>{this.state.app_name}</Text>
+            <Text style={styles.title}>{transactionTitle}</Text>
             {authApprovalInner}
           </View>
           <View style={styles.bothButtonContainer}>

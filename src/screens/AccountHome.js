@@ -49,7 +49,9 @@ class AccountHomeScreen extends Component {
     
     let username = this.props.userName;
     let navigation = this.props.navigation;
-     if (!serverPoll){
+     if (serverPoll){
+       console.log('server poll interval already exists. Not creating.');
+     }else{
        console.log('setting server poll interval');
        serverPoll = setInterval(function(){
           pollServer(username, navigation);
@@ -59,7 +61,7 @@ class AccountHomeScreen extends Component {
 
 
     fetchApi({
-      url: 'auth/list',
+      url: 'account',
       payload: {
         'username': this.props.userName,
       },
@@ -103,8 +105,8 @@ class AccountHomeScreen extends Component {
   componentWillUnmount() {
     
     if (serverPoll){
-      console.log('clearing poll interval');
-      clearInterval(serverPoll);
+      console.log('temporarily not clearing poll interval');
+      //clearInterval(serverPoll);
     }
   }
 

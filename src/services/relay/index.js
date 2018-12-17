@@ -7,7 +7,7 @@ import { fetchApi } from '../../services/api/index';
 import { sign, getWallet, getTxParams } from '../../libraries/web3util';
 
 
-const relaySignedRequest = (action, params, username, privateKey) => {
+const relaySignedRequest = (action, params, username, privateKey, requestId) => {
 
 
       params['action'] = action;
@@ -20,13 +20,15 @@ const relaySignedRequest = (action, params, username, privateKey) => {
 
       console.log('signature: ' + signature);
 
+      // TODO: "request_id" 
       fetchApi({
         url: 'relay',
         body: {
           action: action,
           signature: signature,
           params: txParams,
-          username: username
+          username: username,
+          request_id: requestId
         },
         method: 'POST',
       })

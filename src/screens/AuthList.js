@@ -50,8 +50,8 @@ class AuthListScreen extends Component {
 			console.log('Response-->', response);
 			this.setState({
 				isLoading: false,
-				authList: response.sessions,
-				filteredAuthList: response.sessions,
+				authList: response.requests,
+				filteredAuthList: response.requests,
 			})
 		})
 		.catch(e => {
