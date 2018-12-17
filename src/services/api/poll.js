@@ -25,6 +25,11 @@ const pollServer = (username, navigation, pollParams) => {
 
 const pollServerRequest = (username, navigation, pollParams) => {
   
+  if (navigation.state.routeName == 'AuthApproval'){
+    console.log('not checking for auth requests, AuthApproval already open');
+    return;
+  }
+  
   let pollPayload = {
     username: username
   };

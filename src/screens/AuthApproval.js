@@ -28,6 +28,7 @@ class AuthApprovalScreen extends Component {
       app_url: null,
       to: null,
       type: null,
+      isProcessed: false
     }
   }
 
@@ -42,8 +43,7 @@ class AuthApprovalScreen extends Component {
       to: request.to,
       requestType: request.type
     });
-    if (request.type == 'customTransaction'){
-      console.log('is a custom transaction', this.state.type);
+    if (request.type === 'customTransaction' || request.type === 'appTransaction'){
       await this.setState({
           txParams: {
             nonce: request.nonce,
@@ -53,41 +53,55 @@ class AuthApprovalScreen extends Component {
           }
         });
     }
+    let appUrl = 'Unknown URL'
+    if (request.app.url){
+      appUrl = 'https://' + request.app.url;
+    }
     if (request.type == 'appTransaction'){
       await this.setState({
-          app_name: request.app.name,
+          app_name: request.app.name || 'App',
           icon_url: request.app.icon_url,
-          app_url: 'https://' + request.app.url,
+          app_url: appUrl,
         });
     }
 }
 
-  onApprove = () => { // async 
+  onApprove = async () => { // 
     console.log('onApprove');
-    // TODO - include app request ID 
+    this.setState({
+      isProcessed: 'Approved'
+    });
     relaySignedRequest('sendTransaction', this.state.txParams,
       this.props.userName,
       this.props.privateKey,
       this.props.navigation.state.params.request_id);
-    this.props.navigation.navigate('AccountHome');
-  }
+    const nav = this.props.navigation;
+    setTimeout(function(){
+      nav.navigate('AccountHome');
+  }, 2000);
+  
+}
 
   onReject = async () => {
+    
     await this.setState({
-      formData: {
-        request_id: this.props.request_id,
-        action: 'reject'
-      }
+      isProcessed: 'Rejected'
     });
 
     fetchApi({
       url: 'auth/process',
-      payload: this.state.formData,
+      payload: {
+        request_id: this.props.request_id,
+        action: 'reject'
+      },
       method: 'POST',
     })
       .then(response => {
         console.log('Response-->', response);
-        this.props.navigation.navigate('AccountHome');
+        const nav = this.props.navigation;
+        setTimeout(function(){
+          nav.navigate('AccountHome');
+      }, 2000);
       })
       .catch(e => {
         this.setState({
@@ -196,11 +210,32 @@ class AuthApprovalScreen extends Component {
   if (this.state.app_name){
     transactionTitle = this.state.app_name;
   }
+  
+  let processOptions = (
+    <View style={styles.bothButtonContainer}>
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={this.onApprove}>
+        <Text style={styles.buttonText}>Approve Request</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={this.onReject}>
+        <Text style={styles.buttonText}>Reject Request</Text>
+      </TouchableOpacity>
+    </View>
+  );
+  
+  if (this.state.isProcessed){
+    processOptions = (<View style={styles.bothButtonContainer}>
+      <Text style={styles.explanation}>{this.state.isProcessed}...</Text>
+    </View>);
+  }
 
     console.log('User name-->', this.props.userName);
     return (
       <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
-        <Header left="back" right={false} backTo="Help" />
+        <Header left="back" right={false} backTo="AccountHome" />
         <View style={styles.content}>
           <View style={styles.logoContainer}>
             <Image style={styles.image} resizeMode="contain" source={require('../assets/Logo_orange_small.png')} />
@@ -209,18 +244,7 @@ class AuthApprovalScreen extends Component {
             <Text style={styles.title}>{transactionTitle}</Text>
             {authApprovalInner}
           </View>
-          <View style={styles.bothButtonContainer}>
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.onApprove}>
-              <Text style={styles.buttonText}>Approve Request</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.onReject}>
-              <Text style={styles.buttonText}>Reject Request</Text>
-            </TouchableOpacity>
-          </View>
+              {processOptions}
         </View>
       </LinearGradient>
     )

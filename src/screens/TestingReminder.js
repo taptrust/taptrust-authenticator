@@ -65,7 +65,7 @@ class TestingReminderScreen extends Component {
             </View>
             <View style={{ marginTop: 40 }}>
               <Text style={styles.text}>This beta app version uses the</Text>
-              <Text style={styles.text}>Ethereum Rinkeby network</Text>
+              <Text style={styles.text}>Ethereum Ropsten network</Text>
               <Text style={styles.text}>and is only meant for testing.</Text>
               <Text style={styles.text}>Do not send funds and tokens</Text>
               <Text style={styles.text}>from the mainnet network.</Text>

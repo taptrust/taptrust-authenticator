@@ -3,7 +3,7 @@ const Web3 = require('web3');
 const web3 = new Web3(Web3.givenProvider);
 
 const weiToEth = function(wei) {
-	return web3.utils.fromWei(wei.toString(), 'ether');
+	return parseFloat(web3.utils.fromWei(wei.toString(), 'ether')).toFixed(4);
 }
 
 const ethToWei = function(eth) {
