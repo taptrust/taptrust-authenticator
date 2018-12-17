@@ -53,8 +53,10 @@ class PairApprovalScreen extends Component {
         app_url: 'https://www.example.com',
         recipient: '0x0eEB66338d9672Ba67a4342ECE388E4026f9b43d',
         type: 'transaction',
-    })
-    const emoji = emojiHash(this.props.token);
+    });
+    //alert(this.props.navigation.state.params.token);
+    
+    const emoji = emojiHash(this.props.userName, this.props.navigation.state.params.token);
     console.log(emoji);
     this.setState({
         emojiString: emoji,
@@ -62,22 +64,19 @@ class PairApprovalScreen extends Component {
   }
 
   onApprove = async () => {
-    await this.setState({
-      formData: {
-        username: this.props.userName,
-        token: this.props.token,
-        action: 'approve'
-      }
-    });
 
     fetchApi({
       url: 'pair/process',
-      payload: this.state.formData,
+      payload: {
+        username: this.props.userName,
+        token: this.props.navigation.state.params.token,
+        action: 'approve'
+      },
       method: 'post',
     })
       .then(response => {
         console.log('Response-->', response);
-        this.props.navigation.navigate('AuthHome', { userName: this.props.userName});
+        this.props.navigation.navigate('AccountHome'); 
       })
       .catch(e => {
         this.setState({
@@ -88,21 +87,18 @@ class PairApprovalScreen extends Component {
   }
 
   onReject = async () => {
-    await this.setState({
-        formData: {
-          username: this.props.userName,
-          token: this.props.token,
-          action: 'reject'
-        }
-    });
 
     fetchApi({
         url: 'pair/process',
-        payload: this.state.formData,
+        payload: {
+          username: this.props.userName,
+          token: this.props.navigation.state.params.token,
+          action: 'reject'
+        },
         method: 'post',
     })
       .then(response => {
-        this.props.navigation.navigate('AuthHome', { userName: this.props.userName});
+        this.props.navigation.navigate('AccountHome');
       })
       .catch(e => {
         this.setState({

@@ -154,6 +154,12 @@ class AccountHomeScreen extends Component {
                 [styles.tabText, {fontWeight: '700'}] : styles.tabText
               }>Items</Text>
               </TouchableOpacity>
+              <TouchableOpacity onPress={() =>this.select(3)} style={ this.state.tabSelected === 3 ?
+              [styles.tab, {borderBottomColor: 'white', borderBottomWidth: 3}] : styles.tab}>
+                <Text style={ this.state.tabSelected === 3 ?
+                [styles.tabText, {fontWeight: '700'}] : styles.tabText
+              }>Activity</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.tabInner}>
               {this.state.isLoading && <ActivityIndicator size="large" color="white"/>}

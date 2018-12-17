@@ -51,6 +51,15 @@ const pollServerRequest = (username, navigation, pollParams) => {
       
       saveRequest(request_id);
       navigation.navigate('AuthApproval', { request: request, request_id: request_id });
+      return;
+    }
+    
+    if(response.pairRequest) {
+      let token = response.pairRequest.token;
+      // let request = response.session.request;
+      saveRequest(token); // not a request ID 
+      navigation.navigate('PairApproval', { token: token });
+      return;
     }
 
   })

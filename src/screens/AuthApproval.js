@@ -128,9 +128,7 @@ class AuthApprovalScreen extends Component {
     }else{
       toAddress = (
         <View>
-          <Text style={styles.toAddress}>{this.ellipsisHeader(this.state.to)}</Text>
-          <Text style={styles.toAddress}>...</Text>
-          <Text style={styles.toAddress}>{this.ellipsisTail(this.state.to)}</Text>
+          <Text style={styles.toAddress}>{this.ellipsisHeader(this.state.to)}...{this.ellipsisTail(this.state.to)}</Text>
       </View>
     );
     }
