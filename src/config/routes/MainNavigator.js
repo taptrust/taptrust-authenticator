@@ -13,6 +13,7 @@ import VouchersScreen from '../../screens/Vouchers';
 import SecurityScreen from '../../screens/Security';
 import HelpScreen from '../../screens/Help';
 import AppBrowserScreen from '../../screens/AppBrowser';
+import SendPaymentScreen from '../../screens/SendPayment';
 import PairApprovalScreen from '../../screens/PairApproval';
 import TabsStack from './TabsStack';
 
@@ -42,6 +43,9 @@ const Drawer = createDrawerNavigator ({
   },
   Security: {
     screen: SecurityScreen
+  },
+  SendPayment: {
+    screen: SendPaymentScreen
   },
   PairApproval: {
       screen: PairApprovalScreen

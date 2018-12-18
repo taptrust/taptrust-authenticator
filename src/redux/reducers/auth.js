@@ -1,7 +1,7 @@
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 
-import { LOGIN, SAVE_REQUEST, LOGOUT } from '../actions/auth';
+import { LOGIN, SAVE_REQUEST, SAVE_PROFILE, LOGOUT } from '../actions/auth';
 
 // Initial state
 const initialState = {
@@ -33,6 +33,12 @@ const auth = (state = initialState, action) => {
                 userName: action.formData.formData.username,
                 privateKey: action.formData.privateKey,
                 randomFactors: randomFactors
+            };
+        case SAVE_PROFILE:
+            console.log('saving profile', action.profile);
+            return {
+                ...state,
+                profile: action.profile
             };
         case SAVE_REQUEST:
             console.log('Saving request_id');

@@ -47,7 +47,7 @@ class TokensList extends Component {
         <ScrollView style={{flex: 1}}>
                   {this.props.data.map((item, i) => {
                     return (
-                        <TokenItem item={item} key={i}/>
+                        <TokenItem item={item} key={i} selectItem={this.props.selectItem}/>
                     )})
                   }
         </ScrollView>

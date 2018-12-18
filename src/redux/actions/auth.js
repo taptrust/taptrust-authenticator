@@ -1,5 +1,6 @@
 export const LOGIN = 'LOGIN';
 export const SAVE_REQUEST = 'SAVE_REQUEST';
+export const SAVE_PROFILE = 'SAVE_PROFILE';
 export const LOGOUT = 'LOGOUT';
 
 export const login = (formData) => ({
@@ -16,6 +17,12 @@ export const saveRequest = (request_id) => ({
     type: SAVE_REQUEST,
     request_id
 >>>>>>> f4699a5... updates for transaction testing
+});
+
+
+export const saveProfile = (profile) => ({
+    type: SAVE_PROFILE,
+    profile
 });
 
 export const logout = () => ({

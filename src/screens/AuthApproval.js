@@ -53,17 +53,15 @@ class AuthApprovalScreen extends Component {
           }
         });
     }
-    let appUrl = 'Unknown URL'
-    if (request.app.url){
-      appUrl = 'https://' + request.app.url;
+
+    if (request.type === 'appTransaction' && (!request.app || !request.app.name)){
+      request.app = {
+        name: 'Unknown App',
+        icon_url: '',
+        app_url: 'Unknown URL'
+      }
     }
-    if (request.type == 'appTransaction'){
-      await this.setState({
-          app_name: request.app.name || 'App',
-          icon_url: request.app.icon_url,
-          app_url: appUrl,
-        });
-    }
+      await this.setState({request: request});
 }
 
   onApprove = async () => { // 
@@ -188,8 +186,8 @@ class AuthApprovalScreen extends Component {
             </View>
           </View>
           <Text style={styles.explanation}> Please check you are using the</Text>
-          <Text style={styles.explanation}> verified {this.state.app_name} hosted at </Text>
-          <Text style={styles.explanation_url}>{this.state.app_url}</Text>
+          <Text style={styles.explanation}> verified {this.state.request.app.name} hosted at </Text>
+          <Text style={styles.explanation_url}>{this.state.request.app.app_url}</Text>
         </View>
       );
     }

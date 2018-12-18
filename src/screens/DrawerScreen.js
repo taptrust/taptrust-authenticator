@@ -33,14 +33,19 @@ class AuthHomeScreen extends Component {
     return notReadyAlert('App Browser');
     //this.props.navigation.navigate('AppBrowser');
   }
+  
+  onExtension = () => {
+    //return notReadyAlert('App Browser');
+    this.props.navigation.navigate('AuthHome');
+  }
 
   onVouchers = () => {
     this.props.navigation.navigate('Vouchers');
   }
 
   onHelp = () => {
-    //return notReadyAlert('Support');
-    this.props.navigation.navigate('Help');
+    return notReadyAlert('Support');
+    //this.props.navigation.navigate('Help');
   }
 
   onSettings = () => {
@@ -80,6 +85,9 @@ class AuthHomeScreen extends Component {
 
             <TouchableOpacity style={styles.option} onPress={this.onApps}>
               <Text style={styles.text}>Browse Apps</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.option} onPress={this.onExtension}>
+              <Text style={styles.text}>Browser Extension</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.option} onPress={this.onSettings}>
               <Text style={styles.text}>Settings</Text>

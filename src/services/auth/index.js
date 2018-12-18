@@ -5,6 +5,7 @@ import { store } from '../../config/store';
 import {
 login as loginAction,
 saveRequest as saveRequestAction,
+saveProfile as saveProfileAction,
 logout as logoutAction,
 } from '../../redux/actions/auth';
 
@@ -23,6 +24,11 @@ const saveRequest = (request_id) => {
 >>>>>>> f4699a5... updates for transaction testing
 };
 
+const saveProfile = (profile) => {
+  store.dispatch(saveProfileAction(profile));
+};
+
+
 const logout = () => {
     store.dispatch(logoutAction());
 }
@@ -30,5 +36,6 @@ const logout = () => {
 export {
     login,
     saveRequest,
+    saveProfile,
     logout,
 };

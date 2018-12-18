@@ -22,15 +22,17 @@ class WalletHeader extends Component {
 
 
   render() {
-    const { balances, userName } = this.props;
+    const { balances, userName, showAddressModal } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.totalContainer}>
             <Text style={styles.totalText}>{balances.totalUSD}</Text>
         </View>
         <View style={styles.usernameContainer}>
+          <TouchableOpacity onPress={showAddressModal} >
           <Text style={styles.usernameText}>{userName}</Text>
           <Text style={styles.addressText}>{userName}.taptrust.eth</Text>
+          </TouchableOpacity>
         </View>
 
 

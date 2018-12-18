@@ -20,15 +20,16 @@ class TokenItem extends Component {
     super(props);
   }
 
-  selectItem = (item) => {
-    console.log('hhh', item);
-    /* this.props.navigation.navigate('AuthDetails', { item: item }); */
+  selectItem = () => {
+    this.props.selectItem(this.props.item);
   }
 
   render() {
     const { item, key } = this.props;
     return (
+        <TouchableOpacity onPress={this.selectItem}>
       <View style={styles.item} key={key}>
+    
         <View style={{flex: 1, flexDirection: 'row'}}>
           <View style={styles.icon}>
             <Image style={{ width: 40, height: 50 }} resizeMode="contain" source={{uri: item.iconUrl}}/>
@@ -47,6 +48,7 @@ class TokenItem extends Component {
         </View>
 
       </View>
+        </TouchableOpacity>
 )
   }
 }

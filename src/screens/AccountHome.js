@@ -5,9 +5,13 @@ import {
   View,
   Image,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Dimensions,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
+  TouchableHighlight,
+  Modal,
+  Clipboard
 } from 'react-native';
 
 import { LinearGradient } from 'expo';
@@ -20,8 +24,7 @@ import TokensList from '../components/Wallet/TokensList';
 import ItemsList from '../components/Wallet/ItemsList';
 import { pollServer } from '../services/api/poll';
 import { fetchApi } from '../services/api/index';
-import { saveRequest } from '../services/auth';
-
+import { saveRequest, saveProfile } from '../services/auth';
 const { width, height } = Dimensions.get('window');
 
 let serverPoll;
@@ -33,8 +36,10 @@ class AccountHomeScreen extends Component {
     this.state={
       isLoading: false,
       creditList: null,
+      contractAddress: null,
       tabSelected: 0,
       tokensList: false,
+      addressModalVisible: false, 
       itemsList: false,
       balances: {
           totalUSD: ''
@@ -84,17 +89,19 @@ class AccountHomeScreen extends Component {
       this.setState({
         isLoading: false,
         creditList: response.credits && response.credits,
+        contractAddress: response.profile.contractAddress,
         tokens: response.tokens && response.tokens,
         tokensList: tokensListValue,
         tabSelected: tabSelectedValue,
         items: response.items && response.items,
         itemsList: itemsListValue, // tokensList shown by default
         balances: response.balances && response.balances
-      })
+      });
+      saveProfile(response.profile);
       console.log('Request response-->', response);
     })
     .catch(e => {
-      console.log('error loading accounthome');
+      console.log('error loading accounthome', e);
         this.setState({
             isLoading: false,
             errors: true,
@@ -132,13 +139,27 @@ class AccountHomeScreen extends Component {
     }
     console.log(val);
   }
+  
+  selectItem = (item) => {
+    if (item.symbol === 'ETH'){
+      this.props.navigation.navigate('SendPayment', {contractAddress: this.state.contractAddress});
+    }
+  }
 
   render() {
+    
+    let addressModal = this.addressModal();
+    
     return (
+      
+      
       <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
+      
         <Header left="nav" right={false}/>
-        <WalletHeader balances={this.state.balances}/>
-
+        <WalletHeader balances={this.state.balances} showAddressModal={() => this.setModalVisible(true)}/>
+          <TouchableWithoutFeedback onPress={() => this.setModalVisible(false)}>
+          {addressModal}
+            </TouchableWithoutFeedback>
           <View style={styles.tabView}>
             <View style={styles.tabHeader}>
               <TouchableOpacity onPress={() => this.select(1)} style={ this.state.tabSelected === 1 ?
@@ -163,7 +184,7 @@ class AccountHomeScreen extends Component {
             </View>
             <View style={styles.tabInner}>
               {this.state.isLoading && <ActivityIndicator size="large" color="white"/>}
-              <TokensList data={this.state.tokensList}/>
+              <TokensList data={this.state.tokensList} selectItem={(item) => this.selectItem(item)}/>
               <ItemsList data={this.state.itemsList}/>
             </View>
           </View>
@@ -176,9 +197,49 @@ class AccountHomeScreen extends Component {
               </TouchableOpacity>
             </View>
           </View>
-
+        
       </LinearGradient>
+    
     )
+  }
+  async copyAddressToClipboard() {
+    this.setModalVisible(false);
+     await Clipboard.setString(this.state.contractAddress);
+  }  
+  setModalVisible(visible) {
+    this.setState({addressModalVisible: visible});
+  }
+  
+addressModal() {
+    return (<Modal
+  animationType="slide"
+  transparent={true}
+  visible={this.state.addressModalVisible}
+  onRequestClose={() => {
+    
+  }}
+  style={{height:100, alignItems: 'center'}}>
+
+    <View style={{height:250, marginTop: "40%", marginLeft: "5%", marginRight: "5%", borderRadius: 8,alignItems: 'center', backgroundColor: '#fcfcfc'}}>
+    
+    <View>
+      <Text style={{alignItems: 'center', fontSize: 20, padding: 10}}>Your contract address:</Text>
+      </View>
+        <View>
+      <Text style={{fontSize: 12, alignItems: 'center', padding: 10}}>{this.state.contractAddress}</Text>
+        </View>
+        <View style={{margin:20}}>
+      <TouchableOpacity style={styles.buttonContainer, {padding: 10, borderRadius: 8, backgroundColor:'#eee'}} onPress={() => {this.copyAddressToClipboard();}}>
+        <Text style={styles.buttonText}>Copy to Clipboard</Text>
+      </TouchableOpacity>
+        </View>
+        <View style={{margin:20}}>
+      <TouchableOpacity style={styles.buttonContainer, {padding: 10, borderRadius: 8, backgroundColor:'#eee'}} onPress={() => {this.setModalVisible(false);}}>
+        <Text style={styles.buttonText}>Close</Text>
+      </TouchableOpacity>
+        </View>
+  </View>
+</Modal>);
   }
 }
 
