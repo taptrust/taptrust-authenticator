@@ -6,6 +6,7 @@ import { PersistGate } from 'redux-persist/es/integration/react';
 import { store, persistor } from "./src/config/store";
 import SplashScreen from './src/screens/Splash';
 import Root from './src/Root';
+import { Toast } from 'react-native-redux-toast';
 
 class App extends Component {
 
@@ -15,6 +16,7 @@ class App extends Component {
                 <View style={{ flex: 1 }}>
                     <PersistGate persistor={persistor}>
                         <Root />
+                        <Toast messageStyle={{ color: 'white' }} />
                     </PersistGate>
                 </View>
             </Provider>

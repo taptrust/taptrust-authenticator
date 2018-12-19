@@ -5,9 +5,18 @@ import { Alert } from 'react-native'
 
 import { fetchApi } from '../../services/api/index';
 import { sign, getWallet, getTxParams } from '../../libraries/web3util';
+import { ToastActionsCreators } from 'react-native-redux-toast';
 
 
-const relaySignedRequest = (action, params, username, privateKey, requestId) => {
+
+function updateTxCompleted(isCompletedValue) {
+  return {
+    type: 'TX_COMPLETED',
+    isTxCompleted: isCompletedValue
+  }
+}
+
+const relaySignedRequest = (action, params, username, privateKey, requestId, dispatch, navigation) => {
 
 
       params['action'] = action;
@@ -19,7 +28,7 @@ const relaySignedRequest = (action, params, username, privateKey, requestId) => 
       const signature = sign(txParams, privateKey.toString('hex'));
 
       console.log('signature: ' + signature);
-
+try{
       // TODO: "request_id" 
       fetchApi({
         url: 'relay',
@@ -35,33 +44,29 @@ const relaySignedRequest = (action, params, username, privateKey, requestId) => 
         .then(response => {
           console.log('Response-->', response);
           if (response.error){
-            Alert.alert(
-              'Error',
-              response.error,
-              [
-              {text: 'OK', onPress: () => console.log('Error relaying message')},
-              ],
-              { cancelable: false }
-            );
+            if (dispatch){
+              dispatch(ToastActionsCreators.displayError('Error completing transaction: ' + response.error));
+            }
+            
             return;
           }else{
-            Alert.alert(
-              'Success',
-              response.message,
-              [
-              {text: 'OK', onPress: () => console.log('Successfully relayed message')},
-              ],
-              { cancelable: false }
-            );
+            if (dispatch){
+              dispatch(ToastActionsCreators.displayInfo('Transaction successfully completed'));
+              //navigation.navigate('AccountHome', {forceRefresh: true});
+              dispatch(updateTxCompleted(true));
+            }
+            
           }
         })
         .catch(e => {
           console.log(e);
         });
-
+      }catch(e){
+        dispatch(ToastActionsCreators.displayError('Error sending transaction.'));
+      }
 
 }
 
 export {
-    relaySignedRequest
+    relaySignedRequest, updateTxCompleted
 };

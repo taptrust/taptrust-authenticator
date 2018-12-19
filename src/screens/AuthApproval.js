@@ -16,6 +16,7 @@ import Header from '../components/Header';
 import { fetchApi } from '../services/api/index';
 import { relaySignedRequest } from "../services/relay";
 import { weiToEth } from '../libraries/web3util';
+import { ToastActionsCreators } from 'react-native-redux-toast';
 
 class AuthApprovalScreen extends Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class AuthApprovalScreen extends Component {
 
 
   const request = this.props.navigation.state.params.request;
-  console.log('Request-->', request);
+  console.log('Requested transaction-->', request);
   await this.setState({
       value: request.value,
       ethValue: weiToEth(request.value),
@@ -66,18 +67,27 @@ class AuthApprovalScreen extends Component {
 
   onApprove = async () => { // 
     console.log('onApprove');
-    this.setState({
-      isProcessed: 'Approved'
-    });
-    relaySignedRequest('sendTransaction', this.state.txParams,
+    try {
+      relaySignedRequest('sendTransaction', this.state.txParams,
       this.props.userName,
       this.props.privateKey,
-      this.props.navigation.state.params.request_id);
-    const nav = this.props.navigation;
-    setTimeout(function(){
-      nav.navigate('AccountHome');
-  }, 2000);
-  
+      this.props.navigation.state.params.request_id,
+      this.props.dispatch,
+      this.props.navigation);
+      
+      this.setState({
+        isProcessed: 'Approved'
+      });
+      this.props.dispatch(ToastActionsCreators.displayInfo('The transaction request has been approved and should complete within one minute.', 2500));
+      const nav = this.props.navigation;
+      setTimeout(function(){
+        nav.navigate('AccountHome');
+    }, 2000);
+    
+    }catch(e){
+      this.props.dispatch(ToastActionsCreators.displayError('Unable to send transaction: ' + e));
+    }
+
 }
 
   onReject = async () => {
@@ -96,19 +106,37 @@ class AuthApprovalScreen extends Component {
     })
       .then(response => {
         console.log('Response-->', response);
-        const nav = this.props.navigation;
-        setTimeout(function(){
-          nav.navigate('AccountHome');
-      }, 2000);
+        if (response.status === 200 || response.status === 202) {
+          this.setState({
+            loading: false
+          });
+          const nav = this.props.navigation;
+          this.props.dispatch(ToastActionsCreators.displayInfo('The transaction request has been successfully rejected', 2500));
+          setTimeout(function(){
+              nav.navigate('AccountHome');
+            }, 2000);
+        }else{
+          this.handleError(response.error || 'Unknown Server Error');
+        }
+
       })
       .catch(e => {
-        this.setState({
-          loading: false,
-          errors: true,
-        });
+        this.handleError(e);
       });
   }
 
+  handleError = (errorMessage) => {
+    const nav = this.props.navigation;
+    this.props.dispatch(ToastActionsCreators.displayError(errorMessage, 5000));
+    setTimeout(function(){
+        nav.navigate('AccountHome');
+      }, 2000);
+    this.setState({
+      loading: false,
+      errors: true,
+    });
+  }
+  
   ellipsisHeader = (str) => {
 		let head = str.substring(0,4);
 		return head;

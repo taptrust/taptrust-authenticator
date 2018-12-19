@@ -25,6 +25,8 @@ import ItemsList from '../components/Wallet/ItemsList';
 import { pollServer } from '../services/api/poll';
 import { fetchApi } from '../services/api/index';
 import { saveRequest, saveProfile } from '../services/auth';
+import { updateTxCompleted } from '../services/relay';
+import { store } from '../config/store';
 const { width, height } = Dimensions.get('window');
 
 let serverPoll;
@@ -48,28 +50,53 @@ class AccountHomeScreen extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      isLoading: true,
-    });
-    
-    let username = this.props.userName;
-    let navigation = this.props.navigation;
+
      if (serverPoll){
        console.log('server poll interval already exists. Not creating.');
      }else{
        console.log('setting server poll interval');
+       const username = this.props.userName;
+       const nav = this.props.navigation;
        serverPoll = setInterval(function(){
-          pollServer(username, navigation);
+          pollServer(username, nav);
       }, 10000);
      }
 
 
+    this.getAccountProfile();
+    const getProfile = this.getAccountProfile;
+    const accountHome = this; 
+  /*  this.storeUnsubscribe = store.subscribe(function() {
+      //console.log('store_0 has been updated. Latest store state:', store_0.getState());
+      const state = store.getState();
+      console.log('is tx completed', state.app.isTxCompleted);
+      
+      if (state.app.isTxCompleted){
+        let gP = getProfile.bind(accountHome);
+        //gP(true);
+        updateTxCompleted(false);
+      }
+      
+    }); */
+    
+  }
+  
+  getAccountProfile(forceRefresh) {
+    this.setState({
+      isLoading: true,
+    });
+
+     let accountPayload = {
+       'username': this.props.userName,
+     }
+     
+     if (forceRefresh){
+       accountPayload['forceRefresh'] = true;
+     }
 
     fetchApi({
       url: 'account',
-      payload: {
-        'username': this.props.userName,
-      },
+      payload: accountPayload,
       method: 'POST'
     })
     .then(response => {
@@ -114,6 +141,10 @@ class AccountHomeScreen extends Component {
     if (serverPoll){
       console.log('temporarily not clearing poll interval');
       //clearInterval(serverPoll);
+    }
+    
+    if (this.storeUnsubscribe){
+      this.storeUnsubscribe();
     }
   }
 

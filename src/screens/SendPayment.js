@@ -21,6 +21,7 @@ import { fetchApi } from '../services/api/index';
 import { saveRequest } from '../services/auth';
 import { relaySignedRequest } from "../services/relay";
 import { pollServer } from '../services/api/poll';
+import { ToastActionsCreators } from 'react-native-redux-toast';
 const { width, height } = Dimensions.get('window');
 
 class SendPaymentScreen extends Component {
@@ -79,7 +80,7 @@ class SendPaymentScreen extends Component {
     this.setState({
       isAddressModalOpen: false,
       method: false,
-      isRecipientAddressShown: false,
+      isRecipientAddressShown: true,
     });
   }
   handleEdit = () => {
@@ -118,6 +119,7 @@ class SendPaymentScreen extends Component {
 
   usdAmountChange = (value) => {
     const eth = this.usdToETH(value);
+    if (isNaN(eth)){ return; }
     this.setState({
       usdAmount: String(value),
       ethAmount: String(eth),
@@ -126,6 +128,7 @@ class SendPaymentScreen extends Component {
 
   ethAmountChange = (value) => {
     const usd = this.ethToUSD(value);
+    if (isNaN(usd)){ return; }
     this.setState({
       usdAmount: String(usd),
       ethAmount: String(value),
@@ -155,6 +158,14 @@ class SendPaymentScreen extends Component {
       method: 'POST',
     })
       .then(response => {
+        this.setState({
+          isLoading: false,
+        });
+        if (response.error) {
+           this.props.dispatch(ToastActionsCreators.displayError(response.error, 2500));
+           return;
+        }
+
         console.log('Response-->', response);
         this.setState({
           isLoading: false,
@@ -164,6 +175,8 @@ class SendPaymentScreen extends Component {
         request.id = request_id;
       
         saveRequest(request_id);
+        
+        this.props.dispatch(ToastActionsCreators.displayInfo('Approve the request to send this transaction', 2500));
         this.props.navigation.navigate('AuthApproval', { request: request, request_id: request_id });
       });
       

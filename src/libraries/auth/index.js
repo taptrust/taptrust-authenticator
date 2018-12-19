@@ -7,7 +7,8 @@ let minFactorValue = 1000;
 let maxFactorValue = 5000;
 
 const generateSeed = (username, password, randomFactor) => {
-    return seedPrefix + username + '-' + password + '-' + randomFactor;
+    // username is not case sensitive, password is. 
+    return seedPrefix + String(username).toLowerCase() + '-' + password + '-' + randomFactor;
 }
 
 const getRandomFactor = () => {

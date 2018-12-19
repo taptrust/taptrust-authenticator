@@ -52,6 +52,10 @@ const pollServerRequest = (username, navigation, pollParams) => {
       // TODO: probably load different views depending on tx vs. authRequest 
       let request_id = response.authRequest.request_id;
       let request = response.authRequest.params;
+      if (!request.nonce){
+        console.error('No nonce returned for request', request);
+        return;
+      }
       request.id = request_id;
       
       saveRequest(request_id);

@@ -15,6 +15,7 @@ const initialState = {
 
 // Reducer
 const auth = (state = initialState, action) => {
+  console.log('auth Reducer was called with action ', action);
     switch (action.type) {
         case LOGIN:
             let randomFactors;
