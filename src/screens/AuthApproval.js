@@ -22,14 +22,12 @@ class AuthApprovalScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      app_name: null,
       value: null,
-      icon_url: null,
       hours_left: null,
-      app_url: null,
       to: null,
       type: null,
-      isProcessed: false
+      isProcessed: false,
+      request: null
     }
   }
 
@@ -55,14 +53,7 @@ class AuthApprovalScreen extends Component {
         });
     }
 
-    if (request.type === 'appTransaction' && (!request.app || !request.app.name)){
-      request.app = {
-        name: 'Unknown App',
-        icon_url: '',
-        app_url: 'Unknown URL'
-      }
-    }
-      await this.setState({request: request});
+    await this.setState({request: request});
 }
 
   onApprove = async () => { // 
@@ -194,6 +185,16 @@ class AuthApprovalScreen extends Component {
         </View>
       );
       }
+      let appInfo = '';
+      if (this.state.request && this.state.request.app && this.state.request.app.name){
+        appInfo = (
+          <View>
+          <Text style={styles.explanation}> Please check you are using the</Text>
+          <Text style={styles.explanation}> verified {this.state.request.app.name} hosted at </Text>
+          <Text style={styles.explanation_url}>{this.state.request.app.appUrl}</Text>
+          </View>
+        ); 
+      }
     if (this.state.requestType === 'appTransaction'){
       authApprovalInner = (
         <View>
@@ -213,9 +214,7 @@ class AuthApprovalScreen extends Component {
               </View>
             </View>
           </View>
-          <Text style={styles.explanation}> Please check you are using the</Text>
-          <Text style={styles.explanation}> verified {this.state.request.app.name} hosted at </Text>
-          <Text style={styles.explanation_url}>{this.state.request.app.app_url}</Text>
+          {appInfo}
         </View>
       );
     }

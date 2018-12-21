@@ -12,7 +12,7 @@ const pollServer = (username, navigation, pollParams) => {
   }
   
   
-  // TODO: do not poll if app is not in foreground 
+  // TODO: do not poll if app is not in foreground or if user logged out 
   
   try {
       pollServerRequest(username, navigation, pollParams);

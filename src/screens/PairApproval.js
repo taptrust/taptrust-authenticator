@@ -24,7 +24,7 @@ class PairApprovalScreen extends Component {
       eth_amount: 0,
       icon_url: "../assets/0x-icon.png",
       hours_left: 0,
-      app_url: 'https://etheroll.com/',
+      appUrl: 'https://etheroll.com/',
       recipient: null,
       type: null,
       emojiString: ''
@@ -41,7 +41,7 @@ class PairApprovalScreen extends Component {
       eth_amount: request.value,
       icon_url: request.app.icon_url,
       hours_left: !request.duration ? 0 : request.duration,
-      app_url: 'https://' + request.app.url,
+      appUrl: 'https://' + request.app.url,
       recipient: request.recipient,
       type: request.type,
     }) */
@@ -50,7 +50,7 @@ class PairApprovalScreen extends Component {
         eth_amount: '0.01',
         icon_url: "../assets/0x-icon.png",
         hours_left: 0,
-        app_url: 'https://www.example.com',
+        appUrl: 'https://www.example.com',
         recipient: '0x0eEB66338d9672Ba67a4342ECE388E4026f9b43d',
         type: 'transaction',
     });

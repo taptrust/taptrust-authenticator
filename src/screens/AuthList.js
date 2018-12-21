@@ -157,7 +157,7 @@ class AuthListScreen extends Component {
 											<View style={{flex: 1, flexDirection: 'row'}}>
 												<View style={{ width: 45, height: 45, borderRadius: 50, backgroundColor: 'white'}}></View>
 												<View style={styles.content}>
-													<Text style={styles.name}>{item.app_url}</Text>
+													<Text style={styles.name}>{item.appUrl}</Text>
 													<Text style={styles.date}>{_date + ' / ' + time}</Text>
 												</View>
 											</View>

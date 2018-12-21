@@ -23,7 +23,7 @@ class AuthDetailsScreen extends Component {
       ethAmount: 0.5,
       logo_url: "../assets/0x-icon.png",
       hoursLeft: 24,
-      app_url: 'https://etheroll.com/',
+      appUrl: 'https://etheroll.com/',
       item: {}
     }
   }

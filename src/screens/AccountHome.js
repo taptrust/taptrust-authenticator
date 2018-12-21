@@ -139,8 +139,9 @@ class AccountHomeScreen extends Component {
   componentWillUnmount() {
     
     if (serverPoll){
-      console.log('temporarily not clearing poll interval');
-      //clearInterval(serverPoll);
+      console.log('clearing poll interval');
+      clearInterval(serverPoll);
+      serverPoll = null;
     }
     
     if (this.storeUnsubscribe){
