@@ -37,6 +37,7 @@ class AccountHomeScreen extends Component {
 
     this.state={
       isLoading: false,
+      pendingTransaction: false,
       creditList: null,
       contractAddress: null,
       tabSelected: 0,
@@ -63,21 +64,36 @@ class AccountHomeScreen extends Component {
      }
 
 
-    this.getAccountProfile();
+    this.getAccountProfile(false);
     const getProfile = this.getAccountProfile;
     const accountHome = this; 
-  /*  this.storeUnsubscribe = store.subscribe(function() {
+    const isPending = this.props.navigation.getParam('pendingTransaction',false);
+    const requestId = this.props.navigation.getParam('requestId',false);
+
+    if (isPending){
+      this.setState({
+        pendingTransaction: true,
+      });
+    }
+    this.storeUnsubscribe = store.subscribe(function() {
       //console.log('store_0 has been updated. Latest store state:', store_0.getState());
       const state = store.getState();
-      console.log('is tx completed', state.app.isTxCompleted);
-      
-      if (state.app.isTxCompleted){
-        let gP = getProfile.bind(accountHome);
-        //gP(true);
-        updateTxCompleted(false);
+
+      if (state.app.isTxCompleted == requestId){
+      console.log('tx is completed');
+        accountHome.storeUnsubscribe();
+        this.refreshTimeout = setTimeout(function(){
+          let gP = getProfile.bind(accountHome);
+          gP(true);
+          updateTxCompleted(false);
+          accountHome.setState({
+            pendingTransaction: false,
+          });  
+        }, 5000); // increase if etherscan takes longer to update balance 
+
       }
       
-    }); */
+    }); 
     
   }
   
@@ -92,6 +108,7 @@ class AccountHomeScreen extends Component {
      
      if (forceRefresh){
        accountPayload['forceRefresh'] = true;
+       console.log("force refreshing profile");
      }
 
     fetchApi({
@@ -143,6 +160,9 @@ class AccountHomeScreen extends Component {
       clearInterval(serverPoll);
       serverPoll = null;
     }
+    if (this.refreshTimeout){
+      clearTimeout(this.refreshTimeout);
+    }
     
     if (this.storeUnsubscribe){
       this.storeUnsubscribe();
@@ -182,6 +202,15 @@ class AccountHomeScreen extends Component {
     
     let addressModal = this.addressModal();
     
+    let statusInfo = '';
+    if (this.state.pendingTransaction){
+      statusInfo = (
+        <View style={{justifyContent: 'space-around', width:'45%', marginLeft: '27%', marginTop:-15, marginBottom: 15, flexDirection: 'row'}}>
+        <Text style={{color: '#ddd', flexDirection: 'row'}}>Pending transaction...</Text> <ActivityIndicator style={{flexDirection: 'row', marginLeft: 5}} size="small" color="white"/>
+        </View>
+      )
+    }
+    
     return (
       
       
@@ -192,6 +221,7 @@ class AccountHomeScreen extends Component {
           <TouchableWithoutFeedback onPress={() => this.setModalVisible(false)}>
           {addressModal}
             </TouchableWithoutFeedback>
+          {statusInfo}
           <View style={styles.tabView}>
             <View style={styles.tabHeader}>
               <TouchableOpacity onPress={() => this.select(1)} style={ this.state.tabSelected === 1 ?

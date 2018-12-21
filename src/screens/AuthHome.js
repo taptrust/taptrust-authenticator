@@ -31,7 +31,8 @@ class AuthHomeScreen extends Component {
 			this.setState({
 					username: this.props.userName
 			})
-			fetchApi({
+			/*
+      fetchApi({
 					url: 'auth/request',
 					payload: {
 							'username': this.props.userName,
@@ -50,6 +51,7 @@ class AuthHomeScreen extends Component {
 							errors: true,
 					});
 			});
+      */
 
 			// var timerId = setInterval( () => {
 			//     console.log('Timer');
@@ -85,30 +87,11 @@ class AuthHomeScreen extends Component {
 
 	}
 
-	reFresh = () => {
-		try {
-			fetchApi({
-				url: 'auth/get',
-				payload: {
-					username: this.props.userName
-				},
-				method: 'post',
-		})
-		.then(response => {
-			console.log('Timer Response-->', response);
-<<<<<<< HEAD
-			if(response.pairRequest) {
-				let token = response.pairRequest.token;
-				// let request = response.session.request;
-				saveSession(token);
-				this.props.navigation.navigate('PairApproval', { token: token });
-=======
 			if(response.session) {
 				let request_id = response.session.request_id;
 				let request = response.session.request;
 				saveRequest(request_id);
 				this.props.navigation.navigate('AuthApproval', { request: request });
->>>>>>> f4699a5... updates for transaction testing
 			}
 			this.setState({
 				loading: false,
@@ -141,7 +124,7 @@ class AuthHomeScreen extends Component {
 								<Text style={styles.explanationBold}>browser extensions:</Text>
 							</View>
               <View style={{ alignItems: 'center', marginTop: 50 }}>
-              <TouchableOpacity style={styles.buttonContainer} onPress={this.reFresh}>
+              <TouchableOpacity style={styles.buttonContainer} >
               <Image style={styles.buttonImage}
                 resizeMethod={'resize'}
                 source={require('../assets/Chrome.png')}

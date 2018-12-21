@@ -53,7 +53,7 @@ try{
             if (dispatch){
               dispatch(ToastActionsCreators.displayInfo('Transaction successfully completed'));
               //navigation.navigate('AccountHome', {forceRefresh: true});
-              dispatch(updateTxCompleted(true));
+              dispatch(updateTxCompleted(requestId));
             }
             
           }

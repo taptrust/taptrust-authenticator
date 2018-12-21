@@ -58,11 +58,12 @@ class AuthApprovalScreen extends Component {
 
   onApprove = async () => { // 
     console.log('onApprove');
+    const requestId = this.props.navigation.state.params.request_id;
     try {
       relaySignedRequest('sendTransaction', this.state.txParams,
       this.props.userName,
       this.props.privateKey,
-      this.props.navigation.state.params.request_id,
+      requestId,
       this.props.dispatch,
       this.props.navigation);
       
@@ -72,7 +73,8 @@ class AuthApprovalScreen extends Component {
       this.props.dispatch(ToastActionsCreators.displayInfo('The transaction request has been approved and should complete within one minute.', 2500));
       const nav = this.props.navigation;
       setTimeout(function(){
-        nav.navigate('AccountHome');
+        nav.navigate('AccountHome', {pendingTransaction: true, 
+          requestId: requestId});
     }, 2000);
     
     }catch(e){
