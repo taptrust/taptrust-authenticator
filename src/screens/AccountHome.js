@@ -21,29 +21,39 @@ import Header from '../components/Header';
 
 import WalletHeader from '../components/Wallet/WalletHeader';
 import TokensList from '../components/Wallet/TokensList';
+import ActivityList from '../components/Wallet/ActivityList';
 import ItemsList from '../components/Wallet/ItemsList';
 import { pollServer } from '../services/api/poll';
 import { fetchApi } from '../services/api/index';
 import { saveRequest, saveProfile } from '../services/auth';
 import { updateTxCompleted } from '../services/relay';
 import { store } from '../config/store';
+import { ToastActionsCreators } from 'react-native-redux-toast';
 const { width, height } = Dimensions.get('window');
 
-let serverPoll;
+
 
 class AccountHomeScreen extends Component {
   constructor(props) {
     super(props);
 
+    this.requestPoll = null; 
+    this.profilePoll = null;
+    this.profilePollCount = 0;
+    
     this.state={
       isLoading: false,
       pendingTransaction: false,
+      creatingAccount: false,
       creditList: null,
       contractAddress: null,
       tabSelected: 0,
       tokensList: false,
-      addressModalVisible: false, 
       itemsList: false,
+      activityList: false,
+      error: null,
+      addressModalVisible: false, 
+      
       balances: {
           totalUSD: ''
       }
@@ -52,13 +62,13 @@ class AccountHomeScreen extends Component {
 
   componentDidMount() {
 
-     if (serverPoll){
+     if (this.requestPoll){
        console.log('server poll interval already exists. Not creating.');
      }else{
        console.log('setting server poll interval');
        const username = this.props.userName;
        const nav = this.props.navigation;
-       serverPoll = setInterval(function(){
+       this.requestPoll = setInterval(function(){
           pollServer(username, nav);
       }, 10000);
      }
@@ -98,9 +108,11 @@ class AccountHomeScreen extends Component {
   }
   
   getAccountProfile(forceRefresh) {
-    this.setState({
+    if (!this.profilePoll){
+      this.setState({
       isLoading: true,
     });
+  }
 
      let accountPayload = {
        'username': this.props.userName,
@@ -117,30 +129,86 @@ class AccountHomeScreen extends Component {
       method: 'POST'
     })
     .then(response => {
+
+      
+      if (response.error){
+        return this.setState({
+            isLoading: false,
+            error: 'Error \n\n ' + response.error
+        });
+      }
+      
       let tabSelectedValue;
       let itemsListValue;
       let tokensListValue;
+      let activityListValue;
+
+      tabSelectedValue = 1;
+      itemsListValue = false;
+      activityListValue = false;
+      tokensListValue = response.tokens && response.tokens;
+      
+      if (response.newActivity === true){
+        tabSelectedValue = 3;
+        activityListValue = response.activity && response.activity;
+        tokensListValue = false;
+        itemsListValue = false;
+      }
       if (response.newItem === true){
         tabSelectedValue = 2;
         itemsListValue = response.items && response.items;
         tokensListValue = false;
-      }else{
-        tabSelectedValue = 1;
-        itemsListValue = false;
-        tokensListValue = response.tokens && response.tokens;
+        activityListValue = false;
       }
 
       this.setState({
         isLoading: false,
-        creditList: response.credits && response.credits,
-        contractAddress: response.profile.contractAddress,
-        tokens: response.tokens && response.tokens,
-        tokensList: tokensListValue,
         tabSelected: tabSelectedValue,
-        items: response.items && response.items,
-        itemsList: itemsListValue, // tokensList shown by default
-        balances: response.balances && response.balances
+        tokensList: tokensListValue,
+        itemsList: itemsListValue, 
+        activityList: activityListValue, 
       });
+
+
+      if (response.profile.contractAddress === 'no address found'){
+        this.setState({
+           creatingAccount: true,
+        });
+        if (!this.profilePoll){
+          const accountHome = this; 
+          const getProfile = this.getAccountProfile;
+          this.profilePoll = setInterval(function(){
+            accountHome.profilePollCount = accountHome.profilePollCount + 1;
+            console.log('profile poll ', accountHome.profilePollCount);
+            
+            if (accountHome.profilePollCount > 10){
+              clearInterval(accountHome.profilePoll);
+              accountHome.profilePpll = null; 
+              accountHome.setState({
+                 creatingAccount: false,
+              });
+              accountHome.props.dispatch(ToastActionsCreators.displayError('Error creating account'));
+              return;
+            }
+            let gP = getProfile.bind(accountHome);
+            gP(true);
+       }, 5000);
+     }
+      }else{
+        if (this.profilePoll){
+          clearInterval(this.profilePoll);
+          this.profilePoll = null; 
+        }
+        this.setState({
+              creatingAccount: false,
+              creditList: response.credits && response.credits,
+              contractAddress: response.profile.contractAddress,
+              tokens: response.tokens && response.tokens,
+              items: response.items && response.items,
+              activity: response.activity && response.activity,
+              balances: response.balances && response.balances,
+        });
+      }
       saveProfile(response.profile);
       console.log('Request response-->', response);
     })
@@ -148,17 +216,22 @@ class AccountHomeScreen extends Component {
       console.log('error loading accounthome', e);
         this.setState({
             isLoading: false,
-            errors: true,
+            error: 'Unexpected Error'
         });
     });
   }
   
   componentWillUnmount() {
     
-    if (serverPoll){
+    if (this.requestPoll){
       console.log('clearing poll interval');
-      clearInterval(serverPoll);
-      serverPoll = null;
+      clearInterval(this.requestPoll);
+      this.requestPoll = null;
+    }
+    if (this.profilePoll){
+      console.log('clearing profile poll interval');
+      clearInterval(this.profilePoll);
+      this.profilePoll = null;
     }
     if (this.refreshTimeout){
       clearTimeout(this.refreshTimeout);
@@ -174,6 +247,11 @@ class AccountHomeScreen extends Component {
   }
 
   select = (val) => {
+    if (this.state.isLoading){
+      console.log('not navigating tabs while loading');
+      return;
+    }
+    
     this.setState({
       tabSelected: val,
     })
@@ -181,12 +259,21 @@ class AccountHomeScreen extends Component {
       this.setState({
          tokensList: this.state.tokens,
          itemsList: false,
+         activityList: false,
        });
     }
     if( val === 2 ) {
     this.setState({
        tokensList: false,
        itemsList: this.state.items,
+       activityList: false,
+     });
+    }
+    if( val === 3 ) {
+    this.setState({
+       tokensList: false,
+       itemsList: false,
+       activityList: this.state.activity,
      });
     }
     console.log(val);
@@ -198,9 +285,54 @@ class AccountHomeScreen extends Component {
     }
   }
 
+  accountHomeInner = () => {
+    
+  if (this.state.error){
+    return ( <View style={styles.tabView}>
+      <View style={{alignItems:'center',flexDirection: 'row', flex: 1, margin: 20}}>
+      <Text style={styles.tabText}>{this.state.error}</Text>
+      </View>
+    </View>);
+  }
+  
+  
+  return ( <View style={styles.tabView}>
+    <View style={styles.tabHeader}>
+      <TouchableOpacity onPress={() => this.select(1)} style={ this.state.tabSelected === 1 ?
+      [styles.tab, {borderBottomColor: 'white', borderBottomWidth: 3}] : styles.tab
+      }>
+        <Text style={ this.state.tabSelected === 1 ?
+        [styles.tabText, {fontWeight: '700'}] : styles.tabText
+        }>Tokens</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() =>this.select(2)} style={ this.state.tabSelected === 2 ?
+      [styles.tab, {borderBottomColor: 'white', borderBottomWidth: 3}] : styles.tab}>
+        <Text style={ this.state.tabSelected === 2 ?
+        [styles.tabText, {fontWeight: '700'}] : styles.tabText
+      }>Items</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() =>this.select(3)} style={ this.state.tabSelected === 3 ?
+      [styles.tab, {borderBottomColor: 'white', borderBottomWidth: 3}] : styles.tab}>
+        <Text style={ this.state.tabSelected === 3 ?
+        [styles.tabText, {fontWeight: '700'}] : styles.tabText
+      }>Activity</Text>
+      </TouchableOpacity>
+    </View>
+    <View style={styles.tabInner}>
+      {this.state.isLoading && <ActivityIndicator size="large" color="white"/>}
+      <TokensList creatingAccount={this.state.creatingAccount} data={this.state.tokensList} selectItem={(item) => this.selectItem(item)}/>
+      <ItemsList data={this.state.itemsList}/>
+      <ActivityList data={this.state.activityList}/>
+    </View>
+  </View>);
+  
+  }
+  
+  
   render() {
     
-    let addressModal = this.addressModal();
+    const accountHomeInner = this.accountHomeInner();
+    const addressModal = this.addressModal();
     
     let statusInfo = '';
     if (this.state.pendingTransaction){
@@ -222,35 +354,10 @@ class AccountHomeScreen extends Component {
           {addressModal}
             </TouchableWithoutFeedback>
           {statusInfo}
-          <View style={styles.tabView}>
-            <View style={styles.tabHeader}>
-              <TouchableOpacity onPress={() => this.select(1)} style={ this.state.tabSelected === 1 ?
-              [styles.tab, {borderBottomColor: 'white', borderBottomWidth: 3}] : styles.tab
-              }>
-                <Text style={ this.state.tabSelected === 1 ?
-                [styles.tabText, {fontWeight: '700'}] : styles.tabText
-                }>Tokens</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() =>this.select(2)} style={ this.state.tabSelected === 2 ?
-              [styles.tab, {borderBottomColor: 'white', borderBottomWidth: 3}] : styles.tab}>
-                <Text style={ this.state.tabSelected === 2 ?
-                [styles.tabText, {fontWeight: '700'}] : styles.tabText
-              }>Items</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() =>this.select(3)} style={ this.state.tabSelected === 3 ?
-              [styles.tab, {borderBottomColor: 'white', borderBottomWidth: 3}] : styles.tab}>
-                <Text style={ this.state.tabSelected === 3 ?
-                [styles.tabText, {fontWeight: '700'}] : styles.tabText
-              }>Activity</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.tabInner}>
-              {this.state.isLoading && <ActivityIndicator size="large" color="white"/>}
-              <TokensList data={this.state.tokensList} selectItem={(item) => this.selectItem(item)}/>
-              <ItemsList data={this.state.itemsList}/>
-            </View>
-          </View>
-
+        
+          
+              {accountHomeInner}
+            
 
           <View style={styles.bottom}>
             <View style={styles.links}>

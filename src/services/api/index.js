@@ -1,7 +1,11 @@
+
+const API_SERVER = 'www.taptrust.com';
+//const API_SERVER = 'localhost:7080'; // network request fails right now. 
+
 import { Platform } from 'react-native';
 
 let apiVersion = '1';
-let apiUrl = 'http://www.taptrust.com/api/' + apiVersion + '/';
+let apiUrl = 'http://' + API_SERVER + '/api/' + apiVersion + '/';
 
 const defaultSettings = {
     url: '',

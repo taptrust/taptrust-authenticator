@@ -6,6 +6,7 @@ import {
   Image,
   Alert,
   TouchableOpacity,
+  ActivityIndicator,
   Dimensions,
   ScrollView
 } from 'react-native'
@@ -22,7 +23,7 @@ class TokensList extends Component {
   }
 
   componentDidMount () {
-    console.log('Data', this.props.data);
+    console.log('TokensList Data', this.props.data);
   }
 
   onBuyTokensPressed = () => {
@@ -52,7 +53,13 @@ class TokensList extends Component {
                   }
         </ScrollView>
     );
-    } else {
+  } else if (this.props.creatingAccount) {
+    tokensListInner = (
+      <View style={{justifyContent: 'space-around', width:'50%', marginLeft: '27%', marginTop:-15, marginBottom: 15, flexDirection: 'row'}}>
+      <Text style={{color: '#ddd', flexDirection: 'row'}}>Creating account...</Text> <ActivityIndicator style={{flexDirection: 'row', marginLeft: 20, marginTop:-3}} size="small" color="white"/>
+      </View>
+    );
+  } else {
       tokensListInner = (
         <View>
         <View>

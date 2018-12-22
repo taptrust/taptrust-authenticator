@@ -6,6 +6,7 @@ import {
   Image,
   Alert,
   TouchableOpacity,
+  ActivityIndicator,
   Dimensions,
   ScrollView
 } from 'react-native'
@@ -13,49 +14,36 @@ import { LinearGradient } from 'expo';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { DrawerActions, withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
-import Item from '../Item';
+import Activity from '../Activity';
 const { width, height } = Dimensions.get('window');
 
-class ItemsList extends Component {
+class ActivityList extends Component {
   constructor(props) {
     super(props);
   }
 
   componentDidMount () {
-    console.log('ItemsList Data', this.props.data);
+    console.log('ActivityList Data', this.props.data);
   }
 
-  onBuyItemsPressed = () => {
-    return Alert.alert(
-    'Not Available',
-    'Item purchasing is not yet available. For now, you can redeem item vouchers to add items to your wallet.',
-    [
-      {text: 'Cancel', onPress: () =>  console.log('Cancel Alert') },
-      {text: 'Continue', onPress: () =>  this.props.navigation.navigate('Vouchers') },
-    ],
-    { cancelable: false }
-  );
-  }
 
   render() {
     if (this.props.data === false){ return (null); }
-    let itemsListInner;
+    let activityListInner;
     console.log('data -> ' + this.props.data);
     if (this.props.data.length > 0) {
-      itemsListInner = (
+      activityListInner = (
         <ScrollView style={{flex: 1}}>
-          <View style={{flex: 1,flexDirection: 'row', flexWrap: 'wrap'}}>
+        
                   {this.props.data.map((item, i) => {
                     return (
-                        <Item item={item} key={i}/>
+                        <Activity item={item} key={i} selectItem={this.props.selectItem}/>
                     )})
                   }
-          </View>
         </ScrollView>
     );
-    } else {
-      itemsListInner = (
-        <View>
+  } else {
+      activityListInner = (
         <View>
       <Text style={{
         color: 'white',
@@ -63,35 +51,22 @@ class ItemsList extends Component {
         textAlign: 'center',
         fontSize: 16,
         alignContent: 'flex-end'
-      }}>You do not currently have any items.</Text>
+      }}>You do not have any account activity.</Text>
       </View>
-      <View>
-    <Text style={{
-      color: 'white',
-      marginTop: 15,
-      textAlign: 'center',
-      fontSize: 24,
-      textDecorationLine: 'underline',
-      alignContent: 'flex-end'
-    }}
-    onPress={this.onBuyItemsPressed}>Buy Items</Text>
-    </View>
-    </View>
+      
   );
     }
     return (
       <View style={styles.tabContent}>
-        {itemsListInner}
+        {activityListInner}
       </View>
     )
   }
 }
 
-
 const styles = StyleSheet.create({
   tabContent: {
     flex: 1,
-    marginLeft:15,
   },
 });
 
@@ -103,4 +78,4 @@ const mapStateToProps = (state) => ({
 });
 
 
-export default withNavigation(connect(mapStateToProps)(ItemsList));
+export default withNavigation(connect(mapStateToProps)(ActivityList));

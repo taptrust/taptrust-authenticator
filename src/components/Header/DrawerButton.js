@@ -21,7 +21,7 @@ class DrawerButton extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    top: 8,
+    top: 22,
     left: 0,
     position: 'absolute',
     padding: 10,
