@@ -37,6 +37,7 @@ class AuthApprovalScreen extends Component {
   const request = this.props.navigation.state.params.request;
   console.log('Requested transaction-->', request);
   await this.setState({
+      request: request,
       value: request.value,
       ethValue: weiToEth(request.value),
       to: request.to,
@@ -53,7 +54,6 @@ class AuthApprovalScreen extends Component {
         });
     }
 
-    await this.setState({request: request});
 }
 
   onApprove = async () => { // 
@@ -165,6 +165,18 @@ class AuthApprovalScreen extends Component {
       </View>
     );
     }
+    
+    let appInfo = '';
+    //{ url': u'https://www.cryptokitties.co/', 'token': {}, 'transactions': 3057149, 'title': u'CryptoKitties Core'}, 'address': '0x06012c8cf97bead5deae237070f9587f8e7a266d'}
+    if (this.state.request && this.state.request.addressInfo && this.state.request.addressInfo.url && this.state.request.addressInfo.title){
+      appInfo = (
+        <View>
+        <Text style={styles.explanation}> Please check you are using the</Text>
+        <Text style={styles.explanation}> verified {this.state.request.addressInfo.title} app hosted at </Text>
+        <Text style={styles.explanation_url}>{this.state.request.addressInfo.url}</Text>
+        </View>
+      ); 
+    }
 
     if (this.state.requestType === 'customTransaction'){
       authApprovalInner = (
@@ -183,55 +195,11 @@ class AuthApprovalScreen extends Component {
               </View>
             </View>
           </View>
-
-        </View>
-      );
-      }
-      let appInfo = '';
-      if (this.state.request && this.state.request.app && this.state.request.app.name){
-        appInfo = (
-          <View>
-          <Text style={styles.explanation}> Please check you are using the</Text>
-          <Text style={styles.explanation}> verified {this.state.request.app.name} hosted at </Text>
-          <Text style={styles.explanation_url}>{this.state.request.app.appUrl}</Text>
-          </View>
-        ); 
-      }
-    if (this.state.requestType === 'appTransaction'){
-      authApprovalInner = (
-        <View>
-        <Text style={styles.explanation}>Wants to send a transaction</Text>
-        <Text style={styles.explanation}>of the following amount:</Text>
-
-          <View style={styles.details}>
-            <Text style={styles.ethAmount}>{renderedValue} {valueUnit}</Text>
-            <View style={styles.to}>
-              <View>
-                <Text style={styles.toString}>will be sent to</Text>
-              </View>
-              <View style={{marginTop: 7, flexDirection: 'row'}}>
-                <Text style={styles.toAddress}>{this.ellipsisHeader(this.state.to)}</Text>
-                <Text style={styles.toAddress}>...</Text>
-                <Text style={styles.toAddress}>{this.ellipsisTail(this.state.to)}</Text>
-              </View>
-            </View>
-          </View>
           {appInfo}
         </View>
       );
-    }
-  if (this.state.requestType === 'appSession'){
-      authApprovalInner = (
-        <View>
-        <Text style={styles.explanation}> Is Requesting a</Text>
-        <Text style={styles.explanation}>Permission:</Text>
-        <View style={styles.details}>
-          <Text style={styles.ethAmount}> Spend up to {renderedValue} {valueUnit} </Text>
-          <Text style={styles.hoursLeft}> Expires in {this.state.hours_left} hours </Text>
-        </View>
-        </View>
-      );
-    }
+      }
+
     
   let transactionTitle = 'Transaction Request';
   if (this.state.app_name){

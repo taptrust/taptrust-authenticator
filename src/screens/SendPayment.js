@@ -30,6 +30,7 @@ class SendPaymentScreen extends Component {
 
 		this.state={
       inputAddress: '',
+      savedInputAddress: '',
       username: '',
       redirect: '',
       isAddressModalOpen: false,
@@ -78,17 +79,19 @@ class SendPaymentScreen extends Component {
 
   handleEscape = () => {
     this.setState({
+      inputAddress: this.state.savedInputAddress,
       isAddressModalOpen: false,
-      method: false,
-      isRecipientAddressShown: true,
-    });
-  }
-  handleEdit = () => {
-    this.setState({
-      method: true,
-      isRecipientAddressShown: false
+      method: this.state.recipientAddress === '',
+      isRecipientAddressShown: this.state.recipientAddress != '',
     })
   }
+  handleEditAddress = () => {
+    this.setState({
+      savedInputAddress: this.state.inputAddress,
+      isAddressModalOpen: true
+    })
+  }
+
 
   addressEllipsis(address){
     var length = String(address).length;
@@ -106,7 +109,7 @@ class SendPaymentScreen extends Component {
     if(!usd) {
       return 0;
     }
-    return (value/100).toFixed(3);
+    return (value/150).toFixed(3);
   }
 
   ethToUSD = (eth) => {
@@ -114,7 +117,7 @@ class SendPaymentScreen extends Component {
     if(!eth) {
       return 0;
     }
-    return (value*100).toFixed(2);
+    return (value*150).toFixed(2);
   }
 
   usdAmountChange = (value) => {
@@ -303,7 +306,7 @@ borderBottomWidth: 1}}>            {this.state.isRecipientAddressShown &&
                       <View/>
                       <Text style={styles.content,{ flexDirection: 'row', color: 'white', fontSize: 18, padding: 10}}>{this.state.recipientAddress}</Text>
                       <TouchableOpacity
-                        style={styles.buttonContainer} onPress={this.handleEdit}>
+                        style={styles.buttonContainer} onPress={this.handleEditAddress}>
                         <Image 
                         style={{flexDirection: 'row', width: 20, height: 20}}
                           source={require('../assets/edit.png')}
@@ -324,14 +327,14 @@ borderBottomWidth: 1}}>            {this.state.isRecipientAddressShown &&
     marginBottom:0}}>
                   <TouchableOpacity
                     style={styles.buttonContainer} onPress={this.handleAddress}>
-                      <Text style={styles.buttonText, { fontSize: 15}}>ETH Address</Text>
+                      <Text style={styles.buttonText, { fontSize: 15}}>Add Ethereum Address</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={styles.buttonContainer}>
+                      style={styles.buttonContainer, {display: 'none'}}>
                       <Text style={styles.buttonText, { fontSize: 15}}>Scan QR</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={styles.buttonContainer}>
+                      style={styles.buttonContainer, {display: 'none'}}>
                       <Text style={styles.buttonText, { fontSize: 15}}>Recent</Text>
                     </TouchableOpacity>
                   </View>
@@ -344,7 +347,7 @@ borderBottomWidth: 1}}>            {this.state.isRecipientAddressShown &&
     return ( <View style={{
   
       flexDirection: 'column',
-      marginTop: 50,
+      paddingTop: 20,
       marginBottom: 0
     }}>        
                 
@@ -354,7 +357,9 @@ borderBottomWidth: 1}}>            {this.state.isRecipientAddressShown &&
                   textAlign: 'center',
                   fontSize: 18,
                 }}>from</Text>
-                <View>
+                <View style={{
+                  padding: 8,
+                }}>
                 <Text style={{
                   color: 'white',
                   alignSelf: 'center',

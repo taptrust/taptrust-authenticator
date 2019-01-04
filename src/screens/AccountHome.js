@@ -254,7 +254,8 @@ class AccountHomeScreen extends Component {
     
     this.setState({
       tabSelected: val,
-    })
+    });
+    
     if( val === 1 ) {
       this.setState({
          tokensList: this.state.tokens,
@@ -276,7 +277,6 @@ class AccountHomeScreen extends Component {
        activityList: this.state.activity,
      });
     }
-    console.log(val);
   }
   
   selectItem = (item) => {

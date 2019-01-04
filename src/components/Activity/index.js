@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Linking,
   ScrollView
 } from 'react-native'
 import { LinearGradient } from 'expo';
@@ -23,6 +24,11 @@ class Activity extends Component {
 
   selectItem = () => {
     this.props.selectItem(this.props.item);
+  }
+  
+  openTxLink = (item) => {
+    console.log(item.txurl);
+    Linking.openURL(item.txurl);
   }
 
   getTime = (date) => {
@@ -46,14 +52,14 @@ class Activity extends Component {
   
   
   txLink = (item) => {
-    if (item.txhash){
+    if (item.txurl){
       return (
         <View  style={styles.content, {flexDirection: 'row', top:'50%', width: '50%', right: -30, position: 'absolute'}}>
-          <TouchableOpacity onPress={() => this.selectItem(item)} style={{ marginRight: 5,}}>
-            <Text style={{ color: '#ddd', fontSize: 12, }}>View on Etherscan</Text>
+          <TouchableOpacity onPress={() => this.openTxLink(item)} style={{ marginRight: 8,}}>
+            <Text style={{ color: '#fff', fontSize: 12, }}>View on Etherscan</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.selectItem(item)} style={{ marginLeft:-5, marginTop:-5 }}>
-            <Entypo style={{ alignSelf: 'center',}} name="chevron-small-right" size={25} color="white"/>
+          <TouchableOpacity onPress={() => this.openTxLink(item)} style={{ marginLeft:-15, marginTop:-10 }}>
+            <Entypo style={{ alignSelf: 'center',}} name="chevron-small-right" size={35} color="white"/>
           </TouchableOpacity>
         </View>
       );
