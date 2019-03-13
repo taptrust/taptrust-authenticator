@@ -45,11 +45,7 @@ const auth = (state = initialState, action) => {
             console.log('Saving request_id');
             return {
                 ...state,
-<<<<<<< HEAD
-                token: action.token,
-=======
                 request_id: action.request_id,
->>>>>>> f4699a5... updates for transaction testing
             }
         case LOGOUT:
         console.log('LOG_OUT');

@@ -26,12 +26,13 @@ const { width, height } = Dimensions.get('window');
 class HelpScreen extends Component {
   constructor(props) {
 		super(props);
-
 		this.state={
 		}
 	}
 
   componentDidMount() {
+    
+    console.log(this.props.navigation);
 
   }
 
@@ -46,6 +47,11 @@ class HelpScreen extends Component {
 
   viewAuthApproval = () => {
     this.props.navigation.navigate('AuthApproval');
+  }
+  
+
+  viewInvestmentSettings = () => {
+    this.props.navigation.navigate('InvestmentSettings');
   }
 
   addEmail = () => {
@@ -72,6 +78,11 @@ class HelpScreen extends Component {
       <LinearGradient  colors={['#0499ED', '#0782c6', '#1170a3']} style={styles.container}>
         <Header left="nav" title=""/>
         <View style={styles.view}>
+        </View>
+        <View style={styles.view}>
+          <TouchableOpacity style={styles.buttonContainer} onPress={this.viewInvestmentSettings}>
+            <Text style={{ color: 'black', fontSize: 15, }}>Investment Settings</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.view}>
           <TouchableOpacity style={styles.buttonContainer} onPress={this.viewSecurity}>

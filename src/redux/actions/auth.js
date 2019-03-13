@@ -8,17 +8,10 @@ export const login = (formData) => ({
     formData
 });
 
-<<<<<<< HEAD
-export const saveSession = (token) => ({
-    type: SAVE_SESSION,
-    token
-=======
 export const saveRequest = (request_id) => ({
     type: SAVE_REQUEST,
     request_id
->>>>>>> f4699a5... updates for transaction testing
 });
-
 
 export const saveProfile = (profile) => ({
     type: SAVE_PROFILE,

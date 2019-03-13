@@ -87,25 +87,6 @@ class AuthHomeScreen extends Component {
 
 	}
 
-			if(response.session) {
-				let request_id = response.session.request_id;
-				let request = response.session.request;
-				saveRequest(request_id);
-				this.props.navigation.navigate('AuthApproval', { request: request });
-			}
-			this.setState({
-				loading: false,
-			});
-		})
-		.catch(e => {
-			this.setState({
-				loading: false,
-				errors: true,
-			});
-		});} catch(e) {
-			Alert.alert(e);
-		}
-	}
 
 	render() {
 		return (

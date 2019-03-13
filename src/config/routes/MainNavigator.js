@@ -15,6 +15,7 @@ import HelpScreen from '../../screens/Help';
 import AppBrowserScreen from '../../screens/AppBrowser';
 import SendPaymentScreen from '../../screens/SendPayment';
 import PairApprovalScreen from '../../screens/PairApproval';
+import InvestmentSettingsScreen from '../../screens/InvestmentSettings';
 import TabsStack from './TabsStack';
 
 const { width, height } = Dimensions.get('window');
@@ -49,6 +50,9 @@ const Drawer = createDrawerNavigator ({
   },
   PairApproval: {
       screen: PairApprovalScreen
+  },
+  InvestmentSettings: {
+      screen: InvestmentSettingsScreen
   }
 },  {
   drawerWidth: width/2,

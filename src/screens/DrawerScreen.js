@@ -17,7 +17,7 @@ class AuthHomeScreen extends Component {
     super(props);
 
     this.state={
-      username: '',
+      username: ''
     }
   }
 
@@ -44,8 +44,8 @@ class AuthHomeScreen extends Component {
   }
 
   onHelp = () => {
-    return notReadyAlert('Support');
-    //this.props.navigation.navigate('Help');
+    //return notReadyAlert('Support');
+    this.props.navigation.navigate('Help');
   }
 
   onSettings = () => {
